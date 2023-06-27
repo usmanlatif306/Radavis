@@ -1,0 +1,5 @@
+[29-Nov-2022 19:55:58 UTC] PHP Warning:  require(/home/radc1987/public_html/dev/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/radc1987/public_html/dev/public/index.php on line 34
+[29-Nov-2022 19:55:58 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/radc1987/public_html/dev/public/../vendor/autoload.php' (include_path='.:/opt/alt/php80/usr/share/pear:/opt/alt/php80/usr/share/php:/usr/share/pear:/usr/share/php') in /home/radc1987/public_html/dev/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/radc1987/public_html/dev/public/index.php on line 34
