@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bulletin;
+use App\Models\dispatch;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Rules\MatchOldPassword;
@@ -28,7 +30,27 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $bulletin = Bulletin::doesntHave('read')->first();
+        $strFromDate = date("Y-m-d");
+        $strToDate = date("Y-m-d");
+
+        $dispatches = dispatch::get_dispatches_search($strFromDate, $strToDate, []);
+
+        return view('home', compact('bulletin', 'dispatches'));
+    }
+
+    /**
+     * Read the bulliton.
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function readBulletin(Bulletin $bulletin)
+    {
+        $bulletin->reads()->create([
+            'user_id' => auth()->id(),
+        ]);
+
+        return back();
     }
 
     /**
@@ -59,7 +81,7 @@ class HomeController extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             #Update Profile Data
             User::whereId(auth()->user()->id)->update([
                 'first_name' => $request->first_name,
@@ -72,7 +94,6 @@ class HomeController extends Controller
 
             #Return To Profile page with success
             return back()->with('success', 'Profile Updated Successfully.');
-            
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
@@ -97,14 +118,13 @@ class HomeController extends Controller
             DB::beginTransaction();
 
             #Update Password
-            User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-            
+            User::find(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
+
             #Commit Transaction
             DB::commit();
 
             #Return To Profile page with success
             return back()->with('success', 'Password Changed Successfully.');
-            
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());

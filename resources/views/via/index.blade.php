@@ -15,11 +15,11 @@
                     </a>
                 </div>
                 <!-- <div class="col-md-6">
-                    <a href="{{ route('via.export') }}" class="btn btn-sm btn-success">
-                        <i class="fas fa-check"></i> Export To Excel
-                    </a>
-                </div> -->
-                
+                            <a href="{{ route('via.export') }}" class="btn btn-sm btn-success">
+                                <i class="fas fa-check"></i> Export To Excel
+                            </a>
+                        </div> -->
+
             </div>
 
         </div>
@@ -38,13 +38,14 @@
                     <tr>
                         <th>No</th>
                         <th>Name</th>
+                        <th>User</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
-            </table>     
+            </table>
         </div>
 
     </div>
@@ -55,35 +56,50 @@
 
 @section('scripts')
 
-<script type = "text/javascript">
+    <script type="text/javascript">
+        function ConfirmDelete(id) {
+            $('#deleteModal').modal('show');
+            $('#confirm_del_id').val(id);
+        }
+    </script>
+    <script type="text/javascript">
+        $(function() {
 
-function ConfirmDelete(id){
-    $('#deleteModal').modal('show');
-    $('#confirm_del_id').val(id);
-}
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                "oLanguage": {
+                    "sSearch": "Filter:"
+                },
+                ajax: "{{ route('via.index') }}",
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'user',
+                        name: 'user'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                stateSave: true,
+                dom: '<"top"lif>rtp'
+            });
 
-</script>
-<script type="text/javascript">
-  $(function () {
-    
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        "oLanguage": {
-            "sSearch": "Filter:"
-        },
-        ajax: "{{ route('via.index') }}",
-        columns: [
-            {data: 'id', name: 'id'},
-            {data: 'name', name: 'name'},
-            {data: 'status', name: 'status'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ],
-        stateSave: true,
-        dom: '<"top"lif>rtp'
-    });
-    
-  });
-</script> 
-    
+        });
+    </script>
+
 @endsection

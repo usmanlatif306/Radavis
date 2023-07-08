@@ -2,9 +2,9 @@
 
 @section('title', 'Dispatch')
 @push('styles')
-    {{-- <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" /> --}}
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
     <style>
         td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -74,8 +74,8 @@
         <div class="panel" @if ($bOpenSearch) style="display: block;" @endif>
             <div class="card shadow mb-4">
                 <!--<div class="card-header py-3">
-                                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
-                                                                                        </div>-->
+                                                <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
+                                            </div>-->
                 <form method="GET" action="{{ route('dispatch.searchview') }}">
                     @csrf
                     <div class="card-body">
@@ -100,12 +100,12 @@
                             </div>
 
                             <!-- <div class="col-sm-3 mb-2 mt-6 mb-sm-0">
-                                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
-                                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
-                                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
-                                                                                                            <span class="slider round"></span>
-                                                                                                        </label>
-                                                                                                    </div> -->
+                                                        <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
+                                                            <label class="switch" style="margin: 20px 0px -14px 100px;">
+                                                                <input type="checkbox" name="note" id="note" class="form-control form-control-user">
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </div> -->
                             {{-- <div class="col-sm-4 mb-2 mt-6 mb-sm-0">
                         <label for="completed" class="top_option" style="padding-bottom:20px;">Completed: </label>
                             <label class="switch"  style="margin: 20px 0px -14px 100px;">
@@ -394,6 +394,16 @@
                                 <th data-priority="2">Via</th>
                                 <th data-priority="3">Destination</th>
                                 <th>Rate</th>
+                                <?php /*<th>Saleman</th>
+                                <th>Sales No.</th>
+                                <th>Set</th>
+                                <th>DNS</th>
+                                @if($config[7]->value == 'show')
+                                <th>Driver</th>
+                                <th>Sales</th>
+                                <th>Accounts</th>
+                                @endif */
+                                ?>
                             @else
                                 <th></th>
                                 <th>Date</th>
@@ -408,6 +418,16 @@
                                 <th>Rate</th>
                                 <th>Saleman</th>
                                 <th>Sales No.</th>
+                                <?php
+                                /*<th>Set</th>
+                                <th>DNS</th>*/
+                                ?>
+                                <?php /*@if($config[7]->value == 'show')
+                                <th>Driver</th>
+                                <th>Sales</th>
+                                <th>Accounts</th>
+                                @endif*/
+                                ?>
                             @endif
 
                         </tr>
@@ -434,6 +454,56 @@
                                             onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
                                     </td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
+                                    <?php /*<td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->salesman1->first_name ?? ' '!!}</td>
+                                <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_num ?? ' '!!}</td>
+                                <td >
+                                @if ($dispatch->delivered == 0)
+                                    <a href="{{ route('dispatch.updatedelivered', ['id' => $dispatch->id, 'delivered' => 1]) }}" class="">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                @elseif ($dispatch->delivered == 1)
+                                    <a href="{{ route('dispatch.updatedelivered', ['id' => $dispatch->id, 'delivered' => 0]) }}" class="">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                @endif
+
+                                </td>
+                                <td>
+                                @if ($dispatch->noship == 0)
+                                    <a href="{{ route('dispatch.updatenoship', ['id' => $dispatch->id, 'noship' => 1]) }}" class="">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                @elseif ($dispatch->noship == 1)
+                                    <a href="{{ route('dispatch.updatenoship', ['id' => $dispatch->id, 'noship' => 0]) }}" class="">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                @endif
+                                </td>
+                                @hasrole('Admin')
+                                <!-- <td style="display: flex">
+                                    <a href="#" data-toggle="modal" onclick="EditDispatch({{ $dispatch->id }})"
+                                        class="btn btn-primary m-2">
+                                        <i class="fa fa-pen"></i>
+                                    </a> -->
+                                <!-- <a class="btn btn-danger m-2" href="#" data-toggle="modal"
+                                        onclick="ConfirmDelete({{ $dispatch->id }})">
+                                        <i class="fas fa-trash"></i>
+                                    </a> -->
+                                <!-- </td> -->
+                                @endhasrole
+
+                                @if($config[7]->value == 'show')
+                                    @if($dispatch->driver_instructions != ' ')
+                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->driver_instructions ?? ' '!!}</td>
+                                    @endif
+                                    @if($dispatch->sales_notes != ' ' )
+                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_notes ?? ' '!!}</td>
+                                    @endif
+                                    @if($dispatch->accounting_notes != ' ')
+                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->accounting_notes ?? ' ' !!}</td>
+                                    @endif
+                                @endif*/
+                                    ?>
                                 @else
                                     <?php
                                     $strDispClass = '';
@@ -472,7 +542,60 @@
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->salesman1->first_name ?? ' ' !!}</td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_num ?? ' ' !!}</td>
+                                    <?php
+                                    /*<td >
+                                @if ($dispatch->delivered == 0)
+                                    <a href="{{ route('dispatch.updatedelivered', ['id' => $dispatch->id, 'delivered' => 1]) }}" class="">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                @elseif ($dispatch->delivered == 1)
+                                    <a href="{{ route('dispatch.updatedelivered', ['id' => $dispatch->id, 'delivered' => 0]) }}" class="">
+                                        <i class="fa fa-check"></i>
+                                    </a>
                                 @endif
+
+                                </td>
+                                <td>
+                                @if ($dispatch->noship == 0)
+                                    <a href="{{ route('dispatch.updatenoship', ['id' => $dispatch->id, 'noship' => 1]) }}" class="">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                @elseif ($dispatch->noship == 1)
+                                    <a href="{{ route('dispatch.updatenoship', ['id' => $dispatch->id, 'noship' => 0]) }}" class="">
+                                        <i class="fa fa-check"></i>
+                                    </a>
+                                @endif
+                                </td>*/
+                                    ?>
+                                    @hasrole('Admin')
+                                        <!-- <td style="display: flex">
+                                                                                                    <a href="#" data-toggle="modal" onclick="EditDispatch({{ $dispatch->id }})"
+                                                                                                        class="btn btn-primary m-2">
+                                                                                                        <i class="fa fa-pen"></i>
+                                                                                                    </a> -->
+                                        <!-- <a class="btn btn-danger m-2" href="#" data-toggle="modal"
+                                                                                                        onclick="ConfirmDelete({{ $dispatch->id }})">
+                                                                                                        <i class="fas fa-trash"></i>
+                                                                                                    </a> -->
+                                        <!-- </td> -->
+                                    @endhasrole
+                                    <?php
+                                    /*
+                                @if($config[7]->value == 'show')
+                                    @if($dispatch->driver_instructions != ' ')
+                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->driver_instructions ?? ' '!!}</td>
+                                    @endif
+                                    @if($dispatch->sales_notes != ' ' )
+                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_notes ?? ' '!!}</td>
+                                    @endif
+                                    @if($dispatch->accounting_notes != ' ')
+                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->accounting_notes ?? ' ' !!}</td>
+                                    @endif
+                                @endif
+                                */
+                                    ?>
+                                @endif
+
                             </tr>
                         @endforeach
                     </tbody>

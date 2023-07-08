@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('title', 'Dispatch')
-@push('styles')
-    {{-- <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
+
+@section('content')
+    <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" /> --}}
     <style>
+        @import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+
         td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
             cursor: pointer;
@@ -15,9 +17,15 @@
             background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
         }
     </style>
-@endpush
-@section('content')
-
+    <?php
+    /*<style>
+    @media print{
+        @page {
+            size: landscape;
+        }
+    }
+</style>*/
+    ?>
     <?php
     if (isset($_GET['date'])) {
         $date = $_GET['date'];
@@ -74,8 +82,8 @@
         <div class="panel" @if ($bOpenSearch) style="display: block;" @endif>
             <div class="card shadow mb-4">
                 <!--<div class="card-header py-3">
-                                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
-                                                                                        </div>-->
+                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
+                                                                        </div>-->
                 <form method="GET" action="{{ route('dispatch.searchview') }}">
                     @csrf
                     <div class="card-body">
@@ -100,12 +108,12 @@
                             </div>
 
                             <!-- <div class="col-sm-3 mb-2 mt-6 mb-sm-0">
-                                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
-                                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
-                                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
-                                                                                                            <span class="slider round"></span>
-                                                                                                        </label>
-                                                                                                    </div> -->
+                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
+                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
+                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
+                                                                                            <span class="slider round"></span>
+                                                                                        </label>
+                                                                                    </div> -->
                             {{-- <div class="col-sm-4 mb-2 mt-6 mb-sm-0">
                         <label for="completed" class="top_option" style="padding-bottom:20px;">Completed: </label>
                             <label class="switch"  style="margin: 20px 0px -14px 100px;">
@@ -221,7 +229,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                            {{-- <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Via: </label>
                                 <select id="via" name="via" class="form-control form-control-user">
                                     <option selected disabled>Select Via</option>
@@ -237,7 +245,7 @@
                                             {{ $via->name }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Supplier: </label>
                                 <select id="supplier" name="supplier" class="form-control form-control-user">
@@ -291,43 +299,41 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-6 row">
-                                <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                    Salesman: </label>
-                                    <select id="salesman" name="salesman" class="form-control form-control-user">
-                                        <option selected disabled>Select Salesman</option>
-                                        <?php $salesman = null;
-                                        
-                                        if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
-                                            $salesman = $_GET['salesman'];
-                                        }
-                                        
-                                        ?>
-                                        @foreach ($users->sortBy('first_name') as $user)
-                                            <option value="{{ $user->id }}"
-                                                {{ $user->id == $salesman ? 'selected' : '' }}>{{ $user->first_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                    Rate: </label>
-                                    <select id="rate" name="rate" class="form-control form-control-user">
-                                        <option selected disabled>Select Rate</option>
-                                        <?php $rate1 = null;
-                                        
-                                        if (isset($_GET['rate']) && $_GET['rate'] != '') {
-                                            $rate1 = $_GET['rate'];
-                                        }
-                                        
-                                        ?>
-                                        @foreach ($rates->sortBy('name') as $rate)
-                                            <option value="{{ $rate->id }}"
-                                                {{ $rate->id == $rate1 ? 'selected' : '' }}>{{ $rate->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                Salesman: </label>
+                                <select id="salesman" name="salesman" class="form-control form-control-user">
+                                    <option selected disabled>Select Salesman</option>
+                                    <?php $salesman = null;
+                                    
+                                    if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
+                                        $salesman = $_GET['salesman'];
+                                    }
+                                    
+                                    ?>
+                                    @foreach ($users->sortBy('first_name') as $user)
+                                        <option value="{{ $user->id }}"
+                                            {{ $user->id == $salesman ? 'selected' : '' }}>{{ $user->first_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                Rate: </label>
+                                <select id="rate" name="rate" class="form-control form-control-user">
+                                    <option selected disabled>Select Rate</option>
+                                    <?php $rate1 = null;
+                                    
+                                    if (isset($_GET['rate']) && $_GET['rate'] != '') {
+                                        $rate1 = $_GET['rate'];
+                                    }
+                                    
+                                    ?>
+                                    @foreach ($rates->sortBy('name') as $rate)
+                                        <option value="{{ $rate->id }}" {{ $rate->id == $rate1 ? 'selected' : '' }}>
+                                            {{ $rate->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                         </div>
@@ -342,38 +348,6 @@
         </div>
 
 
-        <div class="card-header py-3 row">
-            @if (Auth::user()->hasRole('salesman'))
-                <!--Do nothing-->
-            @else
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <button type="button" class="btn btn-outline-primary btn-sm" id="truck_only">Trucks</button>
-                    <button type="button" class="btn btn-outline-primary btn-sm" id="supplier_only">Suppliers</button>
-                </div>
-                <?php
-                /*<label class="switch"  style="margin: 20px 8px -14px 15px;">
-                <!-- <input type="checkbox" name="truck_only" id="truck_only" class="form-control form-control-user"> -->
-                <a class="toggle-vis" name="truck_only" id="truck_only" class="form-control form-control-user">Trucks</a>
-                <!-- <span class="slider round"></span> -->
-            </label>
-            <!-- <label for="voided" class="top_option" style="">supplier Only</label> -->
-            <label class="switch"  style="margin: 20px 8px -14px 15px;">
-                <a class="toggle-vis"  name="supplier_only" id="supplier_only" class="form-control form-control-user">Suppliers</a>
-                <!-- <input type="checkbox" name="supplier_only" id="supplier_only" class="form-control form-control-user"> -->
-                <!-- <span class="slider round"></span> -->
-            </label>*/
-                ?>
-            @endif
-            <div class="col-auto">
-                <a href="javascript:void(0)" onclick="BulkEdit()" class="btn btn-sm btn-success">
-                    <i class="fas fa-check"></i>Bulk Edit
-                </a>
-                <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#createModal">
-                    <i class="fas fa-plus"></i> Add New
-                </a>
-            </div>
-        </div>
-
 
         <div class="card-body">
             <div class="table-responsive">
@@ -381,34 +355,28 @@
                     cellspacing="0">
                     <thead>
                         <tr>
-                            @if (Auth::user()->hasRole('salesman'))
-                                <th></th>
-                                <th>Date</th>
-                                <?php /*<th>Id</th>*/ ?>
-                                <th data-priority="1">Commodity</th>
-                                <?php /*<th>Supplier</th>
-                                <th>Purchase Code</th>*/
-                                ?>
-                                <th>Exit</th>
-                                <th>Release Code</th>
-                                <th data-priority="2">Via</th>
-                                <th data-priority="3">Destination</th>
-                                <th>Rate</th>
-                            @else
-                                <th></th>
-                                <th>Date</th>
-                                <th>Id</th>
-                                <th data-priority="1">Commodity</th>
-                                <th>Supplier</th>
-                                <th>Purchase Code</th>
-                                <th>Exit</th>
-                                <th>Release Code</th>
-                                <th data-priority="2">Via</th>
-                                <th data-priority="3">Destination</th>
-                                <th>Rate</th>
-                                <th>Saleman</th>
-                                <th>Sales No.</th>
-                            @endif
+                            {{-- <th></th> --}}
+                            <th>Date</th>
+                            <?php /*<th>Id</th>*/ ?>
+                            <th data-priority="1">Commodity</th>
+                            <?php /*<th>Supplier</th>
+                            <th>Purchase Code</th>*/
+                            ?>
+                            <th>Exit</th>
+                            <th>Release Code</th>
+                            <th data-priority="2">Via</th>
+                            <th data-priority="3">Destination</th>
+                            <th>Rate</th>
+                            <?php /*<th>Saleman</th>
+                            <th>Sales No.</th>
+                            <th>Set</th>
+                            <th>DNS</th>
+                            @if($config[7]->value == 'show')
+                            <th>Driver</th>
+                            <th>Sales</th>
+                            <th>Accounts</th>
+                            @endif */
+                            ?>
 
                         </tr>
                     </thead>
@@ -416,63 +384,22 @@
                         @foreach ($dispatches as $dispatch)
                             <tr class="{{ $dispatch->release_code == '' ? 'table-info' : ' ' }}{{ $dispatch->noship == 1 ? 'table-danger' : ' ' }}{{ $dispatch->void == 1 ? 'table-dark' : ' ' }}{{ $dispatch->delivered == 1 ? 'table-success' : ' ' }}"
                                 @if ($dispatch->void == 1) style="background-color: #D3D3D3; text-decoration: line-through;" @endif>
-                                @if (Auth::user()->hasRole('salesman'))
-                                    <td><input class="all-check" type="checkbox" value="{{ $dispatch->id }}"></td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! date('m/d/Y', $dispatch?->date) !!}</td>
-                                    <?php /*<td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->id!!}</td>*/ ?>
-                                    <td style="color:{{ $dispatch->commodity?->color ?? '' }};font-weight: bold;"><span
-                                            onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->commodity?->name ?? $dispatch->commodity_id !!}</span>
-                                    </td>
-                                    <?php /*<td onclick="EditDispatch({{ $dispatch->id }})"> {!! $dispatch->supplier->name ?? $dispatch->supplier_id!!}</td>
-                                <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->purchase_code ?? ' '!!}</td>*/
-                                    ?>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->release_code ?? ' ' !!}</td>
-                                    <td><span onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
-                                    </td>
-                                    <td><span
-                                            onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
-                                    </td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
-                                @else
-                                    <?php
-                                    $strDispClass = '';
-                                    $strHiddenFields = '';
-                                    if ($config[7]->value == 'show') {
-                                        if ($dispatch->driver_instructions != '') {
-                                            $strDispClass = 'class="details-control"';
-                                            $strHiddenFields = $strHiddenFields . '<input type="hidden" class="driver_instructions" value="' . $dispatch->driver_instructions . '" />';
-                                        }
-                                        if ($dispatch->sales_notes != '') {
-                                            $strDispClass = 'class="details-control"';
-                                            $strHiddenFields = $strHiddenFields . '<input type="hidden" class="sales_notes" value="' . $dispatch->sales_notes . '" />';
-                                        }
-                                        if ($dispatch->accounting_notes != '') {
-                                            $strDispClass = 'class="details-control"';
-                                            $strHiddenFields = $strHiddenFields . '<input type="hidden" class="accounting_notes" value="' . $dispatch->accounting_notes . '" />';
-                                        }
-                                    }
-                                    ?>
-                                    <td <?php echo $strDispClass; ?>><input class="all-check" type="checkbox"
-                                            value="{{ $dispatch->id }}"><?php echo $strHiddenFields; ?></td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! date('m/d/Y', $dispatch->date) !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->id !!}</td>
-                                    <td style="color:{{ $dispatch->commodity->color ?? '' }};font-weight: bold;"><span
-                                            onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->commodity->name ?? $dispatch->commodity_id !!}</span>
-                                    </td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})"> {!! $dispatch->supplier->name ?? $dispatch->supplier_id !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->purchase_code ?? ' ' !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->release_code ?? ' ' !!}</td>
-                                    <td><span onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
-                                    </td>
-                                    <td><span
-                                            onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
-                                    </td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->salesman1->first_name ?? ' ' !!}</td>
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_num ?? ' ' !!}</td>
-                                @endif
+                                {{-- <td><input class="all-check" type="checkbox" value="{{ $dispatch->id }}"></td> --}}
+                                <td>{!! date('m/d/Y', $dispatch?->date) !!}</td>
+                                <?php /*<td>{!! $dispatch->id!!}</td>*/ ?>
+                                <td style="color:{{ $dispatch->commodity?->color ?? '' }};font-weight: bold;">
+                                    <span>{!! $dispatch->commodity?->name ?? $dispatch->commodity_id !!}</span>
+                                </td>
+                                <?php /*<td> {!! $dispatch->supplier->name ?? $dispatch->supplier_id!!}</td>
+                                <td>{!! $dispatch->purchase_code ?? ' '!!}</td>*/
+                                ?>
+                                <td>{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
+                                <td>{!! $dispatch->release_code ?? ' ' !!}</td>
+                                <td><span>{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
+                                </td>
+                                <td><span>{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
+                                </td>
+                                <td>{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -484,13 +411,6 @@
 
     </div>
 
-
-
-
-    @include('dispatch.create')
-    @include('dispatch.bulkedit')
-
-    @include('dispatch.edit')
 
     @include('dispatch.delete-modal')
 

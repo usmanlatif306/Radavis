@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Vias;
 
+use App\Http\Controllers\Controller;
 use App\Models\dispatch;
 use App\Models\Commoditie;
 use App\Models\Supplier;
@@ -22,8 +23,8 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Auth;
 use App\Models\Config;
-use Illuminate\Support\Facades\Auth;
 
 class DispatchController extends Controller
 {
@@ -105,9 +106,10 @@ class DispatchController extends Controller
         $query = dispatch::query();
 
         if (Auth::user()->hasRole('salesman')) {
+
+            //    dd($changedisplay);
+            // if($dispatches)
             $query =   $query->where('date', $date_timestamp)->where('salesman', Auth::user()->id);
-        } elseif (Auth::user()->hasRole('truck')) {
-            $query =  $query->where('date', $date_timestamp)->whereIn('via_id', auth()->user()->trucks->pluck('id'));
         } else {
             $query = $query->where('date', $date_timestamp);
         }
@@ -124,7 +126,6 @@ class DispatchController extends Controller
 
 
         $dispatches = $query->get();
-        //dd()
 
         $config = Config::get();
         $commodities = Commoditie::where('active', 1)->get();
@@ -139,13 +140,7 @@ class DispatchController extends Controller
             ->where('status', 1)
             ->get();
 
-
-
-        if (!auth()->user()->hasRole('truck')) {
-            return view('dispatch.index', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config]);
-        } else {
-            return view('vias.dispatch.index', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config]);
-        }
+        return view('dispatch.index', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config]);
     }
 
     /**
@@ -715,9 +710,9 @@ class DispatchController extends Controller
 
     public function searchview(Request  $request)
     {
-        // echo "<pre>";
-        // dd($request->date);
-        // die();
+        //  echo "<pre>";
+        //  dd($request);
+        //  die();
 
         $changedisplay =  $this->GetDisplayVariables();
 
@@ -835,11 +830,10 @@ class DispatchController extends Controller
         if ($date != '') {
             $date_timestamp =  strtotime($date);
             $query = dispatch::query();
-
             if (Auth::user()->hasRole('salesman')) {
+                //    dd($changedisplay);
+                // if($dispatches)
                 $query =   $query->where('date', $date_timestamp)->where('salesman', Auth::user()->id);
-            } elseif (Auth::user()->hasRole('truck')) {
-                $query = $query->where('date', $date_timestamp)->whereIn('via_id', auth()->user()->trucks->pluck('id'));
             } else {
                 $query = $query->where('date', $date_timestamp);
             }
@@ -893,11 +887,7 @@ class DispatchController extends Controller
         $dispatches = dispatch::get_dispatches_search($request->datepicker_from, $request->datepicker_to, $variables);
      }*/
 
-        if (!auth()->user()->hasRole('truck')) {
-            return view('dispatch.index1', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config, 'bOpenSearch' => $bOpenSearch]);
-        } else {
-            return view('vias.dispatch.index1', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config, 'bOpenSearch' => $bOpenSearch]);
-        }
+        return view('dispatch.index1', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config, 'bOpenSearch' => $bOpenSearch]);
     }
 
     public function searchresult(Request $request)

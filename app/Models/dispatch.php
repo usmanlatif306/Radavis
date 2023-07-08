@@ -76,26 +76,26 @@ class dispatch extends Model
         date_default_timezone_set("America/Los_Angeles");
 
         $query = dispatch::query();
-        
-        if(!isset($variables['datepicker_all'])){
-            if (!$from instanceof Carbon){
-                $from = Carbon::createFromFormat('Y-m-d',$from)->startOfDay();
+
+        if (!isset($variables['datepicker_all'])) {
+            if (!$from instanceof Carbon) {
+                $from = Carbon::createFromFormat('Y-m-d', $from)->startOfDay();
             }
             if (!$to instanceof Carbon) {
                 $to = Carbon::createFromFormat('Y-m-d', $to)->endOfDay();
             }
 
-            $query->when($from, function ($q,$from) {
-                return $q->where('date', '>=',$from->timestamp);
+            $query->when($from, function ($q, $from) {
+                return $q->where('date', '>=', $from->timestamp);
             });
 
-            $query->when($to, function ($q,$to) {
+            $query->when($to, function ($q, $to) {
                 return  $q->where('date', '<=', $to->timestamp);
             });
-    }
+        }
 
 
-     //   print_r($variables);
+        //   print_r($variables);
 
         foreach ($variables as $key => $value) {
             switch ($key) {
@@ -123,26 +123,23 @@ class dispatch extends Model
             }
         }
 
-        
 
-        if(\Auth::user()->hasRole('salesman')){
+
+        if (\Auth::user()->hasRole('salesman')) {
             return $query->where('salesman', \Auth::user()->id)->paginate(1000);
-
-        }
-        else{
+        } elseif (\Auth::user()->hasRole('truck')) {
+            return $query->whereIn('via_id', auth()->user()->trucks->pluck('id'))->paginate(1000);
+        } else {
             /*echo $query->toSql();
             $bindings = $query->getBindings();
             print_r($bindings);
             //exit;*/
             return $query->paginate(1000);
-
         }
-
     }
 
     public function logs()
     {
         return $this->hasMany(DispatchLog::class);
     }
-
 }

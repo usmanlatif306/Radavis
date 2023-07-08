@@ -6,8 +6,8 @@
     </button>
 
     <!-- Topbar Search -->
-    <form
-        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" style="display: none !important;">
+    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+        style="display: none !important;">
         <div class="input-group">
             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                 aria-label="Search" aria-describedby="basic-addon2">
@@ -21,15 +21,22 @@
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-        
+
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->full_name ?? 'Douglas McGee'}}</span>
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <span
+                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->full_name ?? 'Douglas McGee' }}</span>
                 <!--<img class="img-profile rounded-circle"
-                    src="{{asset('admin/img/undraw_profile.svg')}}">-->
-                Logged in as: @if(auth()->user()->role_id==1) Admin @else Salesman @endif
+                    src="{{ asset('admin/img/undraw_profile.svg') }}">-->
+                Logged in as: @if (auth()->user()->role_id == 1)
+                    Admin
+                @elseif (auth()->user()->role_id == 4)
+                    Vias
+                @else
+                    Salesman
+                @endif
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

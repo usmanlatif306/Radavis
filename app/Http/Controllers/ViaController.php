@@ -28,25 +28,28 @@ class ViaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Via::select('*');
+            $data = Via::with('user')->select('*');
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('status', function($row){
-                        if($row->active == 0){
-                            return '<span class="badge badge-danger">Inactive</span>';
-                        }elseif($row->active == 1){
-                            return '<span class="badge badge-success">Active</span>';
-                        }
-                    }) 
-                    ->addColumn('action', function($row){
-                        $btn = '<a href="'.route("via.edit", ["via" => $row->id]).'" class="btn btn-primary m-2"><i class="fa fa-pen"></i></a>';
-                        $btn .=  '<a class="btn btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete('.$row->id.')"><i class="fas fa-trash"></i></a>';     
-                        return $btn;
-                    })  
-                    ->rawColumns(['status','action'])
-                    ->make(true);
+                ->addIndexColumn()
+                ->addColumn('user', function ($row) {
+                    return $row->user ?  $row->user?->full_name . '<br>(' . $row->user?->email . ')' : '<span class="text-danger">No link</span>';
+                })
+                ->addColumn('status', function ($row) {
+                    if ($row->active == 0) {
+                        return '<span class="badge badge-danger">Inactive</span>';
+                    } elseif ($row->active == 1) {
+                        return '<span class="badge badge-success">Active</span>';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route("via.edit", ["via" => $row->id]) . '" class="btn btn-primary m-2"><i class="fa fa-pen"></i></a>';
+                    $btn .=  '<a class="btn btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete(' . $row->id . ')"><i class="fas fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['user', 'status', 'action'])
+                ->make(true);
         }
-        
+
         return view('via.index');
     }
 
@@ -57,7 +60,9 @@ class ViaController extends Controller
      */
     public function create()
     {
-        return view('via.add');
+        return view('via.add', [
+            'users' => User::select(['id', 'first_name', 'last_name', 'email'])->where('role_id', 4)->get(),
+        ]);
     }
 
     /**
@@ -70,6 +75,7 @@ class ViaController extends Controller
     {
         $request->validate([
             'name'    => 'required',
+            'user_id'    => 'required|exists:users,id',
             'active'  =>  'required|numeric|in:0,1',
         ]);
 
@@ -78,14 +84,13 @@ class ViaController extends Controller
             // Store Data
             $vias = Via::create([
                 'name'    => $request->name,
-                'active'        => $request->active,
+                'active'  => $request->active,
+                'user_id'  => $request->user_id,
             ]);
-
 
             // Commit And Redirected To Listing
             DB::commit();
-            return redirect()->route('via.index')->with('success','Via Added Successfully.');
-
+            return redirect()->route('via.index')->with('success', 'Via Added Successfully.');
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -105,7 +110,7 @@ class ViaController extends Controller
         ]);
 
         // If Validations Fails
-        if($validate->fails()){
+        if ($validate->fails()) {
             return redirect()->route('via.index')->with('error', $validate->errors()->first());
         }
 
@@ -117,7 +122,7 @@ class ViaController extends Controller
 
             // Commit And Redirect on index with Success Message
             DB::commit();
-            return redirect()->route('via.index')->with('success','via Status Updated Successfully!');
+            return redirect()->route('via.index')->with('success', 'via Status Updated Successfully!');
         } catch (\Throwable $th) {
 
             // Rollback & Return Error Message
@@ -146,7 +151,8 @@ class ViaController extends Controller
     public function edit(Via $via)
     {
         return view('via.edit')->with([
-            'via'  => $via
+            'via'  => $via,
+            'users' => User::select(['id', 'first_name', 'last_name', 'email'])->where('role_id', 4)->get(),
         ]);
     }
 
@@ -161,23 +167,22 @@ class ViaController extends Controller
     {
         // Validations
         $request->validate([
-            'name'      =>  'required|unique:vias,name,'.$via->id.',id',
+            'name'      =>  'required|unique:vias,name,' . $via->id . ',id',
             'active'    =>  'required|numeric|in:0,1',
+            'user_id'    => 'required|exists:users,id',
         ]);
 
         DB::beginTransaction();
         try {
-
-            //dd($request);
             $via_updated = Via::whereId($via->id)->update([
                 'name'      => $request->name,
                 'active'    => $request->active,
+                'user_id'  => $request->user_id,
             ]);
 
             // Commit And Redirected To Listing
             DB::commit();
-            return redirect()->route('via.index')->with('success','Via Updated Successfully.');
-
+            return redirect()->route('via.index')->with('success', 'Via Updated Successfully.');
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -205,13 +210,12 @@ class ViaController extends Controller
 
             DB::commit();
             return redirect()->route('via.index')->with('success', 'Via Deleted Successfully!.');
-
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
-    public function export() 
+    public function export()
     {
         return Excel::download(new ViasExport, 'vias.xlsx');
     }

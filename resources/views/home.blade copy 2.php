@@ -9,35 +9,32 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                                                                                                                                                                                                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+                                                                                                                                            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
         </div>
 
         <div class="row">
-            @if (
-                $bulletin &&
-                    auth()->user()->hasRole('truck'))
+            @if (count($bulletins) > 0)
                 <div class="col-md-12">
-                    <div class="d-flex align-items-center justify-content-between"
-                        style="background-color: rgb(0, 67, 135); color: white; padding: 10px; font-weight: bold;">
-                        <h3 class="mb-0 pb-0">{{ $bulletin->title }}</h3>
-                        <form action="{{ route('bulletins.read', $bulletin) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="close text-danger">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </form>
-                    </div>
+                    @foreach ($bulletins as $bulletin)
+                        <div class="alert alert-success alert-dismissible" role="alert">
+                            <form action="{{ route('bulletins.read', $bulletin) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="close">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </form>
 
-                    <div style="border: 1px solid rgb(0, 67, 135); border-top: none; padding: 20px; margin: 0 0 20px 0">
-                        {!! $bulletin->description !!}
-                    </div>
+                            <strong>{{ $bulletin->title }}</strong>
+                            <p>{{ $bulletin->description }}</p>
+                        </div>
+                    @endforeach
                 </div>
             @endif
 
             {{-- dispatched --}}
             <div class="col-md-12 mt-4">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Today’s loads</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Dispatch</h1>
                 </div>
 
                 <div class="table-responsive">
@@ -45,9 +42,34 @@
                         cellspacing="0">
                         <thead>
                             <tr>
-                                <th data-priority="1">Commodity</th>
-                                <th data-priority="2">Destination</th>
-                                <th>Rate</th>
+                                @if (Auth::user()->hasRole('salesman'))
+                                    <th></th>
+                                    <th>Date</th>
+                                    <?php /*<th>Id</th>*/ ?>
+                                    <th data-priority="1">Commodity</th>
+                                    <?php /*<th>Supplier</th>
+                                    <th>Purchase Code</th>*/
+                                    ?>
+                                    <th>Exit</th>
+                                    <th>Release Code</th>
+                                    <th data-priority="2">Via</th>
+                                    <th data-priority="3">Destination</th>
+                                    <th>Rate</th>
+                                    <?php /*<th>Saleman</th>
+                                    <th>Sales No.</th>
+                                    <th>Set</th>
+                                    <th>DNS</th>
+                                    @if($config[7]->value == 'show')
+                                    <th>Driver</th>
+                                    <th>Sales</th>
+                                    <th>Accounts</th>
+                                    @endif */
+                                    ?>
+                                @else
+                                    <th data-priority="1">Commodity</th>
+                                    <th data-priority="2">Destination</th>
+                                    <th>Rate</th>
+                                @endif
 
                             </tr>
                         </thead>

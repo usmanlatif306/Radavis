@@ -5,6 +5,7 @@
 /public/assets
 /storage/*.key
 /vendor
+/storage/logs/laravel.log
 *.zip
 .env
 .env.backup

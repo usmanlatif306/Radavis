@@ -12,7 +12,7 @@
     <title>RAD Dispatch</title>
 
     {{-- ICON --}}
-    <link rel="shortcut icon" type="image/jpg" href="{{ asset('images/icon.png') }}"/>
+    <link rel="shortcut icon" type="image/jpg" href="{{ asset('images/icon.png') }}" />
 
     <!-- Font Awesome UI KIT-->
     <script src="https://kit.fontawesome.com/f75ab26951.js" crossorigin="anonymous"></script>
@@ -22,10 +22,10 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{asset('css/app.css')}}" rel="stylesheet">
-    <link href="{{asset('admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
-    
+
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
@@ -35,44 +35,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.16/moment-timezone-with-data.min.js"></script>
 
-<style>
+    <style>
+        .dataTable {
+            width: 98% !important;
+        }
 
-    .dataTable  {width:98% !important;} #DataTables_Table_0_wrapper{ padding:20px !important}
-    .select2-container{
-        width: 100% !important;
-    }
-    .form-control {
-        font-size: 0.75rem !important;
-    }
-    body{
-        font-size: 0.75rem !important;
-    }
+        #DataTables_Table_0_wrapper {
+            padding: 20px !important
+        }
 
-    
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .form-control {
+            font-size: 0.75rem !important;
+        }
+
+        body {
+            font-size: 0.75rem !important;
+        }
+
+
         /* Style the buttons that are used to open and close the accordion panel */
         .accordion {
-        background-color: #eee;
-        color: #444;
-        cursor: pointer;
-        padding: 18px;
-        width: 100%;
-        text-align: left;
-        border: none;
-        outline: none;
-        transition: 0.4s;
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: 0.4s;
         }
 
         /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-        .active, .accordion:hover {
-        background-color: #ccc;
+        .active,
+        .accordion:hover {
+            background-color: #ccc;
         }
 
         /* Style the accordion panel. Note: hidden by default */
         .panel {
-        padding: 0 18px;
-        background-color: white;
-        display: none;
-        overflow: hidden;
+            padding: 0 18px;
+            background-color: white;
+            display: none;
+            overflow: hidden;
         }
 
         button.accordion:after {
@@ -82,7 +91,11 @@
             float: right;
             margin-left: 5px;
         }
-    
-</style>
+
+        .ck-content {
+            min-height: 250px !important;
+        }
+    </style>
+    @stack('styles')
 
 </head>
