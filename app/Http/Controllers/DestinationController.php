@@ -27,30 +27,29 @@ class DestinationController extends Controller
      */
     public function index(Request $request)
     {
-        
         if ($request->ajax()) {
             $data = Destination::select('*');
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('status', function($row){
-                        if($row->active == 0){
-                            return '<span class="badge badge-danger">Inactive</span>';
-                        }elseif ($row->active == 1){
-                            return '<span class="badge badge-success">Active</span>';
-                        }
-                    }) 
-                    ->addColumn('action', function($row){
-                        $btn = '<a href="'.route("destination.edit", ["destination" => $row->id]).'" class="btn btn-primary m-2"><i class="fa fa-pen"></i></a>';
-                        $btn .= '<a class="btn btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete('.$row->id.')"><i class="fas fa-trash"></i></a>';     
-                        return $btn;
-                    })  
-                    ->rawColumns(['status','action'])
-                    ->make(true);
+                ->addIndexColumn()
+                ->addColumn('status', function ($row) {
+                    if ($row->active == 0) {
+                        return '<span class="badge badge-danger">Inactive</span>';
+                    } elseif ($row->active == 1) {
+                        return '<span class="badge badge-success">Active</span>';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route("destination.edit", ["destination" => $row->id]) . '" class="btn btn-primary m-2"><i class="fa fa-pen"></i></a>';
+                    $btn .= '<a class="btn btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete(' . $row->id . ')"><i class="fas fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['status', 'action'])
+                ->make(true);
         }
-        
+
         return view('destination.index');
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -72,6 +71,7 @@ class DestinationController extends Controller
     {
         $request->validate([
             'name'    => 'required',
+            'address'    => 'required',
             'active'  =>  'required|numeric|in:0,1',
         ]);
 
@@ -80,14 +80,14 @@ class DestinationController extends Controller
             // Store Data
             $destination = Destination::create([
                 'name'    => $request->name,
+                'address'    => $request->address,
                 'active'        => $request->active,
             ]);
 
 
             // Commit And Redirected To Listing
             DB::commit();
-            return redirect()->route('destination.index')->with('success','Destination Added Successfully.');
-
+            return redirect()->route('destination.index')->with('success', 'Destination Added Successfully.');
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -108,7 +108,7 @@ class DestinationController extends Controller
         ]);
 
         // If Validations Fails
-        if($validate->fails()){
+        if ($validate->fails()) {
             return redirect()->route('destination.index')->with('error', $validate->errors()->first());
         }
 
@@ -120,7 +120,7 @@ class DestinationController extends Controller
 
             // Commit And Redirect on index with Success Message
             DB::commit();
-            return redirect()->route('destination.index')->with('success','Destination Status Updated Successfully!');
+            return redirect()->route('destination.index')->with('success', 'Destination Status Updated Successfully!');
         } catch (\Throwable $th) {
 
             // Rollback & Return Error Message
@@ -164,7 +164,8 @@ class DestinationController extends Controller
     {
         // Validations
         $request->validate([
-            'name'      =>  'required|unique:destinations,name,'.$destination->id.',id',
+            'name'      =>  'required|unique:destinations,name,' . $destination->id . ',id',
+            'address'      =>  'required|unique:destinations,address,' . $destination->id . ',id',
             'active'    =>  'required|numeric|in:0,1',
         ]);
 
@@ -174,13 +175,13 @@ class DestinationController extends Controller
             //dd($request);
             $destination_updated = Destination::whereId($destination->id)->update([
                 'name'      => $request->name,
+                'address'    => $request->address,
                 'active'    => $request->active,
             ]);
 
             // Commit And Redirected To Listing
             DB::commit();
-            return redirect()->route('destination.index')->with('success','Destination Updated Successfully.');
-
+            return redirect()->route('destination.index')->with('success', 'Destination Updated Successfully.');
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -209,13 +210,12 @@ class DestinationController extends Controller
 
             DB::commit();
             return redirect()->route('destination.index')->with('success', 'Destination Deleted Successfully!.');
-
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
-    public function export() 
+    public function export()
     {
         return Excel::download(new DestinationsExport, 'Destinations.xlsx');
     }

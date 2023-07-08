@@ -1,7 +1,7 @@
 <ul class="navbar-nav sidebar sidebar-dark " id="accordionSidebar" style="background-color: rgb(0, 67, 135) !important;">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
         <img class="img-fluid" src="http://radavisdispatch.com/rad-logo-2.png" />
     </a>
 
@@ -52,22 +52,22 @@
 
     <!-- @hasrole('Admin')
     <li class="nav-item">
-                                                                                                                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                                                                                                                                aria-controls="collapsePages">
-                                                                                                                                <i class="fas fa-fw fa-folder"></i>
-                                                                                                                                <span>Masters</span>
-                                                                                                                            </a>
-                                                                                                                            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                                                                                                                                <div class="bg-white py-2 collapse-inner rounded">
-                                                                                                                                    <h6 class="collapse-header">Role & Permissions</h6>
-                                                                                                                                    <a class="collapse-item" href="{{ route('roles.index') }}">Roles</a>
-                                                                                                                                    <a class="collapse-item" href="{{ route('permissions.index') }}">Permissions</a>
+                                                                                                                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+                                                                                                                                    aria-controls="collapsePages">
+                                                                                                                                    <i class="fas fa-fw fa-folder"></i>
+                                                                                                                                    <span>Masters</span>
+                                                                                                                                </a>
+                                                                                                                                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                                                                                                                    <div class="bg-white py-2 collapse-inner rounded">
+                                                                                                                                        <h6 class="collapse-header">Role & Permissions</h6>
+                                                                                                                                        <a class="collapse-item" href="{{ route('roles.index') }}">Roles</a>
+                                                                                                                                        <a class="collapse-item" href="{{ route('permissions.index') }}">Permissions</a>
+                                                                                                                                    </div>
                                                                                                                                 </div>
-                                                                                                                            </div>
-                                                                                                                        </li>
+                                                                                                                            </li>
 
-                                                                                                                         Divider
-                                                                                                                        <hr class="sidebar-divider d-none d-md-block">
+                                                                                                                             Divider
+                                                                                                                            <hr class="sidebar-divider d-none d-md-block">
 @endhasrole -->
 
 
