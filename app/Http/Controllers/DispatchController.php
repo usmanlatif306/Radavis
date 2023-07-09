@@ -881,18 +881,6 @@ class DispatchController extends Controller
             $dispatches = dispatch::get_dispatches_search($strFromDate, $strToDate, $variables);
         }
 
-        // echo "<pre>";
-        // print_r($variables);
-        // print_r($strFromDate);
-        // die;
-
-
-
-        /*}
-     else {
-        $dispatches = dispatch::get_dispatches_search($request->datepicker_from, $request->datepicker_to, $variables);
-     }*/
-
         if (!auth()->user()->hasRole('truck')) {
             return view('dispatch.index1', ['dispatches' => $dispatches, 'commodities' => $commodities, 'suppliers' => $suppliers, 'exits' => $exits, 'rates' => $rates, 'vias' => $vias, 'destinations' => $destinations, 'users' => $users, 'config' => $config, 'bOpenSearch' => $bOpenSearch]);
         } else {
@@ -1223,10 +1211,16 @@ class DispatchController extends Controller
 
     public function changedisplay()
     {
-
         $value = $_POST['value'];
 
         session(['changedisplay' => $value]);
+    }
+
+    public function changeNotesView()
+    {
+        $value = $_POST['value'];
+
+        session(['display_notes' => $value]);
     }
 
     //////Check if realse code alreaeday  exyetedadasd

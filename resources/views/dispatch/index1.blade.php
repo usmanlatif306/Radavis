@@ -51,20 +51,38 @@
                 <!--<input  class="btn btn-sm btn-success" type="date" name="date" id="date_view" value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($date . ' +1 day')) : date('Y-m-d', strtotime($date . ' +1 day')); ?>">-->
                 <a href="{{ route('dispatch.searchview', ['date' => date('m/d/Y', strtotime($date . ' +1 day'))]) }}"
                     class="btn btn-sm btn-success"><i class="fa fa-arrow-right"></i></a>
-                <div style="margin-left: 80%;">
-                    <?php $changedisplay = session('changedisplay');
-                    //dd($changedisplay);
-                    ?>
-                    <label>Display</label>
-                    <select class="form form-control" name="dispatch_display" onchange="ChangeDisptachDisplay()"
-                        id="dispatch_display" style="text-align: end;">
-                        <option value="completed" @if ($changedisplay == 'completed') selected @endif>Completed</option>
-                        <option value="open" @if ($changedisplay == 'open') selected @endif>Open</option>
-                        <option value="ship" @if ($changedisplay == 'ship') selected @endif>Ready to Ship</option>
-                        <option value="noship" @if ($changedisplay == 'noship') selected @endif>NO Ship</option>
-                        <option value="void" @if ($changedisplay == 'void') selected @endif>Void</option>
-                        <option value="all" @if ($changedisplay == 'all') selected @endif>ALL</option>
-                    </select>
+                <div class="d-flex justify-content-end">
+                    <div class="mr-2" style="width:15%;">
+                        @php
+                            $display_notes = session('display_notes');
+                        @endphp
+
+                        <label>Notes</label>
+                        <select class="form form-control" name="display_notes" id="display_notes"
+                            onchange="ChangeNotesDisplay()">
+                            <option value="show" @if ($display_notes == 'show') selected @endif>Show</option>
+                            <option value="hide" @if ($display_notes == 'hide') selected @endif>Hide</option>
+                        </select>
+                    </div>
+
+                    <div style="width:15%;">
+                        @php
+                            $changedisplay = session('changedisplay');
+                        @endphp
+
+                        <label>Display</label>
+                        <select class="form form-control" name="dispatch_display" onchange="ChangeDisptachDisplay()"
+                            id="dispatch_display">
+                            <option value="completed" @if ($changedisplay == 'completed') selected @endif>Completed</option>
+                            <option value="open" @if ($changedisplay == 'open') selected @endif>Open</option>
+                            <option value="ship" @if ($changedisplay == 'ship') selected @endif>Ready to Ship
+                            </option>
+                            <option value="noship" @if ($changedisplay == 'noship') selected @endif>NO Ship</option>
+                            <option value="void" @if ($changedisplay == 'void') selected @endif>Void</option>
+                            <option value="all" @if ($changedisplay == 'all') selected @endif>ALL</option>
+                        </select>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -74,8 +92,8 @@
         <div class="panel" @if ($bOpenSearch) style="display: block;" @endif>
             <div class="card shadow mb-4">
                 <!--<div class="card-header py-3">
-                                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
-                                                                                        </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>-->
                 <form method="GET" action="{{ route('dispatch.searchview') }}">
                     @csrf
                     <div class="card-body">
@@ -100,12 +118,12 @@
                             </div>
 
                             <!-- <div class="col-sm-3 mb-2 mt-6 mb-sm-0">
-                                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
-                                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
-                                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
-                                                                                                            <span class="slider round"></span>
-                                                                                                        </label>
-                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <label class="switch" style="margin: 20px 0px -14px 100px;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <input type="checkbox" name="note" id="note" class="form-control form-control-user">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span class="slider round"></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </label>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div> -->
                             {{-- <div class="col-sm-4 mb-2 mt-6 mb-sm-0">
                         <label for="completed" class="top_option" style="padding-bottom:20px;">Completed: </label>
                             <label class="switch"  style="margin: 20px 0px -14px 100px;">
@@ -226,11 +244,11 @@
                                 <select id="via" name="via" class="form-control form-control-user">
                                     <option selected disabled>Select Via</option>
                                     <?php $via1 = null;
-                                    
+
                                     if (isset($_GET['via']) && $_GET['via'] != '') {
                                         $via1 = $_GET['via'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($vias->sortBy('name') as $via)
                                         <option value="{{ $via->id }}" {{ $via->id == $via1 ? 'selected' : '' }}>
@@ -243,11 +261,11 @@
                                 <select id="supplier" name="supplier" class="form-control form-control-user">
                                     <option selected disabled>Select Supplier</option>
                                     <?php $supplier1 = null;
-                                    
+
                                     if (isset($_GET['supplier']) && $_GET['supplier'] != '') {
                                         $supplier1 = $_GET['supplier'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($suppliers->sortBy('name') as $supplier)
                                         <option value="{{ $supplier->id }}"
@@ -261,11 +279,11 @@
                                 <select id="destination" name="destination" class="form-control form-control-user">
                                     <option selected disabled>Select Destination</option>
                                     <?php $destination1 = null;
-                                    
+
                                     if (isset($_GET['destination']) && $_GET['destination'] != '') {
                                         $destination1 = $_GET['destination'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($destinations->sortBy('name') as $destination)
                                         <option value="{{ $destination->id }}"
@@ -279,11 +297,11 @@
                                 <select id="exit" name="exit" class="form-control form-control-user">
                                     <option selected disabled>Select Exit</option>
                                     <?php $exit1 = null;
-                                    
+
                                     if (isset($_GET['exit']) && $_GET['exit'] != '') {
                                         $exit1 = $_GET['exit'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($exits->sortBy('name') as $exit)
                                         <option value="{{ $exit->id }}" {{ $exit->id == $exit1 ? 'selected' : '' }}>
@@ -297,11 +315,11 @@
                                     <select id="salesman" name="salesman" class="form-control form-control-user">
                                         <option selected disabled>Select Salesman</option>
                                         <?php $salesman = null;
-                                        
+
                                         if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
                                             $salesman = $_GET['salesman'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($users->sortBy('first_name') as $user)
                                             <option value="{{ $user->id }}"
@@ -315,11 +333,11 @@
                                     <select id="rate" name="rate" class="form-control form-control-user">
                                         <option selected disabled>Select Rate</option>
                                         <?php $rate1 = null;
-                                        
+
                                         if (isset($_GET['rate']) && $_GET['rate'] != '') {
                                             $rate1 = $_GET['rate'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($rates->sortBy('name') as $rate)
                                             <option value="{{ $rate->id }}"
@@ -408,6 +426,11 @@
                                 <th>Rate</th>
                                 <th>Saleman</th>
                                 <th>Sales No.</th>
+                                @if ($display_notes === 'show')
+                                    <th>Driver Note</th>
+                                    <th>Sale Note</th>
+                                    <th>Account Note</th>
+                                @endif
                             @endif
 
                         </tr>
@@ -453,7 +476,7 @@
                                         }
                                     }
                                     ?>
-                                    <td <?php echo $strDispClass; ?>><input class="all-check" type="checkbox"
+                                    <td <?php echo $display_notes === 'hide' ? $strDispClass : ''; ?>><input class="all-check" type="checkbox"
                                             value="{{ $dispatch->id }}"><?php echo $strHiddenFields; ?></td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! date('m/d/Y', $dispatch->date) !!}</td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->id !!}</td>
@@ -472,19 +495,55 @@
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->salesman1->first_name ?? ' ' !!}</td>
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_num ?? ' ' !!}</td>
+
+                                    @if ($display_notes === 'show')
+                                        <td>{{ $dispatch->driver_instructions }}</td>
+                                        <td>{{ $dispatch->sales_notes }}</td>
+                                        <td>{{ $dispatch->accounting_notes }}</td>
+                                    @endif
                                 @endif
                             </tr>
+                            {{-- showing nested rows if notes is set to show only for admin --}}
+                            {{-- @if (Auth::user()->hasRole('Admin') && $display_notes === 'show' && ($dispatch->driver_instructions != '' || $dispatch->sales_notes != '' || $dispatch->accounting_notes != ''))
+                                <tr>
+                                    <td colspan="13">
+                                        <table style="width:100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width:33%"><span class="dtr-title">Driver</span></td>
+                                                    <td style="width:33%"><span class="dtr-title">Sales</span></td>
+                                                    <td style="width:33%"><span class="dtr-title">Accounts</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="dtr-data">
+                                                            {{ $dispatch->driver_instructions }}
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:33%">
+                                                        <span class="dtr-data">
+                                                            {{ $dispatch->sales_notes }}
+                                                        </span>
+                                                    </td>
+                                                    <td style="width:33%">
+                                                        <span class="dtr-data">
+                                                            {{ $dispatch->accounting_notes }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            @endif --}}
                         @endforeach
                     </tbody>
                 </table>
-
 
             </div>
         </div>
 
     </div>
-
-
 
 
     @include('dispatch.create')
@@ -507,8 +566,8 @@
                 var datepicker_to = document.getElementById('datepicker_to');
                 datepicker_from.value = "{{ request()->datepicker_from }}"
                 datepicker_to.value = "{{ request()->datepicker_to }}"
-                console.log(datepicker_from)
-                console.log(datepicker_to)
+                // console.log(datepicker_from)
+                // console.log(datepicker_to)
             }, 500)
 
         })();

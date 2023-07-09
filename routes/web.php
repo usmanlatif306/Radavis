@@ -171,9 +171,7 @@ Route::group(['middleware' => ['role:Admin']], function () {
     });
 
     Route::middleware('auth')->prefix('dispatch')->name('dispatch.')->group(function () {
-
         Route::get('/searchview', [DispatchController::class, 'searchview'])->name('searchview');
-
         Route::get('/{date}', [DispatchController::class, 'index'])->name('index');
         Route::get('/create', [DispatchController::class, 'create'])->name('create');
         Route::post('/store', [DispatchController::class, 'store'])->name('store');
@@ -186,17 +184,15 @@ Route::group(['middleware' => ['role:Admin']], function () {
 
         Route::get('/import-users', [DispatchController::class, 'importUsers'])->name('import');
         Route::post('/upload-users', [DispatchController::class, 'uploadUsers'])->name('upload');
-
         Route::get('export/', [DispatchController::class, 'export'])->name('export');
 
-
         /////////////Ajax Routes
-
         Route::post('/getCommoditieSuppliers', [DispatchController::class, 'getCommoditieSuppliers'])->name('getCommoditieSuppliers');
         Route::post('/getSuppliersExits', [DispatchController::class, 'getSuppliersExits'])->name('getSuppliersExits');
         Route::post('/getdispatch', [DispatchController::class, 'getdispatch'])->name('getdispatch');
         Route::post('/changelog', [DispatchController::class, 'changelog'])->name('changelog');
         Route::post('/changedisplay', [DispatchController::class, 'changedisplay'])->name('changedisplay');
+        Route::post('/displaynotes', [DispatchController::class, 'changeNotesView'])->name('displaynotes');
         Route::post('/GetReleaseCode', [DispatchController::class, 'GetReleaseCode'])->name('GetReleaseCode');
 
         Route::post('/RealseCodeVefiry', [DispatchController::class, 'RealseCodeVefiry'])->name('RealseCodeVefiry');

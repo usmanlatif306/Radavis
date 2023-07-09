@@ -67,11 +67,9 @@
             },
             "bPaginate": false,
             stateSave: true,
-
             dom: '<"top"if>Brtip',
             /*dom: 'Bfrtip',*/
             buttons: [
-
                 'print',
             ],
         });
@@ -86,7 +84,29 @@
             console.log('draw');
         });
 
+        if ('{{ $display_notes }}' === 'show') {
+            table.rows().every(function() {
+                strAdditional = '<table style="width:100%"><tr>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Driver</span></td>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Sales</span></td>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Accounts</span></td></tr>';
+                strAdditional = strAdditional + '<tr><td>';
+                strAdditional = strAdditional + format(this.data()[13])
+                strAdditional = strAdditional + '</td><td style="width:33%">';
+                strAdditional = strAdditional + format(this.data()[14])
+                strAdditional = strAdditional + '</td><td style="width:33%">';
+                strAdditional = strAdditional + format(this.data()[15])
+                strAdditional = strAdditional + '</td></tr></table>';
+                this.child(strAdditional).show();
+                $(this.node()).addClass('shown');
+            });
+        }
+
         $('#myTable').on('click', 'td.details-control', function() {
+            // console.log('this is clicked');
             var tr = $(this).closest('tr');
             var row = table.row(tr);
 
@@ -474,9 +494,7 @@
 
     function ChangeDisptachDisplay() {
 
-        value = $('#dispatch_display').find(":selected").val();
-
-
+        let value = $('#dispatch_display').find(":selected").val();
 
         $.ajax({
             type: 'POST',
@@ -488,6 +506,21 @@
 
                 window.location.href = "";
 
+            }
+        });
+    }
+
+    function ChangeNotesDisplay() {
+        let value = $('#display_notes').find(":selected").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ route('dispatch.displaynotes') }}',
+            data: {
+                value: value
+            },
+            success: function(data) {
+                window.location.href = "";
             }
         });
     }

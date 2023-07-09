@@ -476,8 +476,6 @@
 
         value = $('#dispatch_display').find(":selected").val();
 
-
-
         $.ajax({
             type: 'POST',
             url: '{{ route('dispatch.changedisplay') }}',

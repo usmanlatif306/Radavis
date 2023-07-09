@@ -15,9 +15,9 @@ class ConfigController extends Controller
      */
     public function index()
     {
-       $config = Config::get()->toArray();
-      // dd($config);
-       return view('config.index', ['config' => $config]);
+        $config = Config::get()->toArray();
+        // dd($config);
+        return view('config.index', ['config' => $config]);
     }
 
     /**
@@ -47,24 +47,22 @@ class ConfigController extends Controller
 
         DB::beginTransaction();
         try {
-            foreach ($values as $item=>$value)
-		    {
-                if($item != '_token'){
-			        $data = array('value'=>"$value");
-                    Config::where('item',$item)->update($data);
+            foreach ($values as $item => $value) {
+                if ($item != '_token') {
+                    $data = array('value' => "$value");
+                    Config::where('item', $item)->update($data);
                 }
-		    }
+            }
 
 
-        // Commit And Redirected To Listing
-        DB::commit();
-        return redirect()->route('config.index')->with('success','Config Setting Updated Successfully.');
-
-    } catch (\Throwable $th) {
-        // Rollback and return with Error
-        DB::rollBack();
-        return redirect()->back()->withInput()->with('error', $th->getMessage());
-    }
+            // Commit And Redirected To Listing
+            DB::commit();
+            return redirect()->route('config.index')->with('success', 'Config Setting Updated Successfully.');
+        } catch (\Throwable $th) {
+            // Rollback and return with Error
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
     }
 
     /**
