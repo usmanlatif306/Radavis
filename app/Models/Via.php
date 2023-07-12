@@ -10,9 +10,18 @@ class Via extends Model
 {
     //use HasFactory;
     protected $fillable = [
-        'name', 'active', 'user_id'
+        'name', 'active', 'user_id', 'contact_name', 'email', 'phone', 'last_dispatch_at'
     ];
     public $timestamps = false;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'last_dispatch_at' => 'date',
+    ];
 
     public function user(): BelongsTo
     {

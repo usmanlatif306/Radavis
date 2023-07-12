@@ -52,22 +52,22 @@
 
     <!-- @hasrole('Admin')
     <li class="nav-item">
-                                                                                                                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                                                                                                                                    aria-controls="collapsePages">
-                                                                                                                                    <i class="fas fa-fw fa-folder"></i>
-                                                                                                                                    <span>Masters</span>
-                                                                                                                                </a>
-                                                                                                                                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                                                                                                                                    <div class="bg-white py-2 collapse-inner rounded">
-                                                                                                                                        <h6 class="collapse-header">Role & Permissions</h6>
-                                                                                                                                        <a class="collapse-item" href="{{ route('roles.index') }}">Roles</a>
-                                                                                                                                        <a class="collapse-item" href="{{ route('permissions.index') }}">Permissions</a>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                            </li>
+                                                                                                                                                                                                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+                                                                                                                                                                                                                aria-controls="collapsePages">
+                                                                                                                                                                                                                <i class="fas fa-fw fa-folder"></i>
+                                                                                                                                                                                                                <span>Masters</span>
+                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                                                                                                                                                                                                                <div class="bg-white py-2 collapse-inner rounded">
+                                                                                                                                                                                                                    <h6 class="collapse-header">Role & Permissions</h6>
+                                                                                                                                                                                                                    <a class="collapse-item" href="{{ route('roles.index') }}">Roles</a>
+                                                                                                                                                                                                                    <a class="collapse-item" href="{{ route('permissions.index') }}">Permissions</a>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                        </li>
 
-                                                                                                                             Divider
-                                                                                                                            <hr class="sidebar-divider d-none d-md-block">
+                                                                                                                                                                                                         Divider
+                                                                                                                                                                                                        <hr class="sidebar-divider d-none d-md-block">
 @endhasrole -->
 
 
@@ -121,6 +121,17 @@
 
 
     @hasrole('Admin')
+        <li class="nav-item {{ request()->is('truck*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('truck.directory') }}">
+                <i class="fas fa-fw fa-truck"></i>
+                <span>Truck Directory</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+    @endhasrole
+
+    @hasrole('Admin')
         <li class="nav-item {{ request()->is('destination*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('destination.index') }}">
                 <i class="fas fa-fw fa-home"></i>
@@ -166,6 +177,17 @@
         <hr class="sidebar-divider d-none d-md-block">
     @endhasrole
 
+    @hasrole('Admin')
+        <li class="nav-item {{ request()->is('logistics*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('logistics.index') }}">
+                <i class="fas fa-fw fa-subway"></i>
+                <span>Logistics</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+    @endhasrole
+
 
     @hasrole('salesman')
         <li class="nav-item {{ request()->is('dispatch') ? 'active' : '' }}">
@@ -185,6 +207,16 @@
             </a>
         </li>
 
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Truck Directory -->
+        <li class="nav-item {{ request()->is('truck*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('truck.directory') }}">
+                <i class="fas fa-fw fa-truck"></i>
+                <span>Truck Directory</span>
+            </a>
+        </li>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
     @endhasrole
@@ -207,6 +239,15 @@
             </a>
         </li>
 
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <li class="nav-item {{ request()->is('logistics*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('logistics.index') }}">
+                <i class="fas fa-fw fa-subway"></i>
+                <span>Logistics</span>
+            </a>
+        </li>
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
     @endhasrole

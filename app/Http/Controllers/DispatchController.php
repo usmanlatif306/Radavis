@@ -35,10 +35,8 @@ class DispatchController extends Controller
 
     public function GetDisplayVariables()
     {
-
         $display = session('changedisplay');
         if ($display == '') {
-            //$display = 'all';
             session(['changedisplay' => 'all']);
         }
         $display = session('changedisplay');
@@ -263,33 +261,13 @@ class DispatchController extends Controller
         date_default_timezone_set("America/Phoenix");
 
         $dispatch = dispatch::find($request->dispatch_id);
-        // Validations
-        // foreach ($request->input() as $key => $value) {
-        //     if (empty($value)) {
-        //         $request->request->set($key, " ");
-        //     }
-        // }
-
-        // $request->validate([
-        //     "date"                  =>  'required',
-        //     "commodity_id"          =>  'required',
-        //     "supplier_id"           =>  'required',
-        //     "purchase_code"         =>  'required',
-        //     "exit_id"               =>  'required',
-        //     "release_code"          =>  'required',
-        //     "via_id"                =>  'required',
-        //     "destination_id"        =>  'required',
-        //     "rate_id"               =>  'required',
-        //     "salesman"              =>  'required',
-        //     "sales_num"             =>  'required',
-        //     "accounting_notes"      =>  'required',
-        //     "driver_instructions"   =>  'required',
-        // ]);
 
         DB::beginTransaction();
         try {
             $date  = strtotime($request->date);
-            //dd($request);
+            $is_delivered = $request->delivered === '1' ? true : false;
+
+
             if (Auth::user()->hasRole('salesman')) {
                 $commoditie_updated = dispatch::whereId($request->dispatch_id)->update([
                     "date"                  => $date,
@@ -334,17 +312,15 @@ class DispatchController extends Controller
                 ]);
             }
 
-
             // Commit And Redirected To Listing
             $this->UpdateLogs($request, $dispatch);
-            //dd();
+
+            // if delivered then update via last dispatch date
+            if ($is_delivered) {
+                Via::find($request->via_id)?->update(['last_dispatch_at' => now()]);
+            }
+
             DB::commit();
-
-
-
-
-
-
 
             return  redirect()->back()->with('success', 'Dispatch Updated Successfully.');
         } catch (\Throwable $th) {
@@ -605,12 +581,17 @@ class DispatchController extends Controller
             }
             if ($request->delivered != '') {
                 foreach ($request->ids_to_edit as $id) {
-
+                    $is_delivered = $request->delivered === '1' ? true : false;
                     $dispatch = dispatch::find($id);
 
                     $change = dispatch::whereId($id)->update([
-                        "delivered"          => $request->delivered
+                        "delivered" => $request->delivered
                     ]);
+
+                    // if delivered then update dipatch truck last dispatch date to current date
+                    if ($is_delivered) {
+                        Via::find($dispatch->via_id)?->update(['last_dispatch_at' => now()]);
+                    }
 
                     if ($dispatch->delivered == 0)
                         $log_txt = "Marked as completed";
@@ -1262,6 +1243,37 @@ class DispatchController extends Controller
             echo '0';
         } else {
             echo '1';
+        }
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\dispatch  $dispatch
+     * @return \Illuminate\Http\Response
+     */
+    public function complete(Request $request, dispatch $dispatch)
+    {
+        date_default_timezone_set("America/Phoenix");
+
+        DB::beginTransaction();
+        try {
+            $dispatch->update(['delivered' => true]);
+
+            // Update via last dispatch date
+            Via::find($request->via_id)?->update(['last_dispatch_at' => now()]);
+
+            $this->log_change($dispatch->id, Auth::user()->id, "Marked as completed");
+
+            DB::commit();
+
+            return  redirect()->back()->with('success', 'Dispatch Completed Successfully.');
+        } catch (\Throwable $th) {
+            // Rollback and return with Error
+            DB::rollBack();
+            return  redirect()->back()->with('error', $th->getMessage());
         }
     }
 }

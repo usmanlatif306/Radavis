@@ -9,8 +9,10 @@ use App\Http\Controllers\ExitsController;
 use App\Http\Controllers\ViaController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LogisticController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\TruckDirectoryController;
 use App\Http\Controllers\Vias\DispatchController as ViasDispatchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -213,6 +215,11 @@ Route::group(['middleware' => ['role:Admin']], function () {
     Route::resource('bulletins', BulletinController::class);
 });
 
+// Truck directory routes for admin/salesman
+Route::group(['middleware' => ['role:Admin|salesman|']], function () {
+    Route::get('truck/directory', TruckDirectoryController::class)->name('truck.directory');
+});
+
 /*Route::group(['middleware' => ['role:salesman']], function () {
     Route::middleware('auth')->prefix('dispatch')->name('dispatch.')->group(function () {
         Route::post('/update', [DispatchController::class, 'update'])->name('update');
@@ -222,40 +229,6 @@ Route::group(['middleware' => ['role:Admin']], function () {
 });*/
 
 Route::group(['middleware' => ['role:salesman|truck|Admin']], function () {
-
-
-    /*Route::middleware('auth')->prefix('dispatch')->name('dispatch.')->group(function () {
-
-        Route::get('/searchview', [DispatchController::class, 'searchview'])->name('searchview');
-
-
-        Route::get('/', [DispatchController::class, 'index'])->name('index');
-        Route::get('/create', [DispatchController::class, 'create'])->name('create');
-        Route::post('/store', [DispatchController::class, 'store'])->name('store');
-       // Route::get('/edit/{dispatch}', [DispatchController::class, 'edit'])->name('edit');
-        Route::post('/update', [DispatchController::class, 'update'])->name('update');
-        Route::post('/bulkedit', [DispatchController::class, 'bulkedit'])->name('bulkedit');
-       // Route::delete('/delete', [DispatchController::class, 'delete'])->name('destroy');
-       // Route::get('/update/status/{dispatch_id}/{status}', [DispatchController::class, 'updateStatus'])->name('status');
-
-
-       // Route::get('/import-users', [DispatchController::class, 'importUsers'])->name('import');
-       // Route::post('/upload-users', [DispatchController::class, 'uploadUsers'])->name('upload');
-
-       // Route::get('export/', [DispatchController::class, 'export'])->name('export');
-
-       Route::get('/update/delivered/{id}/{delivered}', [DispatchController::class, 'updatedelivered'])->name('updatedelivered');
-       Route::get('/update/noship/{id}/{noship}', [DispatchController::class, 'updatenoship'])->name('updatenoship');
-
-
-        /////////////Ajax Routes
-
-        Route::post('/getCommoditieSuppliers', [DispatchController::class, 'getCommoditieSuppliers'])->name('getCommoditieSuppliers');
-        Route::post('/getSuppliersExits', [DispatchController::class, 'getSuppliersExits'])->name('getSuppliersExits');
-        Route::post('/getdispatch', [DispatchController::class, 'getdispatch'])->name('getdispatch');
-
-        Route::match(['get', 'post'],'/searchresult', [DispatchController::class, 'searchresult'])->name('searchresult');
-    });*/
     Route::middleware('auth')->prefix('dispatch')->name('dispatch.')->group(function () {
 
         Route::get('/searchview', [DispatchController::class, 'searchview'])->name('searchview');
@@ -268,6 +241,7 @@ Route::group(['middleware' => ['role:salesman|truck|Admin']], function () {
         Route::post('/bulkedit', [DispatchController::class, 'bulkedit'])->name('bulkedit');
         Route::delete('/delete', [DispatchController::class, 'delete'])->name('destroy');
         Route::get('/update/status/{dispatch_id}/{status}', [DispatchController::class, 'updateStatus'])->name('status');
+        Route::post('/{dispatch}/complete', [DispatchController::class, 'complete'])->name('complete');
 
         Route::get('/update/delivered/{id}/{delivered}', [DispatchController::class, 'updatedelivered'])->name('updatedelivered');
         Route::get('/update/noship/{id}/{noship}', [DispatchController::class, 'updatenoship'])->name('updatenoship');
@@ -290,6 +264,11 @@ Route::group(['middleware' => ['role:salesman|truck|Admin']], function () {
         Route::post('/RealseCodeVefiry', [DispatchController::class, 'RealseCodeVefiry'])->name('RealseCodeVefiry');
         Route::match(['get', 'post'], '/searchresult', [DispatchController::class, 'searchresult'])->name('searchresult');
     });
+});
+
+// Logistics routes for admin/truck
+Route::group(['middleware' => ['role:Admin|truck|']], function () {
+    Route::resource('logistics', LogisticController::class);
 });
 
 /*Route::group(['middleware' => ['role:salesman|admin']], function () {

@@ -85,182 +85,134 @@
         });
 
         if ('{{ $display_notes }}' === 'show') {
-            if ('{{ $view }}' === 'all') {
-                table.rows().every(function() {
-                    strAdditional = '<table style="width:100%"><tr>';
-                    strAdditional = strAdditional +
-                        '<td style="width:33%"><span class="dtr-title">Driver</span></td>';
-                    strAdditional = strAdditional +
-                        '<td style="width:33%"><span class="dtr-title">Sales</span></td>';
-                    strAdditional = strAdditional +
-                        '<td style="width:33%"><span class="dtr-title">Accounts</span></td></tr>';
-                    strAdditional = strAdditional + '<tr><td>';
-                    strAdditional = strAdditional + format(this.data()[13])
-                    strAdditional = strAdditional + '</td><td style="width:33%">';
-                    strAdditional = strAdditional + format(this.data()[14])
-                    strAdditional = strAdditional + '</td><td style="width:33%">';
-                    strAdditional = strAdditional + format(this.data()[15])
-                    strAdditional = strAdditional + '</td></tr></table>';
-                    this.child(strAdditional).show();
-                    $(this.node()).addClass('shown');
-                });
-
-            } else {
-                table.rows().every(function() {
-                    if (this.data()[7]) {
-                        strAdditional = '<table style="width:100%"><tr>';
-                        strAdditional = strAdditional +
-                            '<td style="width:100%"><span class="dtr-title">Driver</span></td></tr>';
-                        strAdditional = strAdditional + '<tr><td>';
-                        strAdditional = strAdditional + format(this.data()[7])
-                        strAdditional = strAdditional + '</td></tr></table>';
-                        this.child(strAdditional).show();
-                        $(this.node()).addClass('shown');
-                    }
-
-                })
-            }
+            table.rows().every(function() {
+                strAdditional = '<table style="width:100%"><tr>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Driver</span></td>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Sales</span></td>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Accounts</span></td></tr>';
+                strAdditional = strAdditional + '<tr><td>';
+                strAdditional = strAdditional + format(this.data()[13])
+                strAdditional = strAdditional + '</td><td style="width:33%">';
+                strAdditional = strAdditional + format(this.data()[14])
+                strAdditional = strAdditional + '</td><td style="width:33%">';
+                strAdditional = strAdditional + format(this.data()[15])
+                strAdditional = strAdditional + '</td></tr></table>';
+                this.child(strAdditional).show();
+                $(this.node()).addClass('shown');
+            });
         }
 
+        $('#myTable').on('click', 'td.details-control', function() {
+            // console.log('this is clicked');
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
 
-        // $('#myTable').on('click', 'td.details-control', function() {
-        //     // console.log('this is clicked');
-        //     var tr = $(this).closest('tr');
-        //     var row = table.row(tr);
-
-        //     if (row.child.isShown()) {
-        //         // This row is already open - close it
-        //         row.child.hide();
-        //         tr.removeClass('shown');
-        //     } else {
-        //         // Open this row
-        //         strAdditional = '<table style="width:100%"><tr>';
-        //         strAdditional = strAdditional +
-        //             '<td style="width:33%"><span class="dtr-title">Driver</span></td>';
-        //         strAdditional = strAdditional +
-        //             '<td style="width:33%"><span class="dtr-title">Sales</span></td>';
-        //         strAdditional = strAdditional +
-        //             '<td style="width:33%"><span class="dtr-title">Accounts</span></td></tr>';
-        //         strAdditional = strAdditional + '<tr><td>';
-        //         if ($(this).closest('tr').find('.driver_instructions').length) {
-        //             strAdditional = strAdditional + format($(this).closest('tr').find(
-        //                 '.driver_instructions').val())
-        //         }
-        //         strAdditional = strAdditional + '</td><td style="width:33%">';
-        //         if ($(this).closest('tr').find('.sales_notes').length) {
-        //             strAdditional = strAdditional + format($(this).closest('tr').find(
-        //                     '.sales_notes')
-        //                 .val())
-        //         }
-        //         strAdditional = strAdditional + '</td><td style="width:33%">';
-        //         if ($(this).closest('tr').find('.accounting_notes').length) {
-        //             strAdditional = strAdditional + format($(this).closest('tr').find(
-        //                 '.accounting_notes').val())
-        //         }
-        //         strAdditional = strAdditional + '</td></tr></table>';
-        //         //row.child(format(tr.data('child-value'))).show();
-        //         row.child(strAdditional).show();
-        //         tr.addClass('shown');
-        //     }
-        // });
-
-        // changing records view
-        $('.view-btn').on('click', function() {
-            let view = $(this).data('view');
-            let currentUrl = window.location.href;
-
-            // ceck if url has already view  tag in request then remove it to avoid being duplicate view tag in request
-            if (currentUrl.includes("?view=") || currentUrl.includes("view=")) {
-                currentUrl = currentUrl.replace("?view=all", "");
-                currentUrl = currentUrl.replace("&view=all", "");
-                currentUrl = currentUrl.replace("?view=trucks", "");
-                currentUrl = currentUrl.replace("&view=trucks", "");
-                currentUrl = currentUrl.replace("?view=suppliers", "");
-                currentUrl = currentUrl.replace("&view=suppliers", "");
-            }
-
-            let newUrl = '';
-            // if view mode is for all then don't show view tag in request
-            if (view === 'all') {
-                newUrl = currentUrl;
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
             } else {
-                if (currentUrl.includes("?")) {
-                    newUrl = currentUrl + `&view=${view}`;
-                } else {
-                    newUrl = currentUrl + `?view=${view}`;
+                // Open this row
+                strAdditional = '<table style="width:100%"><tr>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Driver</span></td>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Sales</span></td>';
+                strAdditional = strAdditional +
+                    '<td style="width:33%"><span class="dtr-title">Accounts</span></td></tr>';
+                strAdditional = strAdditional + '<tr><td>';
+                if ($(this).closest('tr').find('.driver_instructions').length) {
+                    strAdditional = strAdditional + format($(this).closest('tr').find(
+                        '.driver_instructions').val())
                 }
+                strAdditional = strAdditional + '</td><td style="width:33%">';
+                if ($(this).closest('tr').find('.sales_notes').length) {
+                    strAdditional = strAdditional + format($(this).closest('tr').find('.sales_notes')
+                        .val())
+                }
+                strAdditional = strAdditional + '</td><td style="width:33%">';
+                if ($(this).closest('tr').find('.accounting_notes').length) {
+                    strAdditional = strAdditional + format($(this).closest('tr').find(
+                        '.accounting_notes').val())
+                }
+                strAdditional = strAdditional + '</td></tr></table>';
+                //row.child(format(tr.data('child-value'))).show();
+                row.child(strAdditional).show();
+                tr.addClass('shown');
             }
+        });
 
-            window.location.href = newUrl;
-        })
-        // $('#truck_only').on('click', function(e) {
-        //     // console.log(table.column(0));
-        //     $('#supplier_only').css('background-color', '#f8f9fc');
-        //     $('#supplier_only').css('color', '#4e73df');
+        $('#truck_only').on('click', function(e) {
+            // console.log(table.column(0));
+            $('#supplier_only').css('background-color', '#f8f9fc');
+            $('#supplier_only').css('color', '#4e73df');
 
-        //     $('#truck_only').css('background-color', '#4e73df');
-        //     $('#truck_only').css('color', '#f8f9fc');
-        //     e.preventDefault();
-        //     //Get the column API object 2 8 11 12 13 14
-        //     var column0 = table.column(0);
-        //     column0.visible(!column0.visible());
-        //     var column1 = table.column(2); //ID
-        //     column1.visible(!column1.visible());
-        //     var column2 = table.column(5); //PURCHASE
-        //     column2.visible(!column2.visible());
-        //     var column3 = table.column(11); //SALESMAN
-        //     column3.visible(!column3.visible());
+            $('#truck_only').css('background-color', '#4e73df');
+            $('#truck_only').css('color', '#f8f9fc');
+            e.preventDefault();
+            //Get the column API object 2 8 11 12 13 14
+            var column0 = table.column(0);
+            column0.visible(!column0.visible());
+            var column1 = table.column(2); //ID
+            column1.visible(!column1.visible());
+            var column2 = table.column(5); //PURCHASE
+            column2.visible(!column2.visible());
+            var column3 = table.column(11); //SALESMAN
+            column3.visible(!column3.visible());
 
-        //     var column4 = table.column(12); //SALES NO
-        //     column4.visible(!column4.visible());
-        //     var column5 = table.column(13); //SET
-        //     column5.visible(!column5.visible());
-        //     var column6 = table.column(14); //DNS
-        //     column6.visible(!column6.visible());
-        //     // var column7 = table.column(16); //SALES NOTES
-        //     // column7.visible(!column7.visible());
-        //     // var column8 = table.column(17); //ACCTG NOTES
-        //     // column8.visible(!column8.visible());
+            var column4 = table.column(12); //SALES NO
+            column4.visible(!column4.visible());
+            var column5 = table.column(13); //SET
+            column5.visible(!column5.visible());
+            var column6 = table.column(14); //DNS
+            column6.visible(!column6.visible());
+            // var column7 = table.column(16); //SALES NOTES
+            // column7.visible(!column7.visible());
+            // var column8 = table.column(17); //ACCTG NOTES
+            // column8.visible(!column8.visible());
 
-        // });
+        });
 
-        // $('#supplier_only').on('click', function(e) {
-        //     $('#truck_only').css('background-color', '#f8f9fc');
-        //     $('#truck_only').css('color', '#4e73df');
+        $('#supplier_only').on('click', function(e) {
+            $('#truck_only').css('background-color', '#f8f9fc');
+            $('#truck_only').css('color', '#4e73df');
 
-        //     $('#supplier_only').css('background-color', '#4e73df');
-        //     $('#supplier_only').css('color', '#f8f9fc');
-        //     e.preventDefault();
-        //     // Get the column API object 2 4 5 9 10 11 12 13 14
-        //     var column0 = table.column(0);
-        //     column0.visible(!column0.visible());
-        //     var column1 = table.column(2);
-        //     column1.visible(!column1.visible());
-        //     var column2 = table.column(4);
-        //     column2.visible(!column2.visible());
-        //     var column3 = table.column(5);
-        //     column3.visible(!column3.visible());
-        //     var column4 = table.column(6);
-        //     column4.visible(!column4.visible());
-        //     var column5 = table.column(9);
-        //     column5.visible(!column5.visible());
-        //     var column6 = table.column(10);
-        //     column6.visible(!column6.visible());
-        //     var column7 = table.column(11);
-        //     column7.visible(!column7.visible());
-        //     var column8 = table.column(12);
-        //     column8.visible(!column8.visible());
-        //     var column9 = table.column(13);
-        //     column9.visible(!column9.visible());
-        //     var column10 = table.column(14);
-        //     column10.visible(!column10.visible());
-        //     var column11 = table.column(15);
-        //     column11.visible(!column11.visible());
-        //     var column12 = table.column(16);
-        //     column12.visible(!column12.visible());
-        //     // var column13 = table.column(17);
-        //     // column13.visible(!column13.visible());
-        // });
+            $('#supplier_only').css('background-color', '#4e73df');
+            $('#supplier_only').css('color', '#f8f9fc');
+            e.preventDefault();
+            // Get the column API object 2 4 5 9 10 11 12 13 14
+            var column0 = table.column(0);
+            column0.visible(!column0.visible());
+            var column1 = table.column(2);
+            column1.visible(!column1.visible());
+            var column2 = table.column(4);
+            column2.visible(!column2.visible());
+            var column3 = table.column(5);
+            column3.visible(!column3.visible());
+            var column4 = table.column(6);
+            column4.visible(!column4.visible());
+            var column5 = table.column(9);
+            column5.visible(!column5.visible());
+            var column6 = table.column(10);
+            column6.visible(!column6.visible());
+            var column7 = table.column(11);
+            column7.visible(!column7.visible());
+            var column8 = table.column(12);
+            column8.visible(!column8.visible());
+            var column9 = table.column(13);
+            column9.visible(!column9.visible());
+            var column10 = table.column(14);
+            column10.visible(!column10.visible());
+            var column11 = table.column(15);
+            column11.visible(!column11.visible());
+            var column12 = table.column(16);
+            column12.visible(!column12.visible());
+            // var column13 = table.column(17);
+            // column13.visible(!column13.visible());
+        });
     });
 
     function ConfirmDelete(id) {

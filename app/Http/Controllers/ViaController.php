@@ -73,8 +73,12 @@ class ViaController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
-            'name'    => 'required',
+            'name'    => 'required|max:255|string|unique:vias,name',
+            'contact_name'    => 'required|max:255|string',
+            'email'    => 'required|max:255|email|unique:vias,email',
+            'phone'    => 'required|max:255',
             'user_id'    => 'required|exists:users,id',
             'active'  =>  'required|numeric|in:0,1',
         ]);
@@ -84,6 +88,9 @@ class ViaController extends Controller
             // Store Data
             $vias = Via::create([
                 'name'    => $request->name,
+                'contact_name'    => $request->contact_name,
+                'email'    => $request->email,
+                'phone'    => $request->phone,
                 'active'  => $request->active,
                 'user_id'  => $request->user_id,
             ]);
@@ -168,6 +175,9 @@ class ViaController extends Controller
         // Validations
         $request->validate([
             'name'      =>  'required|unique:vias,name,' . $via->id . ',id',
+            'contact_name'    => 'required|max:255|string',
+            'email'    => 'required|max:255|email|unique:vias,email,' . $via->id . ',id',
+            'phone'    => 'required|max:255',
             'active'    =>  'required|numeric|in:0,1',
             'user_id'    => 'required|exists:users,id',
         ]);
@@ -176,6 +186,9 @@ class ViaController extends Controller
         try {
             $via_updated = Via::whereId($via->id)->update([
                 'name'      => $request->name,
+                'contact_name'    => $request->contact_name,
+                'email'    => $request->email,
+                'phone'    => $request->phone,
                 'active'    => $request->active,
                 'user_id'  => $request->user_id,
             ]);

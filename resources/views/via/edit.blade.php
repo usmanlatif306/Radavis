@@ -28,20 +28,59 @@
                 <div class="card-body">
                     <div class="form-group row">
 
-                        {{-- Name --}}
-                        <div class="col-sm-12 mb-6 mt-6 mb-sm-0">
-                            <span style="color:red;">*</span>Name</label>
-                            <input type="text" class="form-control form-control-via @error('name') is-invalid @enderror"
-                                id="exampleFirstName" placeholder="Name" name="name"
-                                value="{{ old('name') ? old('name') : $via->name }}">
+                        {{-- Company Name --}}
+                        <div class="col-sm-12 mb-3">
+                            <span style="color:red;">*</span>Company Name</label>
+                            <input type="text" class="form-control form-control-user @error('name') is-invalid @enderror"
+                                id="exampleName" placeholder="***Company Name***" name="name"
+                                value="{{ old('name', $via->name) }}">
 
-                            @error('first_name')
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Contact Name --}}
+                        <div class="col-sm-12 mb-3">
+                            <span style="color:red;">*</span>Contact Name</label>
+                            <input type="text"
+                                class="form-control form-control-user @error('contact_name') is-invalid @enderror"
+                                id="exampleContactName" placeholder="***Contact Name***" name="contact_name"
+                                value="{{ old('contact_name', $via->contact_name) }}">
+
+                            @error('contact_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Email Address --}}
+                        <div class="col-sm-12 mb-3">
+                            <span style="color:red;">*</span>Email Address</label>
+                            <input type="email"
+                                class="form-control form-control-user @error('email') is-invalid @enderror"
+                                id="exampleEmail" placeholder="***Email Address***" name="email"
+                                value="{{ old('email', $via->email) }}">
+
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Phone Number --}}
+                        <div class="col-sm-12 mb-3">
+                            <span style="color:red;">*</span>Phone Number</label>
+                            <input type="tel"
+                                class="form-control form-control-user @error('phone') is-invalid @enderror"
+                                id="examplePhone" placeholder="***Phone Number***" name="phone"
+                                value="{{ old('phone', $via->phone) }}">
+
+                            @error('phone')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         {{-- Link User --}}
-                        <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
+                        <div class="col-sm-12 mb-3">
                             <label><span style="color:red;">*</span>Link User</label>
                             <select id="user"
                                 class="form-control form-control-user @error('user_id') is-invalid @enderror"
@@ -59,7 +98,7 @@
                         </div>
 
                         {{-- Status --}}
-                        <div class="col-sm-12 mt-3 mb-sm-0">
+                        <div class="col-sm-12 mb-3">
                             <span style="color:red;">*</span>Status</label>
                             <select class="form-control form-control-via @error('status') is-invalid @enderror"
                                 name="active">
