@@ -1257,15 +1257,21 @@ class DispatchController extends Controller
     public function complete(Request $request, dispatch $dispatch)
     {
         date_default_timezone_set("America/Phoenix");
+        $status = $dispatch->delivered;
 
         DB::beginTransaction();
         try {
-            $dispatch->update(['delivered' => true]);
+            $dispatch->update(['delivered' => !$status]);
 
-            // Update via last dispatch date
-            Via::find($request->via_id)?->update(['last_dispatch_at' => now()]);
+            if (!$status) {
+                // Update via last dispatch date
+                Via::find($request->via_id)?->update(['last_dispatch_at' => now()]);
+                $log_txt = "Marked as completed";
+            } else {
+                $log_txt = "Removed mark as completed";
+            }
 
-            $this->log_change($dispatch->id, Auth::user()->id, "Marked as completed");
+            $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
 
             DB::commit();
 

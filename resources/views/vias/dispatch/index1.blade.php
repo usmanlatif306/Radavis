@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Dispatch')
-
-@section('content')
+@push('styles')
     <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
     <style>
-        @import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
-
         td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
             cursor: pointer;
@@ -17,31 +15,25 @@
             background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
         }
     </style>
-    <?php
-    /*<style>
-    @media print{
-        @page {
-            size: landscape;
+@endpush
+
+@section('content')
+
+    @php
+        if (isset($_GET['date'])) {
+            $date = $_GET['date'];
+        } else {
+            $date = date('m/d/Y');
         }
-    }
-</style>*/
-    ?>
-    <?php
-    if (isset($_GET['date'])) {
-        $date = $_GET['date'];
-    } else {
-        $date = date('m/d/Y');
-    }
-    ?>
+        $display_notes = 'show';
+        $view = 'all';
+    @endphp
 
     <div class="container-fluid">
 
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dispatch</h1>
-            <?php /*<a href="{{route('dispatch.index')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-arrow-left fa-sm text-white-50"></i> Back</a>*/
-            ?>
         </div>
 
         {{-- Alert Messages --}}
@@ -56,23 +48,24 @@
                     class="btn btn-sm btn-success"><i class="fa fa-arrow-left"></i></a>
                 <input class="btn btn-sm btn-success" type="date" name="date" id="date_view"
                     value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($_GET['date'])) : date('Y-m-d'); ?>">
-                <!--<input  class="btn btn-sm btn-success" type="date" name="date" id="date_view" value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($date . ' +1 day')) : date('Y-m-d', strtotime($date . ' +1 day')); ?>">-->
+
                 <a href="{{ route('dispatch.searchview', ['date' => date('m/d/Y', strtotime($date . ' +1 day'))]) }}"
                     class="btn btn-sm btn-success"><i class="fa fa-arrow-right"></i></a>
-                <div style="margin-left: 80%;">
-                    <?php $changedisplay = session('changedisplay');
-                    //dd($changedisplay);
-                    ?>
-                    <label>Display</label>
-                    <select class="form form-control" name="dispatch_display" onchange="ChangeDisptachDisplay()"
-                        id="dispatch_display" style="text-align: end;">
-                        <option value="completed" @if ($changedisplay == 'completed') selected @endif>Completed</option>
-                        <option value="open" @if ($changedisplay == 'open') selected @endif>Open</option>
-                        <option value="ship" @if ($changedisplay == 'ship') selected @endif>Ready to Ship</option>
-                        <option value="noship" @if ($changedisplay == 'noship') selected @endif>NO Ship</option>
-                        <option value="void" @if ($changedisplay == 'void') selected @endif>Void</option>
-                        <option value="all" @if ($changedisplay == 'all') selected @endif>ALL</option>
-                    </select>
+                <div class="d-flex justify-content-end">
+                    <div class="mr-2" style="width:20%;">
+                        <?php $changedisplay = session('changedisplay');
+                        ?>
+                        <label>Display</label>
+                        <select class="form form-control" name="dispatch_display" onchange="ChangeDisptachDisplay()"
+                            id="dispatch_display">
+                            <option value="completed" @if ($changedisplay == 'completed') selected @endif>Completed</option>
+                            <option value="open" @if ($changedisplay == 'open') selected @endif>Open</option>
+                            <option value="ship" @if ($changedisplay == 'ship') selected @endif>Ready to Ship</option>
+                            <option value="noship" @if ($changedisplay == 'noship') selected @endif>NO Ship</option>
+                            <option value="void" @if ($changedisplay == 'void') selected @endif>Void</option>
+                            <option value="all" @if ($changedisplay == 'all') selected @endif>ALL</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,9 +74,6 @@
             Dispatch</button>
         <div class="panel" @if ($bOpenSearch) style="display: block;" @endif>
             <div class="card shadow mb-4">
-                <!--<div class="card-header py-3">
-                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
-                                                                        </div>-->
                 <form method="GET" action="{{ route('dispatch.searchview') }}">
                     @csrf
                     <div class="card-body">
@@ -106,47 +96,6 @@
                                         echo 'checked';
                                     } ?> />
                             </div>
-
-                            <!-- <div class="col-sm-3 mb-2 mt-6 mb-sm-0">
-                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
-                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
-                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
-                                                                                            <span class="slider round"></span>
-                                                                                        </label>
-                                                                                    </div> -->
-                            {{-- <div class="col-sm-4 mb-2 mt-6 mb-sm-0">
-                        <label for="completed" class="top_option" style="padding-bottom:20px;">Completed: </label>
-                            <label class="switch"  style="margin: 20px 0px -14px 100px;">
-                                <input type="checkbox" name="completed" id="completed" class="form-control form-control-user"<?php
-                                // if(isset($_GET['completed']) && $_GET['completed'] != ''){
-                                //     echo "checked";
-                                // }
-                                ?>>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="col-sm-4 mb-2 mt-6 mb-sm-0" >
-                        <label for="noship" class="top_option" style="padding-left:20px;">Ship: </label>
-                            <label class="switch"  style="margin: 20px 0px -14px 100px;">
-                                <input type="checkbox" name="noship" id="noship" class="form-control form-control-user"<?php
-                                // if(isset($_GET['noship']) && $_GET['noship'] != ''){
-                                //     echo "checked";
-                                // }
-                                ?>>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="col-sm-4 mb-2 mt-6 mb-sm-0">
-                        <label for="voided" class="top_option" style="padding-left:20px;;">VOID: </label>
-                            <label class="switch"  style="margin: 20px 0px -14px 100px;">
-                                <input type="checkbox" name="voided" id="voided" class="form-control form-control-user"<?php
-                                // if(isset($_GET['voided']) && $_GET['voided'] != ''){
-                                //     echo "checked";
-                                // }
-                                ?>>
-                                <span class="slider round"></span>
-                            </label>
-                        </div> --}}
 
 
                             <div class="col-sm-4 mb-2 mt-2 mb-sm-0">
@@ -224,7 +173,8 @@
                                     ?>
                                     @foreach ($commodities->sortBy('name') as $commoditie)
                                         <option style="color:{{ $commoditie->id }}" value="{{ $commoditie->id }}"
-                                            {{ $commoditie->id == $commodity ? 'selected' : '' }}>{{ $commoditie->name }}
+                                            {{ $commoditie->id == $commodity ? 'selected' : '' }}>
+                                            {{ $commoditie->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -234,11 +184,11 @@
                                 <select id="via" name="via" class="form-control form-control-user">
                                     <option selected disabled>Select Via</option>
                                     <?php $via1 = null;
-                                    
+
                                     if (isset($_GET['via']) && $_GET['via'] != '') {
                                         $via1 = $_GET['via'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($vias->sortBy('name') as $via)
                                         <option value="{{ $via->id }}" {{ $via->id == $via1 ? 'selected' : '' }}>
@@ -251,11 +201,11 @@
                                 <select id="supplier" name="supplier" class="form-control form-control-user">
                                     <option selected disabled>Select Supplier</option>
                                     <?php $supplier1 = null;
-                                    
+
                                     if (isset($_GET['supplier']) && $_GET['supplier'] != '') {
                                         $supplier1 = $_GET['supplier'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($suppliers->sortBy('name') as $supplier)
                                         <option value="{{ $supplier->id }}"
@@ -269,11 +219,11 @@
                                 <select id="destination" name="destination" class="form-control form-control-user">
                                     <option selected disabled>Select Destination</option>
                                     <?php $destination1 = null;
-                                    
+
                                     if (isset($_GET['destination']) && $_GET['destination'] != '') {
                                         $destination1 = $_GET['destination'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($destinations->sortBy('name') as $destination)
                                         <option value="{{ $destination->id }}"
@@ -287,11 +237,11 @@
                                 <select id="exit" name="exit" class="form-control form-control-user">
                                     <option selected disabled>Select Exit</option>
                                     <?php $exit1 = null;
-                                    
+
                                     if (isset($_GET['exit']) && $_GET['exit'] != '') {
                                         $exit1 = $_GET['exit'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($exits->sortBy('name') as $exit)
                                         <option value="{{ $exit->id }}" {{ $exit->id == $exit1 ? 'selected' : '' }}>
@@ -304,11 +254,11 @@
                                 <select id="salesman" name="salesman" class="form-control form-control-user">
                                     <option selected disabled>Select Salesman</option>
                                     <?php $salesman = null;
-                                    
+
                                     if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
                                         $salesman = $_GET['salesman'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($users->sortBy('first_name') as $user)
                                         <option value="{{ $user->id }}"
@@ -322,11 +272,11 @@
                                 <select id="rate" name="rate" class="form-control form-control-user">
                                     <option selected disabled>Select Rate</option>
                                     <?php $rate1 = null;
-                                    
+
                                     if (isset($_GET['rate']) && $_GET['rate'] != '') {
                                         $rate1 = $_GET['rate'];
                                     }
-                                    
+
                                     ?>
                                     @foreach ($rates->sortBy('name') as $rate)
                                         <option value="{{ $rate->id }}" {{ $rate->id == $rate1 ? 'selected' : '' }}>
@@ -357,42 +307,26 @@
                         <tr>
                             {{-- <th></th> --}}
                             <th>Date</th>
-                            <?php /*<th>Id</th>*/ ?>
                             <th data-priority="1">Commodity</th>
-                            <?php /*<th>Supplier</th>
-                            <th>Purchase Code</th>*/
-                            ?>
+                            <th>Supplier</th>
                             <th>Exit</th>
                             <th>Release Code</th>
                             <th data-priority="2">Via</th>
                             <th data-priority="3">Destination</th>
                             <th>Rate</th>
-                            <?php /*<th>Saleman</th>
-                            <th>Sales No.</th>
-                            <th>Set</th>
-                            <th>DNS</th>
-                            @if($config[7]->value == 'show')
-                            <th>Driver</th>
-                            <th>Sales</th>
-                            <th>Accounts</th>
-                            @endif */
-                            ?>
-
+                            <th>Status</th>
+                            <th class="d-none">Driver Note</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($dispatches as $dispatch)
                             <tr class="{{ $dispatch->release_code == '' ? 'table-info' : ' ' }}{{ $dispatch->noship == 1 ? 'table-danger' : ' ' }}{{ $dispatch->void == 1 ? 'table-dark' : ' ' }}{{ $dispatch->delivered == 1 ? 'table-success' : ' ' }}"
                                 @if ($dispatch->void == 1) style="background-color: #D3D3D3; text-decoration: line-through;" @endif>
-                                {{-- <td><input class="all-check" type="checkbox" value="{{ $dispatch->id }}"></td> --}}
                                 <td>{!! date('m/d/Y', $dispatch?->date) !!}</td>
-                                <?php /*<td>{!! $dispatch->id!!}</td>*/ ?>
                                 <td style="color:{{ $dispatch->commodity?->color ?? '' }};font-weight: bold;">
                                     <span>{!! $dispatch->commodity?->name ?? $dispatch->commodity_id !!}</span>
                                 </td>
-                                <?php /*<td> {!! $dispatch->supplier->name ?? $dispatch->supplier_id!!}</td>
-                                <td>{!! $dispatch->purchase_code ?? ' '!!}</td>*/
-                                ?>
+                                <td> {!! $dispatch->supplier->name ?? $dispatch->supplier_id !!}</td>
                                 <td>{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
                                 <td>{!! $dispatch->release_code ?? ' ' !!}</td>
                                 <td><span>{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
@@ -400,6 +334,16 @@
                                 <td><span>{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
                                 </td>
                                 <td>{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
+                                <td>
+
+                                    <button onclick="document.getElementById('complete-{{ $dispatch->id }}').submit();"
+                                        class="btn btn-sm btn-success">{{ $dispatch->delivered ? 'Reset' : 'Loaded' }}</button>
+                                    <form id="complete-{{ $dispatch->id }}"
+                                        action="{{ route('dispatch.complete', $dispatch) }}" method="post">
+                                        @csrf
+                                    </form>
+                                </td>
+                                <td class="d-none">{{ $dispatch->driver_instructions }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -412,14 +356,10 @@
     </div>
 
 
-    @include('dispatch.delete-modal')
-
-    @include('dispatch.changelog')
-
 @endsection
 
 @section('scripts')
-    @include('dispatch.js')
+    @include('vias.dispatch.js')
     <script>
         (function() {
             setTimeout(function() {
@@ -427,8 +367,8 @@
                 var datepicker_to = document.getElementById('datepicker_to');
                 datepicker_from.value = "{{ request()->datepicker_from }}"
                 datepicker_to.value = "{{ request()->datepicker_to }}"
-                console.log(datepicker_from)
-                console.log(datepicker_to)
+                // console.log(datepicker_from)
+                // console.log(datepicker_to)
             }, 500)
 
         })();

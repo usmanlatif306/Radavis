@@ -86,6 +86,24 @@
             console.log('draw');
         });
 
+        // showing notes in nested row
+        if ('{{ $display_notes }}' === 'show') {
+            if ('{{ $view }}' === 'all') {
+                table.rows().every(function() {
+                    if (this.data()[9]) {
+                        strAdditional = '<table style="width:100%"><tr>';
+                        strAdditional = strAdditional +
+                            '<td style="width:100%"><span class="dtr-title">Driver Instructions</span></td></tr>';
+                        strAdditional = strAdditional + '<tr><td>';
+                        strAdditional = strAdditional + format(this.data()[9])
+                        strAdditional = strAdditional + '</td></tr></table>';
+                        this.child(strAdditional).show();
+                        $(this.node()).addClass('shown');
+                    }
+                })
+            }
+        }
+
         $('#myTable').on('click', 'td.details-control', function() {
             var tr = $(this).closest('tr');
             var row = table.row(tr);

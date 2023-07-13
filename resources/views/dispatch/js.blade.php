@@ -84,35 +84,40 @@
             console.log('draw');
         });
 
+
+        // showing notes in nested row
         if ('{{ $display_notes }}' === 'show') {
             if ('{{ $view }}' === 'all') {
                 table.rows().every(function() {
-                    strAdditional = '<table style="width:100%"><tr>';
-                    strAdditional = strAdditional +
-                        '<td style="width:33%"><span class="dtr-title">Driver</span></td>';
-                    strAdditional = strAdditional +
-                        '<td style="width:33%"><span class="dtr-title">Sales</span></td>';
-                    strAdditional = strAdditional +
-                        '<td style="width:33%"><span class="dtr-title">Accounts</span></td></tr>';
-                    strAdditional = strAdditional + '<tr><td>';
-                    strAdditional = strAdditional + format(this.data()[13])
-                    strAdditional = strAdditional + '</td><td style="width:33%">';
-                    strAdditional = strAdditional + format(this.data()[14])
-                    strAdditional = strAdditional + '</td><td style="width:33%">';
-                    strAdditional = strAdditional + format(this.data()[15])
-                    strAdditional = strAdditional + '</td></tr></table>';
-                    this.child(strAdditional).show();
-                    $(this.node()).addClass('shown');
+                    if (this.data()[13] || this.data()[14] || this.data()[15]) {
+                        strAdditional = '<table style="width:101%"><tr>';
+                        strAdditional = strAdditional +
+                            '<td style="width:33%"><span class="dtr-title">Driver Note</span></td>';
+                        strAdditional = strAdditional +
+                            '<td style="width:33%"><span class="dtr-title">Sales Note</span></td>';
+                        strAdditional = strAdditional +
+                            '<td style="width:34%"><span class="dtr-title">Accounts Note</span></td></tr>';
+                        strAdditional = strAdditional + '<tr><td>';
+                        strAdditional = strAdditional + format(this.data()[13])
+                        strAdditional = strAdditional + '</td><td style="width:33%">';
+                        strAdditional = strAdditional + format(this.data()[14])
+                        strAdditional = strAdditional + '</td><td style="width:33%">';
+                        strAdditional = strAdditional + format(this.data()[15])
+                        strAdditional = strAdditional + '</td></tr></table>';
+                        this.child(strAdditional).show();
+                        $(this.node()).addClass('shown');
+                    }
+
                 });
 
-            } else {
+            } else if ('{{ $view }}' === 'trucks') {
                 table.rows().every(function() {
-                    if (this.data()[7]) {
+                    if (this.data()[5]) {
                         strAdditional = '<table style="width:100%"><tr>';
                         strAdditional = strAdditional +
                             '<td style="width:100%"><span class="dtr-title">Driver</span></td></tr>';
                         strAdditional = strAdditional + '<tr><td>';
-                        strAdditional = strAdditional + format(this.data()[7])
+                        strAdditional = strAdditional + format(this.data()[5])
                         strAdditional = strAdditional + '</td></tr></table>';
                         this.child(strAdditional).show();
                         $(this.node()).addClass('shown');
@@ -120,6 +125,7 @@
 
                 })
             }
+
         }
 
 
@@ -290,61 +296,61 @@
 
     var timer;
     var x;
-    /*$("#release_code").keyup(function () {
-        if (x) { x.abort() } // If there is an existing XHR, abort it.
-        clearTimeout(timer); // Clear the timer so we don't end up with dupes.
-        timer = setTimeout(function() {
-            let code = $('#release_code').val();
-            // assign timer a new timeout
-            x = $.ajax({
-                    type: 'POST',
-                    url: '{{ route('dispatch.RealseCodeVefiry') }}',
-                    "_token": "{{ csrf_token() }}",
-                    data: {
-                        release_code: code,
-                    },
-                    success: function(data) {
-                            if(data == 1){
-                                    $('#add-disptach').attr('disabled','disabled');
-                                    $.toaster({ priority :'danger', title :'Release Code', message :'must be unique! Please try a different release code.'});
-                            }else if(data == 0) {
-                                        //$.toaster({ priority :'success', title :'Perfect', message :'You can save now'});
-                                    $('#add-disptach').removeAttr('disabled');
-                            }
 
-                    }
-                });// run ajax request and store in x variable (so we can cancel)
-        }, 500); // 2000ms delay, tweak for faster/slower
-    });*/
+    // $("#release_code").keyup(function () {
+    //     if (x) { x.abort() } // If there is an existing XHR, abort it.
+    //     clearTimeout(timer); // Clear the timer so we don't end up with dupes.
+    //     timer = setTimeout(function() {
+    //         let code = $('#release_code').val();
+    //         // assign timer a new timeout
+    //         x = $.ajax({
+    //                 type: 'POST',
+    //                 url: '{{ route('dispatch.RealseCodeVefiry') }}',
+    //                 "_token": "{{ csrf_token() }}",
+    //                 data: {
+    //                     release_code: code,
+    //                 },
+    //                 success: function(data) {
+    //                         if(data == 1){
+    //                                 $('#add-disptach').attr('disabled','disabled');
+    //                                 $.toaster({ priority :'danger', title :'Release Code', message :'must be unique! Please try a different release code.'});
+    //                         }else if(data == 0) {
+    //                                     //$.toaster({ priority :'success', title :'Perfect', message :'You can save now'});
+    //                                 $('#add-disptach').removeAttr('disabled');
+    //                         }
 
+    //                 }
+    //             });// run ajax request and store in x variable (so we can cancel)
+    //     }, 500); // 2000ms delay, tweak for faster/slower
+    // });
 
-    /*$('#editreleasecode').keyup(function(){
-        let code = $(this).val();
-        let dipatchid = $('#dispatch').val();
-        if (x) { x.abort() } // If there is an existing XHR, abort it.
-            clearTimeout(timer); // Clear the timer so we don't end up with dupes.
-            timer = setTimeout(function() {
-                x = $.ajax({
-                        type: 'POST',
-                        url: '{{ route('dispatch.GetReleaseCode') }}',
-                        "_token": "{{ csrf_token() }}",
-                        data: {
-                            release_code: code,
-                            existCode: dipatchid
-                        },
-                        success: function(data) {
-                            if(data == 1){
-                                $.toaster({ priority :'danger', title :'Release code', message :'must be unique! Please try a different release code.'});
-                                $('.edit-button').attr('disabled','disabled');
-                            }else if(data == 0) {
-                                //$.toaster({ priority :'success', title :'Perfect', message :'You can save now'});
-                                $('.edit-button').removeAttr('disabled');
-                            }
-                        }
-                    });
-            }, 500);
+    // $('#editreleasecode').keyup(function(){
+    //     let code = $(this).val();
+    //     let dipatchid = $('#dispatch').val();
+    //     if (x) { x.abort() } // If there is an existing XHR, abort it.
+    //         clearTimeout(timer); // Clear the timer so we don't end up with dupes.
+    //         timer = setTimeout(function() {
+    //             x = $.ajax({
+    //                     type: 'POST',
+    //                     url: '{{ route('dispatch.GetReleaseCode') }}',
+    //                     "_token": "{{ csrf_token() }}",
+    //                     data: {
+    //                         release_code: code,
+    //                         existCode: dipatchid
+    //                     },
+    //                     success: function(data) {
+    //                         if(data == 1){
+    //                             $.toaster({ priority :'danger', title :'Release code', message :'must be unique! Please try a different release code.'});
+    //                             $('.edit-button').attr('disabled','disabled');
+    //                         }else if(data == 0) {
+    //                             //$.toaster({ priority :'success', title :'Perfect', message :'You can save now'});
+    //                             $('.edit-button').removeAttr('disabled');
+    //                         }
+    //                     }
+    //                 });
+    //         }, 500);
 
-    })*/
+    // })
 
     var edit_supplier = 0;
     var edit_exits = 0;

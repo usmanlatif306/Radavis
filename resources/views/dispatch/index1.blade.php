@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
-    <style>
+    {{-- <style>
         td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
             cursor: pointer;
@@ -14,7 +14,7 @@
         tr.shown td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
         }
-    </style>
+    </style> --}}
 @endpush
 @section('content')
 
@@ -92,8 +92,8 @@
         <div class="panel" @if ($bOpenSearch) style="display: block;" @endif>
             <div class="card shadow mb-4">
                 <!--<div class="card-header py-3">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h6 class="m-0 font-weight-bold text-primary">Search Dispatch</h6>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>-->
                 <form method="GET" action="{{ route('dispatch.searchview') }}">
                     @csrf
                     <div class="card-body">
@@ -118,12 +118,12 @@
                             </div>
 
                             <!-- <div class="col-sm-3 mb-2 mt-6 mb-sm-0">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="slider round"></span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </label>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <label for="note" class="top_option" style="padding-bottom:20px;">note: </label>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <label class="switch" style="margin: 20px 0px -14px 100px;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <input type="checkbox" name="note" id="note" class="form-control form-control-user">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span class="slider round"></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </label>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div> -->
                             {{-- <div class="col-sm-4 mb-2 mt-6 mb-sm-0">
                         <label for="completed" class="top_option" style="padding-bottom:20px;">Completed: </label>
                             <label class="switch"  style="margin: 20px 0px -14px 100px;">
@@ -416,16 +416,26 @@
                                     <th>Id</th>
                                 @endif
                                 <th data-priority="1">Commodity</th>
-                                <th>Supplier</th>
+
+                                @if ($view !== 'trucks')
+                                    <th>Supplier</th>
+                                @endif
+
                                 @if ($view === 'all')
                                     <th>Purchase Code</th>
                                 @endif
-                                <th>Exit</th>
+                                @if ($view !== 'trucks')
+                                    <th>Exit</th>
+                                @endif
                                 <th>Release Code</th>
                                 <th data-priority="2">Via</th>
-                                <th data-priority="3">Destination</th>
-                                @if ($view === 'all')
+                                @if ($view !== 'trucks')
+                                    <th data-priority="3">Destination</th>
+                                @endif
+                                @if ($view !== 'trucks')
                                     <th>Rate</th>
+                                @endif
+                                @if ($view === 'all')
                                     <th>Saleman</th>
                                     <th>Sales No.</th>
                                     @if ($display_notes === 'show')
@@ -433,8 +443,9 @@
                                         <th class="d-none">Sale Note</th>
                                         <th class="d-none">Account Note</th>
                                     @endif
-                                    <th>Complete</th>
+
                                 @endif
+                                <th>Status</th>
 
                                 @if ($view === 'trucks')
                                     <th class="d-none">Driver Note</th>
@@ -497,20 +508,27 @@
                                             onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->commodity->name ?? $dispatch->commodity_id !!}</span>
                                     </td>
 
-                                    <td onclick="EditDispatch({{ $dispatch->id }})"> {!! $dispatch->supplier->name ?? $dispatch->supplier_id !!}</td>
+                                    @if ($view !== 'trucks')
+                                        <td onclick="EditDispatch({{ $dispatch->id }})"> {!! $dispatch->supplier->name ?? $dispatch->supplier_id !!}</td>
+                                    @endif
                                     @if ($view === 'all')
                                         <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->purchase_code ?? ' ' !!}</td>
                                     @endif
-
-                                    <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
+                                    @if ($view !== 'trucks')
+                                        <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
+                                    @endif
                                     <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->release_code ?? ' ' !!}</td>
                                     <td><span onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
                                     </td>
-                                    <td><span
-                                            onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
-                                    </td>
-                                    @if ($view === 'all')
+                                    @if ($view !== 'trucks')
+                                        <td><span
+                                                onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
+                                        </td>
+                                    @endif
+                                    @if ($view !== 'trucks')
                                         <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
+                                    @endif
+                                    @if ($view === 'all')
                                         <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->salesman1->first_name ?? ' ' !!}</td>
                                         <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_num ?? ' ' !!}</td>
                                         @if ($display_notes === 'show')
@@ -518,18 +536,14 @@
                                             <td class="d-none">{{ $dispatch->sales_notes }}</td>
                                             <td class="d-none">{{ $dispatch->accounting_notes }}</td>
                                         @endif
-                                        <td>
-                                            @if (!$dispatch->delivered)
-                                                <button
-                                                    onclick="document.getElementById('complete-{{ $dispatch->id }}').submit();"
-                                                    class="btn btn-sm btn-success">Complete</button>
-                                                <form id="complete-{{ $dispatch->id }}"
-                                                    action="{{ route('dispatch.complete', $dispatch) }}" method="post">
-                                                    @csrf
-                                                </form>
-                                            @endif
-                                        </td>
                                     @endif
+                                    <td>
+                                        @if ($dispatch->delivered)
+                                            <span class="badge badge-success">Loaded</span>
+                                        @else
+                                            <span class="badge badge-warning">Not Loaded</span>
+                                        @endif
+                                    </td>
 
                                     @if ($view === 'trucks')
                                         <td class="d-none">{{ $dispatch->driver_instructions }}</td>
