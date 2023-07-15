@@ -71,11 +71,11 @@ class dispatch extends Model
         return $this->belongsTo(User::class, 'salesman', 'id');
     }
 
-    public static function get_dispatches_search($from, $to, $variables = array())
+    public static function get_dispatches_search($from, $to, $variables = array(), $select = '*')
     {
         date_default_timezone_set("America/Los_Angeles");
 
-        $query = dispatch::query();
+        $query = dispatch::query()->with(['commodity', 'destination', 'rate'])->select($select);
 
         if (!isset($variables['datepicker_all'])) {
             if (!$from instanceof Carbon) {

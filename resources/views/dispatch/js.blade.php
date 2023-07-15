@@ -90,7 +90,7 @@
             if ('{{ $view }}' === 'all') {
                 table.rows().every(function() {
                     if (this.data()[13] || this.data()[14] || this.data()[15]) {
-                        strAdditional = '<table style="width:101%"><tr>';
+                        strAdditional = '<table style="width:100%"><tr>';
                         strAdditional = strAdditional +
                             '<td style="width:33%"><span class="dtr-title">Driver Note</span></td>';
                         strAdditional = strAdditional +
