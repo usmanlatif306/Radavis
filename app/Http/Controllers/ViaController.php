@@ -27,8 +27,15 @@ class ViaController extends Controller
      */
     public function index(Request $request)
     {
+        Via::whereNull('equip_type')->update([
+            'equip_type' => [],
+            'service_area' => [],
+        ]);
+
+
         if ($request->ajax()) {
-            $data = Via::with('user')->select('*');
+            $status = $request->status === 'inactive' ? 0 : 1;
+            $data = Via::with('user')->where('active', $status);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('user', function ($row) {
@@ -73,15 +80,18 @@ class ViaController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'name'    => 'required|max:255|string|unique:vias,name',
             'contact_name'    => 'required|max:255|string',
             'email'    => 'required|max:255|email|unique:vias,email',
             'phone'    => 'required|max:255',
             'user_id'    => 'required|exists:users,id',
+            'trucks'    => 'required|integer',
+            'equip_type'    => 'required|array',
+            'service_area'    => 'required|array',
             'active'  =>  'required|numeric|in:0,1',
         ]);
+
 
         DB::beginTransaction();
         try {
@@ -93,6 +103,9 @@ class ViaController extends Controller
                 'phone'    => $request->phone,
                 'active'  => $request->active,
                 'user_id'  => $request->user_id,
+                'trucks'  => $request->trucks,
+                'equip_type'  => $request->equip_type,
+                'service_area'  => $request->service_area,
             ]);
 
             // Commit And Redirected To Listing
@@ -180,6 +193,9 @@ class ViaController extends Controller
             'phone'    => 'required|max:255',
             'active'    =>  'required|numeric|in:0,1',
             'user_id'    => 'required|exists:users,id',
+            'trucks'    => 'required|integer',
+            'equip_type'    => 'required|array',
+            'service_area'    => 'required|array',
         ]);
 
         DB::beginTransaction();
@@ -191,6 +207,9 @@ class ViaController extends Controller
                 'phone'    => $request->phone,
                 'active'    => $request->active,
                 'user_id'  => $request->user_id,
+                'trucks'  => $request->trucks,
+                'equip_type'  => $request->equip_type,
+                'service_area'  => $request->service_area,
             ]);
 
             // Commit And Redirected To Listing

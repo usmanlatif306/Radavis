@@ -38,6 +38,9 @@
                             <th>Contact Name</th>
                             <th>Email Address</th>
                             <th>Phone Number</th>
+                            <th>Trucks</th>
+                            <th>Equipment</th>
+                            <th>Area</th>
                             <th>Linked User</th>
                             <th>Last Dispatch</th>
                             <th>Status</th>
@@ -51,6 +54,17 @@
                                 <td>{{ $truck->contact_name }}</td>
                                 <td>{{ $truck->email }}</td>
                                 <td>{{ $truck->phone }}</td>
+                                <td>{{ $truck->trucks }}</td>
+                                <td>
+                                    @foreach ($truck->equip_type as $equip)
+                                        {{ $equip }}{{ $loop->last ? '' : ',' }}
+                                    @endforeach
+                                </td>
+                                <td>
+                                    @foreach ($truck->service_area as $service)
+                                        {{ $service }}{{ $loop->last ? '' : ',' }}
+                                    @endforeach
+                                </td>
                                 <td>{!! $truck->user
                                     ? $truck->user?->full_name . '<br>(' . $truck->user?->email . ')'
                                     : '<span class="text-danger">No link</span>' !!}

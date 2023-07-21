@@ -15,10 +15,10 @@
                     </a>
                 </div>
                 <!-- <div class="col-md-6">
-                            <a href="{{ route('via.export') }}" class="btn btn-sm btn-success">
-                                <i class="fas fa-check"></i> Export To Excel
-                            </a>
-                        </div> -->
+                                                                                                <a href="{{ route('via.export') }}" class="btn btn-sm btn-success">
+                                                                                                    <i class="fas fa-check"></i> Export To Excel
+                                                                                                </a>
+                                                                                            </div> -->
 
             </div>
 
@@ -27,11 +27,22 @@
         {{-- Alert Messages --}}
         @include('common.alert')
 
+        @php
+            $status = request()->status === 'inactive' ? 'inactive' : 'active';
+        @endphp
+
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">All Trucks</h6>
-
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <button type="button"
+                        class="btn btn-sm @if ($status === 'active') btn-primary @else btn-outline-primary @endif status-btn"
+                        data-status="active">Active</button>
+                    <button type="button"
+                        class="btn btn-sm @if ($status === 'inactive') btn-primary @else btn-outline-primary @endif status-btn"
+                        data-status="inactive">Inactive</button>
+                </div>
             </div>
             <table class="table table-bordered data-table">
                 <thead>
@@ -64,14 +75,14 @@
     </script>
     <script type="text/javascript">
         $(function() {
-
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
                 "oLanguage": {
                     "sSearch": "Filter:"
                 },
-                ajax: "{{ route('via.index') }}",
+                // ajax: "{{ route('via.index') }}",
+                ajax: "{{ url('') }}" + '/via?status={{ $status }}',
                 columns: [{
                         data: 'id',
                         name: 'id'
@@ -95,11 +106,16 @@
                         searchable: false
                     },
                 ],
-                stateSave: true,
+                // stateSave: true,
                 dom: '<"top"lif>rtp'
             });
 
         });
+
+        $('.status-btn').on('click', function() {
+            let status = $(this).data('status');
+            window.location.href = "{{ url('') }}" + `/via?status=${status}`;
+        })
     </script>
 
 @endsection

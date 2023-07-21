@@ -10,7 +10,7 @@ class Via extends Model
 {
     //use HasFactory;
     protected $fillable = [
-        'name', 'active', 'user_id', 'contact_name', 'email', 'phone', 'last_dispatch_at'
+        'name', 'active', 'user_id', 'contact_name', 'email', 'phone', 'last_dispatch_at', 'trucks', 'equip_type', 'service_area'
     ];
     public $timestamps = false;
 
@@ -21,6 +21,8 @@ class Via extends Model
      */
     protected $casts = [
         'last_dispatch_at' => 'date',
+        'equip_type' => 'array',
+        'service_area' => 'array',
     ];
 
     public function user(): BelongsTo
