@@ -112,12 +112,12 @@
 
             } else if ('{{ $view }}' === 'trucks') {
                 table.rows().every(function() {
-                    if (this.data()[5]) {
+                    if (this.data()[8]) {
                         strAdditional = '<table style="width:100%"><tr>';
                         strAdditional = strAdditional +
                             '<td style="width:100%"><span class="dtr-title">Driver</span></td></tr>';
                         strAdditional = strAdditional + '<tr><td>';
-                        strAdditional = strAdditional + format(this.data()[5])
+                        strAdditional = strAdditional + format(this.data()[8])
                         strAdditional = strAdditional + '</td></tr></table>';
                         this.child(strAdditional).show();
                         $(this.node()).addClass('shown');
