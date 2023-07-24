@@ -15,13 +15,11 @@ if (Auth::user()->hasRole('salesman')) {
 ?>
 
 <div class="modal fade" id="createModal" role="dialog" aria-labelledby="deleteModalExample" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalExample">Create Dispatch</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="POST" id="disptach-form" action="{{ route('dispatch.store') }}">
                 <div class="modal-body">
@@ -62,8 +60,7 @@ if (Auth::user()->hasRole('salesman')) {
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Supplier</label>
                             <select id="add-supplier" onchange="Updateexits()"
-                                class="form-control form-control-user @error('supplier') is-invalid @enderror"
-                                name="supplier_id">
+                                class="form-select @error('supplier') is-invalid @enderror" name="supplier_id">
                                 <option selected="selected" disabled="disabled">Select Supplier</option>
                             </select>
 
@@ -87,8 +84,7 @@ if (Auth::user()->hasRole('salesman')) {
                         {{-- Exits --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Exits</label>
-                            <select id="add-exits"
-                                class="form-control form-control-user @error('exit') is-invalid @enderror"
+                            <select id="add-exits" class="form-select @error('exit') is-invalid @enderror"
                                 name="exit_id">
                                 <option selected="selected" disabled="disabled">Select Exits</option>
                             </select>
@@ -102,9 +98,7 @@ if (Auth::user()->hasRole('salesman')) {
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Release Code</label>
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">-1</span>
-                                </div>
+                                <span class="input-group-text" id="basic-addon1">-1</span>
                                 <input type="text"
                                     class="form-control form-control-user @error('PurchaseCode') is-invalid @enderror"
                                     id="release_code_new" name="release_code" aria-describedby="basic-addon1"
@@ -118,8 +112,7 @@ if (Auth::user()->hasRole('salesman')) {
                         {{-- Via --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Via</label>
-                            <select class="form-control form-control-user @error('via') is-invalid @enderror"
-                                name="via_id">
+                            <select class="form-select @error('via') is-invalid @enderror" name="via_id">
                                 <option selected disabled>Select Via</option>
                                 @foreach ($vias->sortBy('name') as $via)
                                     <option value="{{ $via->id }}">{!! $via->name !!}</option>
@@ -133,7 +126,7 @@ if (Auth::user()->hasRole('salesman')) {
                         {{-- Destination --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Destination</label>
-                            <select class="form-control form-control-user @error('destination') is-invalid @enderror"
+                            <select class="form-select @error('destination') is-invalid @enderror"
                                 name="destination_id">
                                 <option selected disabled>Select Destination</option>
                                 @foreach ($destinations->sortBy('name') as $destination)
@@ -148,8 +141,7 @@ if (Auth::user()->hasRole('salesman')) {
                         {{-- Rate --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Rate</label>
-                            <select class="form-control form-control-user @error('Rate') is-invalid @enderror"
-                                name="rate_id">
+                            <select class="form-select @error('Rate') is-invalid @enderror" name="rate_id">
                                 <option selected disabled>Select Rate</option>
                                 <option value=""></option>
                                 @foreach ($rates->sortBy('name') as $rate)
@@ -164,8 +156,7 @@ if (Auth::user()->hasRole('salesman')) {
                         {{-- Salesman --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Salesman</label>
-                            <select class="form-control form-control-user @error('salesman') is-invalid @enderror"
-                                name="salesman">
+                            <select class="form-select @error('salesman') is-invalid @enderror" name="salesman">
                                 <option selected disabled>Select Salesman</option>
                                 <option value=""></option>
                                 @foreach ($users->sortBy('first_name') as $user)
@@ -183,7 +174,7 @@ if (Auth::user()->hasRole('salesman')) {
                         </div>
 
                         {{-- Sales Number --}}
-                        <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Sales No.</label>
                             <input type="text"
                                 class="form-control form-control-user @error('sales_num') is-invalid @enderror"
@@ -223,15 +214,11 @@ if (Auth::user()->hasRole('salesman')) {
                             @enderror
                         </div>
 
-
-
-                        <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                        <div class="col-sm-12 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>X Records</label>
-                            <input type="number" value="1" name="x_no_records" class="form-control form-control-user">
-
-
+                            <input type="number" value="1" name="x_no_records"
+                                class="form-control form-control-user">
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">

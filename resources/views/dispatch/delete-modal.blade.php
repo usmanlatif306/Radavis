@@ -4,9 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalExample">Are you Sure You wanted to Delete?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">Select "Delete" below if you want to delete dispatch!.</div>
             <div class="modal-footer">
@@ -17,7 +15,7 @@
                 </a>
                 <form id="dispatch-delete-form" method="POST" action="{{ route('dispatch.destroy') }}">
                     @csrf
-                    <input type = "hidden" value = "" id = "confirm_del_id" name = "dispatch_id">
+                    <input type="hidden" value="" id="confirm_del_id" name="dispatch_id">
                     @method('DELETE')
                 </form>
             </div>

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Commoditie;
 use App\Models\Supplier;
 use App\Models\Exits;
@@ -32,24 +33,24 @@ class CommoditieController extends Controller
         if ($request->ajax()) {
             $data = Commoditie::select('*');
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('name_added', function($row){
-                        return '<a href = "'.route("commoditie.supplierindex", ["commoditie" => $row->id]).'"><span style="color:'.$row->color.'">'.$row->name.'</span></a>';
-                    }) 
-                    ->addColumn('status', function($row){
-                        if($row->active == 0){
-                            return '<span class="badge badge-danger">Inactive</span>';
-                        }elseif($row->active == 1){
-                            return '<span class="badge badge-success">Active</span>';
-                        }
-                    }) 
-                    ->addColumn('action', function($row){
-                        $btn = '<a href="'.route("commoditie.edit", ["commoditie" => $row->id]).'" class="btn btn-primary m-2"><i class="fa fa-pen"></i></a>';
-                        $btn .= '<a class="btn btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete('.$row->id.')"><i class="fas fa-trash"></i></a>';     
-                        return $btn;
-                    })  
-                    ->rawColumns(['name_added','status','action'])
-                    ->make(true);
+                ->addIndexColumn()
+                ->addColumn('name_added', function ($row) {
+                    return '<a href = "' . route("commoditie.supplierindex", ["commoditie" => $row->id]) . '"><span style="color:' . $row->color . '">' . $row->name . '</span></a>';
+                })
+                ->addColumn('status', function ($row) {
+                    if ($row->active == 0) {
+                        return '<span class="badge badge-danger">Inactive</span>';
+                    } elseif ($row->active == 1) {
+                        return '<span class="badge badge-success">Active</span>';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route("commoditie.edit", ["commoditie" => $row->id]) . '" class="btn btn-sm btn-primary m-2"><i class="fa fa-pen"></i></a>';
+                    $btn .= '<a class="btn btn-sm btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete(' . $row->id . ')"><i class="fas fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['name_added', 'status', 'action'])
+                ->make(true);
         }
         return view('commoditie.index');
     }
@@ -77,7 +78,7 @@ class CommoditieController extends Controller
             'color'   => 'required',
             'active'  => 'required|numeric|in:0,1',
         ]);
-        
+
         DB::beginTransaction();
         try {
             // Store Data
@@ -86,12 +87,11 @@ class CommoditieController extends Controller
                 'color'    => $request->color,
                 'active'  => $request->active,
             ]);
-        
-        
+
+
             // Commit And Redirected To Listing
             DB::commit();
-            return redirect()->route('commoditie.index')->with('success','Commoditie Inserted Successfully.');
-        
+            return redirect()->route('commoditie.index')->with('success', 'Commoditie Inserted Successfully.');
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -112,7 +112,7 @@ class CommoditieController extends Controller
         ]);
 
         // If Validations Fails
-        if($validate->fails()){
+        if ($validate->fails()) {
             return redirect()->route('commoditie.index')->with('error', $validate->errors()->first());
         }
 
@@ -124,7 +124,7 @@ class CommoditieController extends Controller
 
             // Commit And Redirect on index with Success Message
             DB::commit();
-            return redirect()->route('commoditie.index')->with('success','commoditie Status Updated Successfully!');
+            return redirect()->route('commoditie.index')->with('success', 'commoditie Status Updated Successfully!');
         } catch (\Throwable $th) {
 
             // Rollback & Return Error Message
@@ -168,7 +168,7 @@ class CommoditieController extends Controller
     {
         // Validations
         $request->validate([
-            'name'      =>  'required|unique:commodities,name,'.$commoditie->id.',id',
+            'name'      =>  'required|unique:commodities,name,' . $commoditie->id . ',id',
             'color'     =>  'required',
             'active'    =>  'required|numeric|in:0,1',
         ]);
@@ -185,8 +185,7 @@ class CommoditieController extends Controller
 
             // Commit And Redirected To Listing
             DB::commit();
-            return redirect()->route('commoditie.index')->with('success','Commoditie Updated Successfully.');
-
+            return redirect()->route('commoditie.index')->with('success', 'Commoditie Updated Successfully.');
         } catch (\Throwable $th) {
             // Rollback and return with Error
             DB::rollBack();
@@ -214,7 +213,6 @@ class CommoditieController extends Controller
 
             DB::commit();
             return redirect()->route('commoditie.index')->with('success', 'Commoditie Deleted Successfully!.');
-
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
@@ -232,12 +230,11 @@ class CommoditieController extends Controller
             $suppliers =  Commoditie::getsupplierofcommodity($id_comm);
 
             DB::commit();
-            return view('commoditie.supplierindex', ['commoditie' => $commoditie,'suppliers' => $suppliers, 'comsuppliers'=>$suppliersall]);
+            return view('commoditie.supplierindex', ['commoditie' => $commoditie, 'suppliers' => $suppliers, 'comsuppliers' => $suppliersall]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
-
     }
 
     public function supplierstore(Request $request)
@@ -253,27 +250,26 @@ class CommoditieController extends Controller
         DB::beginTransaction();
         try {
 
-            $insert = DB::table('supplier_to_commodity')->insert(['supplier_id'   => $request->supplier_id,'commodity_id' => $request->commoditie_id]);
+            $insert = DB::table('supplier_to_commodity')->insert(['supplier_id'   => $request->supplier_id, 'commodity_id' => $request->commoditie_id]);
             // Get Supplier for this commodity
             $suppliersall = Supplier::all();
             $commoditie = Commoditie::whereId($request->commoditie_id)->first();
             $suppliers =  Commoditie::getsupplierofcommodity($request->commoditie_id);
 
             DB::commit();
-            return redirect()->route('commoditie.supplierindex', ['commoditie' => $commoditie,'suppliers' => $suppliers, 'comsuppliers'=>$suppliersall])->with('success', 'Commoditie Supplier Inserted Successfully!.');
+            return redirect()->route('commoditie.supplierindex', ['commoditie' => $commoditie, 'suppliers' => $suppliers, 'comsuppliers' => $suppliersall])->with('success', 'Commoditie Supplier Inserted Successfully!.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
-
     }
 
-    public function commsuppdestroy(Commoditie $commoditie,Request $request)
+    public function commsuppdestroy(Commoditie $commoditie, Request $request)
     {
         DB::beginTransaction();
         try {
             // Delete supplier from commodity
-            DB::table('supplier_to_commodity')->where(['supplier_id'   => $request->supplier_id,'commodity_id' => $commoditie->id])->delete();
+            DB::table('supplier_to_commodity')->where(['supplier_id'   => $request->supplier_id, 'commodity_id' => $commoditie->id])->delete();
 
             $suppliersall = Supplier::all();
             $commoditie = Commoditie::whereId($commoditie->id)->first();
@@ -281,15 +277,14 @@ class CommoditieController extends Controller
             $suppliers =  Commoditie::getsupplierofcommodity($id_comm);
 
             DB::commit();
-            return redirect()->route('commoditie.supplierindex', ['commoditie' => $commoditie,'suppliers' => $suppliers, 'comsuppliers'=>$suppliersall])->with('success', 'Supplier Deleted Successfully from Commodity!.');
-
+            return redirect()->route('commoditie.supplierindex', ['commoditie' => $commoditie, 'suppliers' => $suppliers, 'comsuppliers' => $suppliersall])->with('success', 'Supplier Deleted Successfully from Commodity!.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
-    public function export() 
+    public function export()
     {
         return Excel::download(new CommoditiesExport, 'Commodities.xlsx');
     }

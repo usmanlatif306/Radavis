@@ -263,7 +263,7 @@
                     @hasrole('salesman')
 
                         <!--Dispatch-->
-                        <div class="menu-item">
+                        {{-- <div class="menu-item">
                             <a class="menu-link {{ request()->is('dispatch*') ? 'active' : '' }}"
                                 href="{{ route('dispatch.index') }}">
                                 <span class="menu-icon">
@@ -274,7 +274,7 @@
                                 </span>
                                 <span class="menu-title">Dispatch</span>
                             </a>
-                        </div>
+                        </div> --}}
 
                         <!--Search Dispatch-->
                         <div class="menu-item">
@@ -286,7 +286,8 @@
                                         <span class="path2"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">Search Dispatch</span>
+                                {{-- <span class="menu-title">Search Dispatch</span> --}}
+                                <span class="menu-title">Dispatch</span>
                             </a>
                         </div>
 
@@ -309,7 +310,7 @@
                     @hasrole('truck')
 
                         <!--Dispatch-->
-                        <div class="menu-item">
+                        {{-- <div class="menu-item">
                             <a class="menu-link {{ request()->is('dispatch') ? 'active' : '' }}"
                                 href="{{ route('dispatch.index') }}">
                                 <span class="menu-icon">
@@ -320,7 +321,7 @@
                                 </span>
                                 <span class="menu-title">Dispatch</span>
                             </a>
-                        </div>
+                        </div> --}}
 
                         <!--Search Dispatch-->
                         <div class="menu-item">
@@ -332,7 +333,7 @@
                                         <span class="path2"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">Search Dispatch</span>
+                                <span class="menu-title">Dispatch</span>
                             </a>
                         </div>
 

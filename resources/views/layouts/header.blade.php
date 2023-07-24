@@ -30,7 +30,7 @@
                 data-kt-swapper-mode="{default: 'append', lg: 'prepend'}"
                 data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
                 <!--begin::Menu-->
-                <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
+                {{-- <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
                     id="kt_app_header_menu" data-kt-menu="true">
 
                     <!--begin:Menu item-->
@@ -94,7 +94,7 @@
 
                     </div>
                     <!--end:Menu item-->
-                </div>
+                </div> --}}
                 <!--end::Menu-->
             </div>
             <!--end::Menu wrapper-->
@@ -152,8 +152,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3 my-0">
-                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
-                                data-kt-value="dark">
+                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
                                 <span class="menu-icon" data-kt-element="icon">
                                     <i class="ki-duotone ki-moon fs-2">
                                         <span class="path1"></span>
@@ -166,8 +165,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3 my-0">
-                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode"
-                                data-kt-value="system">
+                            <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="system">
                                 <span class="menu-icon" data-kt-element="icon">
                                     <i class="ki-duotone ki-screen fs-2">
                                         <span class="path1"></span>
@@ -191,7 +189,7 @@
                     <div class="cursor-pointer symbol symbol-35px symbol-md-40px"
                         data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                         data-kt-menu-placement="bottom-end">
-                        <img src="assets/media/avatars/300-3.jpg" alt="user" />
+                        <img src="{{ asset('assets/media/avatars/300-3.jpg') }}" alt="user" />
                     </div>
                     <!--begin::User account menu-->
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px"
@@ -201,7 +199,7 @@
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
-                                    <img alt="Logo" src="assets/media/avatars/300-3.jpg" />
+                                    <img alt="Logo" src="{{ asset('assets/media/avatars/300-3.jpg') }}" />
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->

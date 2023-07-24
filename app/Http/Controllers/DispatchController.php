@@ -858,6 +858,8 @@ class DispatchController extends Controller
 
             if ($request->has('_token')) {
                 $bOpenSearch = true;
+            } else {
+                $bOpenSearch = false;
             }
             $dispatches = dispatch::get_dispatches_search($strFromDate, $strToDate, $variables);
         }
