@@ -1,71 +1,54 @@
 @extends('auth.layouts.app')
 
-@section('title', 'Forgot Password')
-
 @section('content')
-    <div class="row justify-content-center">
-        <div class="text-center m-5">
-            <h1 class="text-white">RAD-DISPATCH</h1>
-        </div>
+    <div class="w-lg-500px p-10">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
-
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Reset Password!</h1>
-                                </div>
-
-                                @if (session('error'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
-                                @if (session('status'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ session('status') }}
-                                    </div>
-                                @endif
-
-                                <form method="POST" action="{{ route('password.email') }}">
-                                    @csrf
-                                    <div class="form-group">
-                                        <input id="email" type="email"
-                                            class="form-control form-control-user @error('email') is-invalid @enderror"
-                                            name="email" value="{{ old('email') }}" required autocomplete="email"
-                                            autofocus placeholder="Enter Email Address.">
-
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <button class="btn btn-primary btn-user btn-block">
-                                        {{ __('Send Password Reset Link') }}
-                                    </button>
-                                </form>
-                                <hr>
-                                <div class="text-center">
-                                    <a class="small" href="{{ route('login') }}">Already know your passwrd? Login Here</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
             </div>
+        @endif
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
 
-        </div>
-
-        <div class="text-center mt-5">
-            <h6 class="text-white">Developed By : <a class="text-white" href="">Rad-Dispatch</a></h6>
-        </div>
-
+        <!--begin::Form-->
+        <form class="form w-100" id="kt_password_reset_form" method="POST" action="{{ route('password.email') }}">
+            @csrf
+            <!--begin::Heading-->
+            <div class="text-center mb-10">
+                <!--begin::Title-->
+                <h1 class="text-dark fw-bolder mb-3">Forgot Password ?</h1>
+                <!--end::Title-->
+                <!--begin::Link-->
+                <div class="text-gray-500 fw-semibold fs-6">Enter your email to reset your password.</div>
+                <!--end::Link-->
+            </div>
+            <!--begin::Heading-->
+            <!--begin::Input group=-->
+            <div class="fv-row mb-8">
+                <input type="email" name="email" autocomplete="off"
+                    class="form-control bg-transparent @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                    placeholder="Enter Email Address" required />
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <!--begin::Actions-->
+            <div class="d-flex flex-wrap justify-content-center pb-lg-0">
+                <button type="submit" id="kt_password_reset_submit" class="btn btn-primary me-4">
+                    <!--begin::Indicator label-->
+                    <span class="indicator-label">Submit</span>
+                    <!--end::Indicator label-->
+                </button>
+                <a href="{{ route('login') }}" class="btn btn-light">Cancel</a>
+            </div>
+            <!--end::Actions-->
+        </form>
+        <!--end::Form-->
     </div>
 @endsection

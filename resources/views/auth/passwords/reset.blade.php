@@ -1,82 +1,68 @@
 @extends('auth.layouts.app')
 
-@section('title', 'Forgot Password')
 
 @section('content')
-    <div class="row justify-content-center">
+    <div class="w-lg-500px p-10">
+        @if (session('error'))
+            <span class="text-danger"> {{ session('error') }}</span>
+        @endif
 
-        <div class="text-center m-5">
-            <h1 class="text-white">RAD-DISPATCH</h1>
-        </div>
+        <form class="form w-100" id="kt_new_password_form" method="POST" action="{{ route('password.update') }}">
+            @csrf
+            <div class="text-center mb-10">
+                <h1 class="text-dark fw-bolder mb-3">Setup New Password</h1>
+            </div>
+            <input type="hidden" name="token" value="{{ $token }}">
 
-        <div class="col-xl-10 col-lg-12 col-md-9">
-
-            <div class="card o-hidden border-0 shadow-lg my-5">
-                <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
-                    <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Reset Password!</h1>
-                                </div>
-
-                                @if (session('error'))
-                                    <span class="text-danger"> {{ session('error') }}</span>
-                                @endif
-
-                                <form method="POST" action="{{ route('password.update') }}">
-                                    @csrf
-
-                                    <input type="hidden" name="token" value="{{ $token }}">
-                                    
-                                    <div class="form-group">
-                                        <input id="email" type="email"
-                                            class="form-control form-control-user @error('email') is-invalid @enderror"
-                                            name="email" value="{{ $email ?? old('email') }}" required
-                                            autocomplete="email" autofocus placeholder="Enter Email Address.">
-
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input id="password" type="password"
-                                            class="form-control form-control-user @error('password') is-invalid @enderror"
-                                            name="password" required autocomplete="new-password" placeholder="New Password">
-
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input id="password-confirm" type="password" class="form-control form-control-user"
-                                            name="password_confirmation" required autocomplete="new-password"
-                                            placeholder="Confirm Password">
-                                    </div>
-
-                                    <button class="btn btn-primary btn-user btn-block" type="submit">
-                                        {{ __('Reset Password') }}
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="fv-row mb-8">
+                <input type="email" placeholder="Enter Email Address" name="email" autocomplete="off"
+                    class="form-control bg-transparent @error('email') is-invalid @enderror"
+                    value="{{ $email ?? old('email') }}" required />
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
 
-        </div>
+            <div class="fv-row mb-8" data-kt-password-meter="true">
+                <div class="mb-1">
+                    <div class="position-relative mb-3">
+                        <input class="form-control bg-transparent @error('password') is-invalid @enderror" type="password"
+                            placeholder="Password" name="password" autocomplete="off" />
+                        <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2"
+                            data-kt-password-meter-control="visibility">
+                            <i class="ki-duotone ki-eye-slash fs-2"></i>
+                            <i class="ki-duotone ki-eye fs-2 d-none"></i>
+                        </span>
 
-        <div class="text-center mt-5">
-            <h6 class="text-white">Developed By : <a class="text-white" href="#">Rad-Dispatch</a></h6>
-        </div>
+                        @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="d-flex align-items-center mb-3" data-kt-password-meter-control="highlight">
+                        <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+                        <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+                        <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px me-2"></div>
+                        <div class="flex-grow-1 bg-secondary bg-active-success rounded h-5px"></div>
+                    </div>
+                </div>
 
+                <div class="text-muted">Use 8 or more characters with a mix of letters, numbers & symbols.</div>
+
+            </div>
+            <div class="fv-row mb-8">
+                <input type="password" placeholder="Confirm Password" name="password_confirmation" autocomplete="off"
+                    class="form-control bg-transparent" />
+            </div>
+
+            <div class="d-grid mb-10">
+                <button type="submit" id="kt_new_password_submit" class="btn btn-primary">
+                    <span class="indicator-label">Reset Password</span>
+                </button>
+            </div>
+        </form>
     </div>
 @endsection

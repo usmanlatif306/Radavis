@@ -1,72 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
 
-{{-- Include Head --}}
-@include('common.head')
+<head>
+    <html lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<body id="page-top">
+    <title>RAD Dispatch</title>
+    {{-- ICON --}}
+    <link rel="shortcut icon" type="image/jpg" href="{{ asset('images/icon.png') }}" />
+    <!-- Font Awesome UI KIT-->
+    <script src="https://kit.fontawesome.com/f75ab26951.js" crossorigin="anonymous"></script>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
 
-        <!-- Sidebar -->
-        @include('common.sidebar')
-        <!-- End of Sidebar -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+    <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet') }}"
+        type="text/css" />
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
-            <!-- Main Content -->
-            <div id="content">
+    @stack('styles')
+</head>
 
-                <!-- Topbar -->
-                @include('common.header')
-                <!-- End of Topbar -->
+<!--begin::Body-->
 
-                <!-- Begin Page Content -->
-                @yield('content')
-                <!-- /.container-fluid -->
+<body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
 
+    @include('common.theme_mode')
+
+    <!--begin::App-->
+    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
+        <!--begin::Page-->
+        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
+            <!--begin::Header-->
+            @include('layouts.header')
+            <!--end::Header-->
+
+            <!--begin::Wrapper-->
+            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+
+                <!--begin::Sidebar-->
+                @include('layouts.sidebar')
+                <!--end::Sidebar-->
+
+                <!--begin::Main-->
+                <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                    <!--begin::Content wrapper-->
+                    <div class="d-flex flex-column flex-column-fluid">
+                        @yield('content')
+                    </div>
+                    <!--end::Content wrapper-->
+
+                    <!--begin::Footer-->
+                    <div id="kt_app_footer" class="app-footer">
+                        <!--begin::Footer container-->
+                        <div
+                            class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
+                            <!--begin::Copyright-->
+                            <div class="text-dark order-2 order-md-1">
+                                <span class="text-muted fw-semibold me-1">{{ date('Y') }}&copy;</span>
+                                <a href="https://keenthemes.com" target="_blank"
+                                    class="text-gray-800 text-hover-primary">{{ config('app.name') }}</a>
+                            </div>
+                            <!--end::Copyright-->
+                        </div>
+                        <!--end::Footer container-->
+                    </div>
+                    <!--end::Footer-->
+                </div>
+                <!--end:::Main-->
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            @include('common.footer')
-            <!-- End of Footer -->
+            <!--end::Wrapper-->
 
         </div>
-        <!-- End of Content Wrapper -->
-
+        <!--end::Page-->
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    @include('common.logout-modal')
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{asset('js/app.js')}}"></script>
+    <!--end::App-->
 
 
-    <!-- Custom scripts for all pages-->
-    <script src="{{asset('admin/js/sb-admin-2.min.js')}}"></script>
-    <script src="{{asset('admin/js/jquery.toaster.js')}}"></script>
-
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('.select2').select2({
-            })
-        })
+    <!--begin::Javascript-->
+    <script>
+        var hostUrl = "assets/";
     </script>
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Vendors Javascript(used for this page only)-->
+    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <!--end::Vendors Javascript-->
 
-    @yield('scripts')
+    <!--begin::Custom Javascript(used for this page only)-->
+    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/create-campaign.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+    <!--end::Custom Javascript-->
+    <!--end::Javascript-->
+    @stack('scripts')
 </body>
 
 </html>

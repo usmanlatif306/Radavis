@@ -3,74 +3,53 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="row justify-content-center">
-
-    <div class="text-center mt-5">
-        <h1 class="text-white">RAD-DISPATCH</h1>
-    </div>
-
-    <div class="col-xl-10 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                    <div class="col-lg-6">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                            </div>
-
-                            @if (session('error'))
-                                <span class="text-danger"> {{ session('error') }}</span>
-                            @endif
-
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-                                <div class="form-group">
-                                    <input id="text" type="text" class="form-control form-control-user @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Enter Email Address.">
-
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                </div>
-                                <div class="form-group">
-                                    <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox small">
-                                        <input class="custom-control-input" type="checkbox" name="remember" id="customCheck" {{ old('remember') ? 'checked' : '' }}>
-
-                                        <label class="custom-control-label" for="customCheck">Remember
-                                            Me</label>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-user btn-block">
-                                    Login
-                                </button>
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="{{route('password.request')}}">Forgot Password?</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!--begin::Wrapper-->
+    <div class="w-lg-500px p-10">
+        <!--begin::Form-->
+        <form class="form w-100" id="kt_sign_in_form" method="POST" action="{{ route('login') }}">
+            @csrf
+            <!--begin::Heading-->
+            <div class="text-center mb-11">
+                <!--begin::Title-->
+                <h1 class="text-dark fw-bolder mb-3">Sign In</h1>
+                <!--end::Title-->
             </div>
-        </div>
-    </div>
-    
-    <div class="text-center mt-5">
-        <h6 class="text-white">RAD Dispatch - Internal Use Only</h6>
-    </div>
+            <!--begin::Heading-->
 
-</div>
+            <div class="fv-row mb-8">
+                <input type="email" placeholder="Enter Email Address" name="email" autocomplete="off"
+                    class="form-control bg-transparent @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                    required />
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="fv-row mb-3">
+                <input type="password" placeholder="Password" name="password" autocomplete="off"
+                    class="form-control bg-transparent @error('password') is-invalid @enderror" required />
+            </div>
+
+            <div class="fv-row mb-3">
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="remember" @checked(old('remember')) />
+                    <span class="form-check-label fw-semibold text-gray-700 fs-base ms-1">Remember Me
+                </label>
+            </div>
+
+            <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
+                <div></div>
+                <a href="{{ route('password.request') }}" class="link-primary">Forgot Password ?</a>
+            </div>
+
+            <div class="d-grid mb-10">
+                <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
+                    <span class="indicator-label">Sign In</span>
+                </button>
+            </div>
+    </div>
+    <!--end::Wrapper-->
+
 @endsection
