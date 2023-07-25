@@ -16,7 +16,11 @@
                 @if ($btn_text === 'Back')
                     <i class="fas fa-arrow-left fa-sm text-white-50"></i>
                 @endif
+                @if ($btn_text === 'Add New')
+                    <i class="fas fa-plus"></i>
+                @endif
                 {{ $btn_text }}
+
             </a>
         @endif
 

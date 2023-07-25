@@ -5,6 +5,7 @@
     {{-- <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" /> --}}
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -13,6 +14,10 @@
 
         tr.shown td.details-control {
             background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 42px !important;
         }
     </style>
 @endpush
@@ -126,7 +131,8 @@
                                     <input type="date" name="datepicker_to" value="{{ request()->datepicker_to }}"
                                         id="datepicker_to" class="form-control form-control-user" />
                                 </div>
-                                <div class="col-sm-4 mb-2 mt-2 mb-sm-0">
+                                <div
+                                    class="col-sm-4 mb-2 mt-2 mb-sm-0 d-flex justify-content-center align-items-center gap-3">
                                     <label for="completed" class="top_option">All Dates:</label>
                                     <input type="checkbox" name="datepicker_all" id="datepicker_all"
                                         class="form-check-input" <?php
@@ -389,7 +395,19 @@
                 datepicker_from.value = "{{ request()->datepicker_from }}"
                 datepicker_to.value = "{{ request()->datepicker_to }}"
             }, 500)
-
         })();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#commodity').select2();
+            $('#via').select2();
+            $('#supplier').select2();
+            $('#destination').select2();
+            $('#exit').select2();
+            $('#salesman').select2();
+            $('#rate').select2();
+        });
     </script>
 @endpush

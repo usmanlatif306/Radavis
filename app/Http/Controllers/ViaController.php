@@ -49,8 +49,8 @@ class ViaController extends Controller
                     }
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route("via.edit", ["via" => $row->id]) . '" class="btn btn-primary m-2"><i class="fa fa-pen"></i></a>';
-                    $btn .=  '<a class="btn btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete(' . $row->id . ')"><i class="fas fa-trash"></i></a>';
+                    $btn = '<a href="' . route("via.edit", ["via" => $row->id]) . '" class="btn btn-sm btn-primary m-2"><i class="fa fa-pen"></i></a>';
+                    $btn .=  '<a class="btn btn-sm btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete(' . $row->id . ')"><i class="fas fa-trash"></i></a>';
                     return $btn;
                 })
                 ->rawColumns(['user', 'status', 'action'])

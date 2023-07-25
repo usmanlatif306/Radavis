@@ -1,72 +1,66 @@
 @extends('layouts.app')
 
 @section('title', 'Trucks List')
+@push('styles')
+    <style>
+        .dt-buttons {
+            display: none !important;
+        }
+    </style>
+@endpush
 
 @section('content')
-    <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Trucks</h1>
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="{{ route('via.create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Add New
-                    </a>
+    @include('common.breadcrumbs', [
+        'title' => 'Trucks',
+        'btn_text' => 'Add New',
+        'btn_link' => route('via.create'),
+    ])
+
+    <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-fluid">
+            {{-- Alert Messages --}}
+            @include('common.alert')
+
+            @php
+                $status = request()->status === 'inactive' ? 'inactive' : 'active';
+            @endphp
+
+            <div class="card shadow mb-4">
+                <div class="card-header card-header-height d-flex justify-content-between align-items-center">
+                    <h5 class="font-weight-bold text-primary m-0">All Trucks</h5>
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <button type="button"
+                            class="btn btn-sm @if ($status === 'active') btn-primary @else btn-outline-primary @endif status-btn"
+                            data-status="active">Active</button>
+                        <button type="button"
+                            class="btn btn-sm @if ($status === 'inactive') btn-primary @else btn-outline-primary @endif status-btn"
+                            data-status="inactive">Inactive</button>
+                    </div>
                 </div>
-                <!-- <div class="col-md-6">
-                                                                                                <a href="{{ route('via.export') }}" class="btn btn-sm btn-success">
-                                                                                                    <i class="fas fa-check"></i> Export To Excel
-                                                                                                </a>
-                                                                                            </div> -->
 
-            </div>
-
-        </div>
-
-        {{-- Alert Messages --}}
-        @include('common.alert')
-
-        @php
-            $status = request()->status === 'inactive' ? 'inactive' : 'active';
-        @endphp
-
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">All Trucks</h6>
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <button type="button"
-                        class="btn btn-sm @if ($status === 'active') btn-primary @else btn-outline-primary @endif status-btn"
-                        data-status="active">Active</button>
-                    <button type="button"
-                        class="btn btn-sm @if ($status === 'inactive') btn-primary @else btn-outline-primary @endif status-btn"
-                        data-status="inactive">Inactive</button>
+                <div class="card-body">
+                    <table class="table table-hover table-bordered data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>User</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <table class="table table-bordered data-table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Name</th>
-                        <th>User</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
         </div>
-
+        @include('via.delete-modal')
     </div>
-
-    @include('via.delete-modal')
-
 @endsection
 
-@section('scripts')
-
+@push('scripts')
     <script type="text/javascript">
         function ConfirmDelete(id) {
             $('#deleteModal').modal('show');
@@ -81,7 +75,6 @@
                 "oLanguage": {
                     "sSearch": "Filter:"
                 },
-                // ajax: "{{ route('via.index') }}",
                 ajax: "{{ url('') }}" + '/via?status={{ $status }}',
                 columns: [{
                         data: 'id',
@@ -106,8 +99,9 @@
                         searchable: false
                     },
                 ],
-                // stateSave: true,
-                dom: '<"top"lif>rtp'
+                stateSave: true,
+                dom: 'frtip',
+                buttons: [],
             });
 
         });
@@ -117,5 +111,4 @@
             window.location.href = "{{ url('') }}" + `/via?status=${status}`;
         })
     </script>
-
-@endsection
+@endpush

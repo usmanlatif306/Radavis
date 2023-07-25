@@ -1,20 +1,29 @@
 @extends('layouts.app')
 
 @section('title', 'Commodities List')
+@push('styles')
+    <style>
+        .dt-buttons {
+            display: none !important;
+        }
+    </style>
+@endpush
 
 @section('content')
-    @include('common.breadcrumbs', ['title' => 'Commodities'])
+    @include('common.breadcrumbs', [
+        'title' => 'Commodities',
+        'btn_text' => 'Add New',
+        'btn_link' => route('commoditie.create'),
+    ])
+
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
             {{-- Alert Messages --}}
             @include('common.alert')
 
             <div class="card shadow mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="font-weight-bold text-primary m-0">All Commodities</h5>
-                    <a href="{{ route('commoditie.create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Add New
-                    </a>
+                <div class="card-header card-header-height d-flex align-items-center">
+                    <h6 class="font-weight-bold text-primary mb-0 pb-0">All Commodities</h6>
                 </div>
                 <div class="card-body">
                     <table class="table table-hover table-bordered data-table">
@@ -89,7 +98,8 @@
                 "oLanguage": {
                     "sSearch": "Filter:"
                 },
-                // dom: '<"top"lif>rtp'
+                dom: 'frtip',
+                buttons: [],
 
             });
 

@@ -61,6 +61,16 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
+    /**
+     * Get the user's gravatar.
+     *
+     * @return string
+     */
+    public function getGravatarAttribute()
+    {
+        return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email)));
+    }
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'role_id');

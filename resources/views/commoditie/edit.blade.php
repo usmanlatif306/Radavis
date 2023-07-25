@@ -17,7 +17,7 @@
 
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
-                <div class="card-header pt-4" style="min-height: 50px !important;">
+                <div class="card-header d-flex align-items-center card-header-height">
                     <h6 class="m-0 font-weight-bold text-primary">Edit Commoditie</h6>
                 </div>
                 <form method="POST" action="{{ route('commoditie.update', ['commoditie' => $commoditie->id]) }}">

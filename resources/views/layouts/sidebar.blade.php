@@ -205,8 +205,8 @@
                         </div>
 
                         <!--User Management-->
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-
+                        <div data-kt-menu-trigger="click"
+                            class="menu-item menu-accordion {{ request()->is('users*') ? 'show' : '' }}">
                             <!--begin:Menu link-->
                             <span class="menu-link">
                                 <span class="menu-icon">
