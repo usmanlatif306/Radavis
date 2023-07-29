@@ -4,7 +4,6 @@
 
 @section('content')
     @include('common.breadcrumbs', ['title' => 'Config'])
-
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
             {{-- Alert Messages --}}
@@ -21,12 +20,12 @@
                         <div class="form-group row">
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Mailing Address:</label>
-                                <input class="form-control form-control-via" type="text" name="mailing_address"
+                                <input class="form-control" type="text" name="mailing_address"
                                     value="{{ $config[0]['value'] }}" id="mailing_address" maxlength="100" size="100" />
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Default records per page:</label>
-                                <select class="form-control form-control-via" name="records_per_page">
+                                <select class="form-select" name="records_per_page">
                                     <option value="20" {{ $config['1']['value'] == 20 ? 'selected' : '' }}>20
                                     </option>
                                     <option value="50" {{ $config['1']['value'] == 50 ? 'selected' : '' }}>50
@@ -39,7 +38,7 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Default notes:</label>
-                                <select class="form-control form-control-via" name="default_display_notes">
+                                <select class="form-select" name="default_display_notes">
                                     <option value="show" {{ $config['7']['value'] == 'show' ? 'selected' : '' }}>Show
                                     </option>
                                     <option value="hide" {{ $config['7']['value'] == 'hide' ? 'selected' : '' }}>Hide
@@ -48,7 +47,7 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Default display group:</label>
-                                <select class="form-control form-control-via" name="default_display">
+                                <select class="form-select" name="default_display">
                                     <option value="completed" {{ $config['4']['value'] == 'completed' ? 'selected' : '' }}>
                                         Completed</option>
                                     <option value="open" {{ $config['4']['value'] == 'open' ? 'selected' : '' }}>Open
@@ -65,7 +64,7 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Window auto close time (sec):</label>
-                                <select class="form-control form-control-via" name="window_auto_close">
+                                <select class="form-select" name="window_auto_close">
                                     <option value="1" {{ $config['5']['value'] == 1 ? 'selected' : '' }}>1
                                     </option>
                                     <option value="2" {{ $config['5']['value'] == 2 ? 'selected' : '' }}>2
@@ -86,7 +85,7 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Auto refresh parent window on new/edit record:</label>
-                                <select class="form-control form-control-via" name="auto_refreash_win_on_new">
+                                <select class="form-select" name="auto_refreash_win_on_new">
                                     <option value="1" {{ $config['6']['value'] == 1 ? 'selected' : '' }}>Yes
                                     </option>
                                     <option value="0" {{ $config['6']['value'] == 0 ? 'selected' : '' }}>No
@@ -95,7 +94,7 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Allow multi login with same username:</label>
-                                <select class="form-control form-control-via" name="multi_sess_per_user">
+                                <select class="form-select" name="multi_sess_per_user">
                                     <option value="1" {{ $config['9']['value'] == 1 ? 'selected' : '' }}>Yes
                                     </option>
                                     <option value="0" {{ $config['9']['value'] == 0 ? 'selected' : '' }}>No
@@ -104,7 +103,7 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Allowed session time (hr):</label>
-                                <select class="form-control form-control-via" name="sess_expiration">
+                                <select class="form-select" name="sess_expiration">
                                     <option value="1" {{ $config['8']['value'] == 1 ? 'selected' : '' }}>1
                                     </option>
                                     <option value="2" {{ $config['8']['value'] == 2 ? 'selected' : '' }}>2
@@ -157,12 +156,17 @@
                             </div>
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 Allow remote access (global):</label>
-                                <select class="form-control form-control-via" name="remote_access">
+                                <select class="form-select" name="remote_access">
                                     <option value="1" {{ $config['11']['value'] == 1 ? 'selected' : '' }}>Yes
                                     </option>
                                     <option value="0" {{ $config['11']['value'] == 0 ? 'selected' : '' }}>No
                                     </option>
                                 </select>
+                            </div>
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                1 Ton:</label>
+                                <input class="form-control" type="number" name="ton"
+                                    value="{{ $config[12]['value'] }}" placeholder="1 Ton contains loads" />
                             </div>
                         </div>
                     </div>

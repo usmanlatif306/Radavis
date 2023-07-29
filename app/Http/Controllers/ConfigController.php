@@ -16,7 +16,6 @@ class ConfigController extends Controller
     public function index()
     {
         $config = Config::get()->toArray();
-        // dd($config);
         return view('config.index', ['config' => $config]);
     }
 
@@ -40,7 +39,6 @@ class ConfigController extends Controller
     {
         //dd($request);
         $values = $request->all();
-        //dd($values);
 
         //update `config` set `value` = lXWKusTCzGdGzviAjNxoZo0b4Y1yJR7oWyl9AiA2, `config`.`updated_at` = 2022-08-28 15:25:38 where `item` = _token
 
@@ -53,8 +51,6 @@ class ConfigController extends Controller
                     Config::where('item', $item)->update($data);
                 }
             }
-
-
             // Commit And Redirected To Listing
             DB::commit();
             return redirect()->route('config.index')->with('success', 'Config Setting Updated Successfully.');

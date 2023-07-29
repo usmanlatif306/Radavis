@@ -35,6 +35,7 @@ Route::get('/', function () {
 Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/ajax', [App\Http\Controllers\HomeController::class, 'home_ajax'])->name('home.ajax');
 Route::post('read/{bulletin}', [App\Http\Controllers\HomeController::class, 'readBulletin'])->name('bulletins.read');
 
 // Profile Routes

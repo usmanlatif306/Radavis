@@ -38,7 +38,7 @@
                     <div class="menu-item">
                         <a class="menu-link {{ request()->is('home') ? 'active' : '' }}" href="{{ route('home') }}">
                             <span class="menu-icon">
-                                <i class="ki-duotone ki-category fs-2">
+                                <i class="fas fa-fw fa-tachometer-alt">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
@@ -55,7 +55,7 @@
                             <a class="menu-link {{ request()->is('dispatch*') ? 'active' : '' }}"
                                 href="{{ route('dispatch.searchview') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-fighter-jet">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -69,7 +69,7 @@
                             <a class="menu-link {{ request()->is('commoditie*') ? 'active' : '' }}"
                                 href="{{ route('commoditie.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-shopping-cart">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -83,7 +83,7 @@
                             <a class="menu-link {{ request()->is('supplier*') ? 'active' : '' }}"
                                 href="{{ route('supplier.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-users">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -97,7 +97,7 @@
                             <a class="menu-link {{ request()->is('exit*') ? 'active' : '' }}"
                                 href="{{ route('exit.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-torii-gate">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -111,7 +111,7 @@
                             <a class="menu-link {{ request()->is('via*') ? 'active' : '' }}"
                                 href="{{ route('via.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-truck">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -125,7 +125,7 @@
                             <a class="menu-link {{ request()->is('truck*') ? 'active' : '' }}"
                                 href="{{ route('truck.directory') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-truck">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -139,7 +139,7 @@
                             <a class="menu-link {{ request()->is('destination*') ? 'active' : '' }}"
                                 href="{{ route('destination.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-home">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -153,7 +153,7 @@
                             <a class="menu-link {{ request()->is('rate*') ? 'active' : '' }}"
                                 href="{{ route('rate.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-dollar-sign">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -167,7 +167,7 @@
                             <a class="menu-link {{ request()->is('config*') ? 'active' : '' }}"
                                 href="{{ route('config.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-cog">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -181,7 +181,7 @@
                             <a class="menu-link {{ request()->is('bulletins*') ? 'active' : '' }}"
                                 href="{{ route('bulletins.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-bullhorn">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -195,7 +195,7 @@
                             <a class="menu-link {{ request()->is('logistics*') ? 'active' : '' }}"
                                 href="{{ route('logistics.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-subway">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -281,7 +281,7 @@
                             <a class="menu-link {{ request()->is('dispatch/searchview') ? 'active' : '' }}"
                                 href="{{ route('dispatch.searchview') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-fighter-jet">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -296,7 +296,7 @@
                             <a class="menu-link {{ request()->is('truck*') ? 'active' : '' }}"
                                 href="{{ route('truck.directory') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-truck">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -328,7 +328,7 @@
                             <a class="menu-link {{ request()->is('dispatch/searchview') ? 'active' : '' }}"
                                 href="{{ route('dispatch.searchview') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-fighter-jet">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -342,7 +342,7 @@
                             <a class="menu-link {{ request()->is('logistics*') ? 'active' : '' }}"
                                 href="{{ route('logistics.index') }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-category fs-2">
+                                    <i class="fas fa-fw fa-subway">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>
@@ -357,7 +357,7 @@
                         <a class="menu-link" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span class="menu-icon">
-                                <i class="ki-duotone ki-category fs-2">
+                                <i class="fas fa-fw fa-sign-out-alt">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>

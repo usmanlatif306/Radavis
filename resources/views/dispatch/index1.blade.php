@@ -4,7 +4,7 @@
 
 @push('styles')
     {{-- <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" /> --}}
-    {{-- <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" /> --}}
+    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
@@ -52,15 +52,18 @@
                 <div class="card shadow">
                     <div class="card-body">
                         <div class="col-md-12 mb-3 mt-3 mb-sm-0" style="text-align:center">
-                            <a href="{{ route('dispatch.searchview', ['date' => date('m/d/Y', strtotime($date . ' -1 day'))]) }}"
-                                class="btn btn-sm btn-primary"><i class="fa fa-arrow-left"></i></a>
-                            <input class="btn btn-sm btn-primary" type="date" name="date" id="date_view"
-                                value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($_GET['date'])) : date('Y-m-d'); ?>">
-                            <!--<input  class="btn btn-sm btn-primary" type="date" name="date" id="date_view" value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($date . ' +1 day')) : date('Y-m-d', strtotime($date . ' +1 day')); ?>">-->
-                            <a href="{{ route('dispatch.searchview', ['date' => date('m/d/Y', strtotime($date . ' +1 day'))]) }}"
-                                class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i></a>
-                            <div class="d-flex justify-content-end">
-                                <div class="me-2" style="width:15%;">
+                            <div class="d-flex gap-3 justify-content-center">
+                                <a href="{{ route('dispatch.searchview', ['date' => date('m/d/Y', strtotime($date . ' -1 day'))]) }}"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-arrow-left"></i></a>
+                                <input class="btn btn-sm btn-primary flex-grow-1 flex-sm-grow-0" type="date"
+                                    name="date" id="date_view" value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($_GET['date'])) : date('Y-m-d'); ?>">
+                                <!--<input  class="btn btn-sm btn-primary" type="date" name="date" id="date_view" value="<?php echo isset($_GET['date']) ? date('Y-m-d', strtotime($date . ' +1 day')) : date('Y-m-d', strtotime($date . ' +1 day')); ?>">-->
+                                <a href="{{ route('dispatch.searchview', ['date' => date('m/d/Y', strtotime($date . ' +1 day'))]) }}"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-arrow-right"></i></a>
+                            </div>
+
+                            <div class="d-flex justify-content-end mt-4">
+                                <div class="me-2" style="">
                                     @php
                                         $display_notes = session('display_notes') ?? 'show';
                                     @endphp
@@ -75,7 +78,7 @@
                                     </select>
                                 </div>
 
-                                <div style="width:15%;">
+                                <div style="">
                                     @php
                                         $changedisplay = session('changedisplay');
                                     @endphp
@@ -370,7 +373,7 @@
                         $view = request()->view ?? 'all';
                     @endphp
                     @if (Auth::user()->hasRole('Admin'))
-                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <div class="btn-group mt-2 mt-sm-0" role="group" aria-label="Basic outlined example">
                             <button type="button"
                                 class="btn btn-sm {{ $view === 'all' ? 'btn-primary' : 'btn-outline-primary' }} view-btn"
                                 data-view="all">All</button>
@@ -387,22 +390,20 @@
 
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="table table-hover table-bordered" width="100%" cellspacing="0">
+                        <table id="myTable" class="table table-hover table-bordered responsive" width="100%"
+                            cellspacing="0">
                             <thead>
                                 <tr>
                                     @if (Auth::user()->hasRole('salesman'))
                                         <th></th>
                                         <th>Date</th>
-                                        <?php /*<th>Id</th>*/ ?>
                                         <th data-priority="1">Commodity</th>
-                                        <?php /*<th>Supplier</th>
-                        <th>Purchase Code</th>*/
-                                        ?>
+                                        <th data-priority="2">Destination</th>
                                         <th>Exit</th>
                                         <th>Release Code</th>
-                                        <th data-priority="2">Via</th>
-                                        <th data-priority="3">Destination</th>
+                                        <th data-priority="3">Via</th>
                                         <th>Rate</th>
+                                        <th>Sales No.</th>
                                     @else
                                         @if ($view === 'all')
                                             <th></th>
@@ -412,7 +413,9 @@
                                             <th>Id</th>
                                         @endif
                                         <th data-priority="1">Commodity</th>
-
+                                        @if ($view !== 'suppliers')
+                                            <th data-priority="2">Destination</th>
+                                        @endif
                                         @if ($view !== 'suppliers')
                                             <th>Supplier</th>
                                         @endif
@@ -424,10 +427,7 @@
                                             <th>Exit</th>
                                         @endif
                                         <th>Release Code</th>
-                                        <th data-priority="2">Via</th>
-                                        @if ($view !== 'suppliers')
-                                            <th data-priority="3">Destination</th>
-                                        @endif
+                                        <th data-priority="3">Via</th>
                                         @if ($view !== 'suppliers')
                                             <th>Rate</th>
                                         @endif
@@ -437,7 +437,7 @@
                                             @if ($display_notes === 'show')
                                                 <th class="d-none">Driver Note</th>
                                                 <th class="d-none">Sale Note</th>
-                                                <th class="d-none">Account Note</th>
+                                                <th class="d-none">Accounting Note</th>
                                             @endif
                                             <th>Status</th>
                                         @endif
@@ -458,23 +458,20 @@
                                             <td><input class="all-check" type="checkbox" value="{{ $dispatch->id }}">
                                             </td>
                                             <td onclick="EditDispatch({{ $dispatch->id }})">{!! date('m/d/Y', $dispatch?->date) !!}</td>
-                                            <?php /*<td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->id!!}</td>*/ ?>
                                             <td style="color:{{ $dispatch->commodity?->color ?? '' }};font-weight: bold;">
                                                 <span
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->commodity?->name ?? $dispatch->commodity_id !!}</span>
                                             </td>
-                                            <?php /*<td onclick="EditDispatch({{ $dispatch->id }})"> {!! $dispatch->supplier->name ?? $dispatch->supplier_id!!}</td>
-                        <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->purchase_code ?? ' '!!}</td>*/
-                                            ?>
+                                            <td><span
+                                                    onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
+                                            </td>
                                             <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
                                             <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->release_code ?? ' ' !!}</td>
                                             <td><span
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
                                             </td>
-                                            <td><span
-                                                    onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
-                                            </td>
                                             <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
+                                            <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->sales_num ?? ' ' !!}</td>
                                         @else
                                             @if ($view === 'all')
                                                 <?php
@@ -508,6 +505,11 @@
                                                 <span
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->commodity->name ?? $dispatch->commodity_id !!}</span>
                                             </td>
+                                            @if ($view !== 'suppliers')
+                                                <td><span
+                                                        onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
+                                                </td>
+                                            @endif
 
                                             @if ($view !== 'suppliers')
                                                 <td onclick="EditDispatch({{ $dispatch->id }})"> {!! $dispatch->supplier->name ?? $dispatch->supplier_id !!}
@@ -526,11 +528,7 @@
                                             <td><span
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
                                             </td>
-                                            @if ($view !== 'suppliers')
-                                                <td><span
-                                                        onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
-                                                </td>
-                                            @endif
+
                                             @if ($view !== 'suppliers')
                                                 <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->rate->name ?? $dispatch->rate_id !!}
                                                 </td>

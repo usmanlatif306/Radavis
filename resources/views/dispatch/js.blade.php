@@ -96,7 +96,7 @@
                         strAdditional = strAdditional +
                             '<td style="width:33%"><span class="dtr-title">Sales Note</span></td>';
                         strAdditional = strAdditional +
-                            '<td style="width:34%"><span class="dtr-title">Accounts Note</span></td></tr>';
+                            '<td style="width:34%"><span class="dtr-title">Accounting Note</span></td></tr>';
                         strAdditional = strAdditional + '<tr><td>';
                         strAdditional = strAdditional + format(this.data()[13])
                         strAdditional = strAdditional + '</td><td style="width:33%">';
@@ -534,7 +534,7 @@
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
-            day = '' + (d.getDate() + 1),
+            day = '' + (d.getDate()),
             year = d.getFullYear();
 
         if (month.length < 2) month = '0' + month;
