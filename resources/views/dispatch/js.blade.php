@@ -368,7 +368,7 @@
                 dispatch: id
             },
             success: function(data) {
-                //console.log(data);
+                // console.log(data);
                 $('#dispatch').val(data[0].id);
                 $('#edit-commoditie').val(data[0].commodity_id);
                 $('#edit-commoditie').trigger('change');
@@ -524,6 +524,7 @@
                 dispatch: id
             },
             success: function(data) {
+                // console.log(data);
                 $('#changelogbody').html(data);
 
             }
@@ -531,17 +532,48 @@
     }
 
 
+    function daysInMonth(month, year) {
+        return new Date(year, month, 0).getDate();
+    }
+
     function formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
-            day = '' + (d.getDate()),
+            day = '' + (d.getDate() + 1),
             year = d.getFullYear();
+
+        let monthDays = daysInMonth(month, year);
+        // if month is 30 days
+        if (monthDays == 30) {
+            // if last date of month
+            if (day == 31) {
+                month = String(Number(month) + 1);
+                day = String(1);
+            };
+        }
+
+
+        // if month is 30 days
+        if (monthDays == 31) {
+            // if last date of month and year
+            if (day == 32 && month === '12') {
+                year = d.getFullYear() + 1;
+                month = String(1);
+                day = String(1);
+            };
+            // if last date of month
+            if (day == 32) {
+                month = String(Number(month) + 1);
+                day = String(1);
+            };
+        }
 
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
 
         return [month, day, year].join('/');
     }
+
     $('#date_view').change(function() {
         new_date = formatDate($('#date_view').val());
         window.location.href = "{{ url('/') }}/dispatch/searchview?date=" + new_date;

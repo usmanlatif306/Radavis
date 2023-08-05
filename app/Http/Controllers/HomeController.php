@@ -100,16 +100,16 @@ class HomeController extends Controller
         }
 
         if ($request->user()->hasRole('truck')) {
-            $bulletin = Bulletin::doesntHave('read')->first();
+            $bulletins = Bulletin::doesntHave('read')->whereStatus(true)->latest()->get();
         } else {
-            $bulletin = [];
+            $bulletins = [];
         }
 
         $strFromDate = date("Y-m-d");
         $strToDate = date("Y-m-d");
         $data['dispatches'] = dispatch::get_dispatches_search($strFromDate, $strToDate, [], ['release_code', 'noship', 'void', 'delivered', 'commodity_id', 'destination_id', 'rate_id']);
 
-        return view('home', compact('data', 'bulletin'));
+        return view('home', compact('data', 'bulletins'));
     }
 
     public function home_ajax(Request $request)

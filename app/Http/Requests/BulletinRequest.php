@@ -26,7 +26,7 @@ class BulletinRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:191'],
             'description' => ['required', 'string'],
-            // 'status' => ['required', 'numeric', 'in:0,1'],
+            'status' => ['required', 'numeric', 'in:0,1'],
         ];
     }
 }

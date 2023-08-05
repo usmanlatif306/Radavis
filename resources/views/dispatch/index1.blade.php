@@ -229,7 +229,7 @@
                                         @foreach ($commodities->sortBy('name') as $commoditie)
                                             <option style="color:{{ $commoditie->id }}" value="{{ $commoditie->id }}"
                                                 {{ $commoditie->id == $commodity ? 'selected' : '' }}>
-                                                {{ $commoditie->name }}
+                                                {!! $commoditie->name !!}
                                             </option>
                                         @endforeach
                                     </select>
@@ -239,15 +239,15 @@
                                     <select id="via" name="via" class="form-select">
                                         <option selected disabled>Select Via</option>
                                         <?php $via1 = null;
-                                        
+
                                         if (isset($_GET['via']) && $_GET['via'] != '') {
                                             $via1 = $_GET['via'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($vias->sortBy('name') as $via)
                                             <option value="{{ $via->id }}" {{ $via->id == $via1 ? 'selected' : '' }}>
-                                                {{ $via->name }}</option>
+                                                {!! $via->name !!}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -256,11 +256,11 @@
                                     <select id="supplier" name="supplier" class="form-select">
                                         <option selected disabled>Select Supplier</option>
                                         <?php $supplier1 = null;
-                                        
+
                                         if (isset($_GET['supplier']) && $_GET['supplier'] != '') {
                                             $supplier1 = $_GET['supplier'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($suppliers->sortBy('name') as $supplier)
                                             <option value="{{ $supplier->id }}"
@@ -274,16 +274,16 @@
                                     <select id="destination" name="destination" class="form-select">
                                         <option selected disabled>Select Destination</option>
                                         <?php $destination1 = null;
-                                        
+
                                         if (isset($_GET['destination']) && $_GET['destination'] != '') {
                                             $destination1 = $_GET['destination'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($destinations->sortBy('name') as $destination)
                                             <option value="{{ $destination->id }}"
                                                 {{ $destination->id == $destination1 ? 'selected' : '' }}>
-                                                {{ $destination->name }}</option>
+                                                {!! $destination->name !!}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -292,16 +292,16 @@
                                     <select id="exit" name="exit" class="form-select">
                                         <option selected disabled>Select Exit</option>
                                         <?php $exit1 = null;
-                                        
+
                                         if (isset($_GET['exit']) && $_GET['exit'] != '') {
                                             $exit1 = $_GET['exit'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($exits->sortBy('name') as $exit)
                                             <option value="{{ $exit->id }}"
                                                 {{ $exit->id == $exit1 ? 'selected' : '' }}>
-                                                {{ $exit->name }}</option>
+                                                {!! $exit->name !!}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -311,11 +311,11 @@
                                         <select id="salesman" name="salesman" class="form-select">
                                             <option selected disabled>Select Salesman</option>
                                             <?php $salesman = null;
-                                            
+
                                             if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
                                                 $salesman = $_GET['salesman'];
                                             }
-                                            
+
                                             ?>
                                             @foreach ($users->sortBy('first_name') as $user)
                                                 <option value="{{ $user->id }}"
@@ -329,11 +329,11 @@
                                         <select id="rate" name="rate" class="form-select">
                                             <option selected disabled>Select Rate</option>
                                             <?php $rate1 = null;
-                                            
+
                                             if (isset($_GET['rate']) && $_GET['rate'] != '') {
                                                 $rate1 = $_GET['rate'];
                                             }
-                                            
+
                                             ?>
                                             @foreach ($rates->sortBy('name') as $rate)
                                                 <option value="{{ $rate->id }}"
@@ -506,8 +506,13 @@
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->commodity->name ?? $dispatch->commodity_id !!}</span>
                                             </td>
                                             @if ($view !== 'suppliers')
-                                                <td><span
-                                                        onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
+                                                <td>
+                                                    <span
+                                                        onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}
+                                                        <span
+                                                            class=" fw-bold text-danger text-uppercase">{{ $dispatch->destination?->note }}
+                                                        </span>
+                                                    </span>
                                                 </td>
                                             @endif
 
@@ -561,7 +566,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

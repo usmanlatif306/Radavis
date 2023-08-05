@@ -169,33 +169,37 @@
                 </div>
             @endif
 
-            @if (
-                $bulletin &&
-                    auth()->user()->hasRole('truck'))
+            @if (auth()->user()->hasRole('truck'))
                 <div class="row">
+
                     {{-- today's load dispatched --}}
                     @include('common.today_loads', ['dispatches' => $data['dispatches']])
 
                     {{-- bulletins --}}
-                    <div class="col-md-12">
-                        <div class="card shadow mb-4">
-                            <div class="card-header card-header-height d-flex align-items-center justify-content-between"
-                                style="background-color: rgb(0, 67, 135); font-weight: bold;">
-                                <h4 class="text-white mb-0 pb-0">{{ $bulletin->title }}</h4>
-                                <span class="cursor-pointer" id="readBulletinBtn">
-                                    <i class="fa fa-times fs-16 text-danger"></i>
-                                </span>
-                            </div>
-                            <form id="readBulletinForm" action="{{ route('bulletins.read', $bulletin) }}" method="POST">
-                                @csrf
-                            </form>
-                            <div class="card-body">
-                                {!! $bulletin->description !!}
+                    @foreach ($bulletins as $bulletin)
+                        <div class="col-md-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header card-header-height d-flex align-items-center justify-content-between"
+                                    style="background-color: rgb(0, 67, 135); font-weight: bold;">
+                                    <h4 class="text-white mb-0 pb-0">{{ $bulletin->title }}</h4>
+                                    <span class="cursor-pointer read-button" data-id="{{ $bulletin->id }}">
+                                        <i class="fa fa-times fs-16 text-danger"></i>
+                                    </span>
+                                </div>
+                                <form id="readBulletinForm{{ $bulletin->id }}"
+                                    action="{{ route('bulletins.read', $bulletin) }}" method="POST">
+                                    @csrf
+                                </form>
+                                <div class="card-body">
+                                    {!! $bulletin->description !!}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
+
                 </div>
             @endif
+
 
             {{-- <div class="card shadow mb-4">
                 <div class="card-header card-header-height d-flex align-items-center">
@@ -212,11 +216,13 @@
         @include('charts')
     @endpush
 @endif
+
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#readBulletinBtn').on('click', function() {
-                $('#readBulletinForm').submit();
+            $('.read-button').on('click', function() {
+                let id = $(this).data('id');
+                $(`#readBulletinForm${id}`).submit();
             })
 
             let table = $('#myTable').DataTable({

@@ -1,10 +1,19 @@
 @extends('layouts.app')
 
 @section('title', 'Bulletins List')
+@push('styles')
+    <style>
+        .dt-buttons {
+            display: none !important;
+        }
+    </style>
+@endpush
 
 @section('content')
     @include('common.breadcrumbs', [
         'title' => 'Bulletins',
+        'btn_text' => 'Add New',
+        'btn_link' => route('bulletins.create'),
     ])
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
@@ -13,62 +22,88 @@
 
             <div class="card shadow mb-4">
                 <div class="card-header card-header-height d-flex align-items-center">
-                    <h6 class="font-weight-bold text-primary mb-0 pb-0">Bulletins</h6>
+                    <h6 class="font-weight-bold text-primary mb-0 pb-0">All Bulletins</h6>
                 </div>
 
-                <form method="POST" action="{{ route('bulletins.update', $bulletin) }}">
-                    @csrf
-                    @method('put')
-                    <div class="card-body">
-                        <div class="form-group row">
-                            {{-- Title --}}
-                            <div class="col-12 mb-6">
-                                <span style="color:red;">*</span>Title</label>
-                                <input type="text"
-                                    class="form-control form-control-user @error('title') is-invalid @enderror"
-                                    id="Title" placeholder="Title" name="title"
-                                    value="{{ old('title', $bulletin->title) }}">
-
-                                @error('title')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            {{-- Description --}}
-                            <div class="col-12 mb-6">
-                                <span style="color:red;">*</span>Description</label>
-                                <textarea name="description" id="description" cols="30" rows="10"
-                                    class="form-control form-control-user @error('description') is-invalid @enderror">{{ old('description', $bulletin->description) }}</textarea>
-
-                                @error('last_name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-success btn-user float-right mb-3">Save</button>
-                        <a class="btn btn-primary float-right mr-3 mb-3" href="{{ route('supplier.index') }}">Cancel</a>
-                    </div>
-                </form>
-
+                <div class="card-body">
+                    <table class="table table-hover table-bordered data-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Title</th>
+                                <th style="width: 15%;">Status</th>
+                                <th style="width: 20%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </div>
+        @include('bulletins.delete-modal')
     </div>
 
+
 @endsection
+
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#description'), {
-                removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption',
-                    'ImageStyle',
-                    'ImageToolbar', 'ImageUpload', 'MediaEmbed'
+    <script type="text/javascript">
+        function ConfirmDelete(id) {
+            $('#bulletinDeleteModal').modal('show');
+            $('#confirm_bulletin_id').val(id);
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(function() {
+
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('bulletins.index') }}",
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
                 ],
+                "oLanguage": {
+                    "sSearch": "Filter:"
+                },
+                stateSave: true,
+                // dom: '<"top"lif>rtp',
+                dom: 'frtip',
+                buttons: [],
             });
+
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                "oLanguage": {
+                    "sSearch": "Filter:"
+                },
+                "lengthChange": false,
+                paging: false,
+                info: false,
+                stateSave: true,
+                dom: '<"top"lif>rtp'
+            });
+        });
     </script>
 @endpush

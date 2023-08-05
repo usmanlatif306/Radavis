@@ -228,11 +228,11 @@
                                     <select id="supplier" name="supplier" class="form-select">
                                         <option selected disabled>Select Supplier</option>
                                         <?php $supplier1 = null;
-                                        
+
                                         if (isset($_GET['supplier']) && $_GET['supplier'] != '') {
                                             $supplier1 = $_GET['supplier'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($suppliers->sortBy('name') as $supplier)
                                             <option value="{{ $supplier->id }}"
@@ -246,11 +246,11 @@
                                     <select id="destination" name="destination" class="form-select">
                                         <option selected disabled>Select Destination</option>
                                         <?php $destination1 = null;
-                                        
+
                                         if (isset($_GET['destination']) && $_GET['destination'] != '') {
                                             $destination1 = $_GET['destination'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($destinations->sortBy('name') as $destination)
                                             <option value="{{ $destination->id }}"
@@ -264,11 +264,11 @@
                                     <select id="exit" name="exit" class="form-select">
                                         <option selected disabled>Select Exit</option>
                                         <?php $exit1 = null;
-                                        
+
                                         if (isset($_GET['exit']) && $_GET['exit'] != '') {
                                             $exit1 = $_GET['exit'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($exits->sortBy('name') as $exit)
                                             <option value="{{ $exit->id }}"
@@ -282,11 +282,11 @@
                                     <select id="salesman" name="salesman" class="form-select">
                                         <option selected disabled>Select Salesman</option>
                                         <?php $salesman = null;
-                                        
+
                                         if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
                                             $salesman = $_GET['salesman'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($users->sortBy('first_name') as $user)
                                             <option value="{{ $user->id }}"
@@ -300,11 +300,11 @@
                                     <select id="rate" name="rate" class="form-select">
                                         <option selected disabled>Select Rate</option>
                                         <?php $rate1 = null;
-                                        
+
                                         if (isset($_GET['rate']) && $_GET['rate'] != '') {
                                             $rate1 = $_GET['rate'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($rates->sortBy('name') as $rate)
                                             <option value="{{ $rate->id }}"
@@ -359,7 +359,12 @@
                                         <td>{!! $dispatch->release_code ?? ' ' !!}</td>
                                         <td><span>{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
                                         </td>
-                                        <td><span>{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
+                                        <td>
+                                            <span>{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}
+                                                <span
+                                                    class=" fw-bold text-danger text-uppercase">{{ $dispatch->destination?->note }}
+                                                </span>
+                                            </span>
                                         </td>
                                         <td>{!! $dispatch->rate->name ?? $dispatch->rate_id !!}</td>
                                         <td>

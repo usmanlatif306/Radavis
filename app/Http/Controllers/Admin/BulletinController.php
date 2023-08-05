@@ -8,6 +8,7 @@ use App\Models\Bulletin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class BulletinController extends Controller
 {
@@ -24,10 +25,30 @@ class BulletinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bulletin = Bulletin::first();
-        return view('bulletins.index', compact('bulletin'));
+        if ($request->ajax()) {
+            $data = Bulletin::select('*');
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('status', function ($row) {
+                    if ($row->status == 0) {
+                        return '<span class="badge badge-danger">Inactive</span>';
+                    } elseif ($row->status == 1) {
+                        return '<span class="badge badge-success">Active</span>';
+                    }
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<a href="' . route("bulletins.edit", ["bulletin" => $row->id]) . '" class="btn btn-sm btn-primary m-2"><i class="fa fa-pen"></i></a>';
+                    $btn .= '<a class="btn btn-sm btn-danger m-2" href="#" data-toggle="modal" onclick = "ConfirmDelete(' . $row->id . ')"><i class="fas fa-trash"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['status', 'action'])
+                ->make(true);
+        }
+
+        $bulletins = Bulletin::paginate();
+        return view('bulletins.index', compact('bulletins'));
     }
 
     /**
@@ -96,11 +117,21 @@ class BulletinController extends Controller
      * @param  \App\Models\Bulletin  $bulletin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bulletin $bulletin)
+    // public function destroy(Bulletin $bulletin)
+    public function destroy(Request $request)
     {
-        $bulletin->delete();
+        DB::beginTransaction();
+        try {
+            $bulletin = Bulletin::find($request->bulletin_id);
+            $bulletin->reads()->delete();
+            $bulletin->delete();
 
-        return to_route('bulletins.index')->with('success', 'Bulletin Deleted Successfully.');
+            DB::commit();
+            return to_route('bulletins.index')->with('success', 'Bulletin Deleted Successfully.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     /**

@@ -213,7 +213,8 @@ Route::group(['middleware' => ['role:Admin']], function () {
     });
 
     Route::get('/update/status/{bulletin}/{status}', [BulletinController::class, 'updateStatus'])->name('bulletins.status');
-    Route::resource('bulletins', BulletinController::class);
+    Route::delete('bulletin/delete', [BulletinController::class, 'destroy'])->name('bulletin.destroy');
+    Route::resource('bulletins', BulletinController::class)->except(['destory']);
 });
 
 // Truck directory routes for admin/salesman

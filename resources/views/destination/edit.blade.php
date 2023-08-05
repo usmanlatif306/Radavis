@@ -51,6 +51,19 @@
                                 @enderror
                             </div>
 
+                            {{-- Note --}}
+                            <div class="col-sm-12 mb-6">
+                                <span style="color:red;">*</span>Note</label>
+                                <input type="text"
+                                    class="form-control form-control-user @error('note') is-invalid @enderror"
+                                    id="exampleNote" placeholder="Destination Note" name="note"
+                                    value="{{ old('note', $destination->note) }}">
+
+                                @error('note')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             {{-- Status --}}
                             <div class="col-sm-12 mb-6">
                                 <span style="color:red;">*</span>Status</label>

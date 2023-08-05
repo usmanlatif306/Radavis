@@ -32,6 +32,7 @@
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Address</th>
+                                <th>Note</th>
                                 <th>Status</th>
                                 <th width="20%;">Action</th>
                             </tr>
@@ -73,6 +74,10 @@
                     {
                         data: 'address',
                         name: 'address'
+                    },
+                    {
+                        data: 'note',
+                        name: 'note'
                     },
                     {
                         data: 'status',

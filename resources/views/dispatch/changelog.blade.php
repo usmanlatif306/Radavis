@@ -6,12 +6,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table>
+                <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Salesman</th>
-                            <th>Change</th>
+                        <tr class="">
+                            <th style="width: 30%;">Time</th>
+                            <th style="width: 25%;">Salesman</th>
+                            <th style="width: 45%;">Change</th>
                         </tr>
                     </thead>
                     <tbody id="changelogbody">

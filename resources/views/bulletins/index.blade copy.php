@@ -3,109 +3,68 @@
 @section('title', 'Bulletins List')
 
 @section('content')
-    <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Bulletins</h1>
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="{{ route('bulletins.create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Add New
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
+@include('common.breadcrumbs', [
+'title' => 'Bulletins',
+])
+<div id="kt_app_content" class="app-content flex-column-fluid">
+    <div id="kt_app_content_container" class="app-container container-fluid">
         {{-- Alert Messages --}}
         @include('common.alert')
 
-        <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">All Bulletins</h6>
-
+            <div class="card-header card-header-height d-flex align-items-center">
+                <h6 class="font-weight-bold text-primary mb-0 pb-0">Bulletins</h6>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="myTable" class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th width="20%">Title</th>
-                                <th width="50%">Description</th>
-                                <th width="20%">Status</th>
-                                <th width="10%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($bulletins as $bulletin)
-                                <tr>
-                                    <td>{{ $bulletin->title }}</td>
-                                    <td>{{ $bulletin->description }}</td>
-                                    <td>
-                                        @if ($bulletin->status == 0)
-                                            <span class="badge badge-danger">Inactive</span>
-                                        @elseif ($bulletin->status == 1)
-                                            <span class="badge badge-success">Active</span>
-                                        @endif
-                                    </td>
-                                    <td style="display: flex">
-                                        @if ($bulletin->status == 0)
-                                            <a href="{{ route('bulletins.status', ['bulletin' => $bulletin->id, 'status' => 1]) }}"
-                                                class="btn btn-success m-2">
-                                                <i class="fa fa-check"></i>
-                                            </a>
-                                        @elseif ($bulletin->status == 1)
-                                            <a href="{{ route('bulletins.status', ['bulletin' => $bulletin->id, 'status' => 0]) }}"
-                                                class="btn btn-danger m-2">
-                                                <i class="fa fa-ban"></i>
-                                            </a>
-                                        @endif
-                                        <a href="{{ route('bulletins.show', $bulletin) }}" class="btn btn-primary m-2">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                        <a href="{{ route('bulletins.edit', $bulletin) }}" class="btn btn-primary m-2">
-                                            <i class="fa fa-pen"></i>
-                                        </a>
-                                        <a class="btn btn-danger m-2" href="#" data-toggle="modal"
-                                            data-target="#deleteModal{{ $bulletin->id }}">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
 
-                    {{ $bulletins->links() }}
+            <form method="POST" action="{{ route('bulletins.update', $bulletin) }}">
+                @csrf
+                @method('put')
+                <div class="card-body">
+                    <div class="form-group row">
+                        {{-- Title --}}
+                        <div class="col-12 mb-6">
+                            <span style="color:red;">*</span>Title</label>
+                            <input type="text" class="form-control form-control-user @error('title') is-invalid @enderror" id="Title" placeholder="Title" name="title" value="{{ old('title', $bulletin->title) }}">
+
+                            @error('title')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Description --}}
+                        <div class="col-12 mb-6">
+                            <span style="color:red;">*</span>Description</label>
+                            <textarea name="description" id="description" cols="30" rows="10" class="form-control form-control-user @error('description') is-invalid @enderror">{{ old('description', $bulletin->description) }}</textarea>
+
+                            @error('last_name')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success btn-user float-right mb-3">Save</button>
+                    <a class="btn btn-primary float-right mr-3 mb-3" href="{{ route('supplier.index') }}">Cancel</a>
+                </div>
+            </form>
+
         </div>
 
     </div>
-    @foreach ($bulletins as $bulletin)
-        @include('bulletins.delete-modal')
-    @endforeach
+</div>
 
 @endsection
-
-@section('scripts')
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#myTable').DataTable({
-                "oLanguage": {
-                    "sSearch": "Filter:"
-                },
-                "lengthChange": false,
-                paging: false,
-                info: false,
-                stateSave: true,
-                dom: '<"top"lif>rtp'
-            });
+@push('scripts')
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            removePlugins: ['CKFinderUploadAdapter', 'CKFinder', 'EasyImage', 'Image', 'ImageCaption',
+                'ImageStyle',
+                'ImageToolbar', 'ImageUpload', 'MediaEmbed'
+            ],
         });
-    </script>
-
-@endsection
+</script>
+@endpush

@@ -11,8 +11,7 @@
                         <tr>
                             <th data-priority="1">Commodity</th>
                             <th data-priority="2">Destination</th>
-                            <th>Via</th>
-
+                            {{-- <th>Via</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -24,7 +23,7 @@
                                 </td>
                                 <td><span>{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}</span>
                                 </td>
-                                <td>{!! $dispatch->via->name ?? $dispatch->via_id !!}</td>
+                                {{-- <td>{!! $dispatch->via->name ?? $dispatch->via_id !!}</td> --}}
 
                             </tr>
                         @endforeach

@@ -28,8 +28,7 @@
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Commodity</label>
                             <select id="edit-commoditie" onchange="EditUpdateSuppliers()"
-                                class="form-control form-control-user @error('commodity') is-invalid @enderror"
-                                name="commodity_id">
+                                class="form-select @error('commodity') is-invalid @enderror" name="commodity_id">
                                 <option selected disabled>Select Commodity</option>
                                 @foreach ($commodities->sortBy('name') as $commoditie)
                                     <option style="color:{{ $commoditie->color }}" value="{{ $commoditie->id }}">
@@ -46,8 +45,8 @@
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Supplier</label>
                             <select id="edit-supplier" onchange="EditUpdateexits()"
-                                class="form-control form-control-user @error('supplier') is-invalid @enderror"
-                                name="supplier_id" @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
+                                class="form-select @error('supplier') is-invalid @enderror" name="supplier_id"
+                                @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
                                 <option selected="selected" disabled="disabled">Select Supplier</option>
                             </select>
 

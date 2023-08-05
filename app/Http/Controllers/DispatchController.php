@@ -193,11 +193,10 @@ class DispatchController extends Controller
 
         DB::beginTransaction();
         try {
-
             // Store Data
             for ($i = 0; $i < $request->x_no_records; $i++) {
 
-                $user = dispatch::create([
+                $dispatch = dispatch::create([
                     "date"                  =>  $timestamp1,
                     "commodity_id"          => $request->commodity_id,
                     "supplier_id"           => $request->supplier_id,
@@ -214,6 +213,128 @@ class DispatchController extends Controller
                     "driver_instructions"   => $request->driver_instructions,
 
                 ]);
+
+                $fields = array('date', 'commodity_id', 'supplier_id', 'purchase_code', 'exit_id', 'release_code', 'via_id', 'destination_id', 'rate_id', 'salesman_id', 'salesman', 'sales_num', 'sales_notes', 'accounting_notes', 'driver_instructions', 'completed', 'noship', 'voided');
+                $data = array();
+                foreach ($fields as $key => $field) {
+                    $value = $request->$field;
+                    if ($field == 'date' && $value != '') {
+                        $date_r = explode("-", $value);
+                        echo $data['date'] = $date_r[0] . '-' . $date_r[1] . '-' . $date_r[2];
+                        $data['date'] = strtotime($data['date']);
+                    } elseif ($field == 'voided') {
+                        $data['void'] = $value;
+                    } elseif ($field == 'completed') {
+                        $data['delivered'] = $value;
+                    } else {
+                        $data[$field] = $value;
+                    }
+                }
+
+                // dd($data, $dispatch->id);
+                foreach ($data as $key => $value) {
+                    if ($value == null) {
+                        unset($data[$key]);
+                    }
+                }
+
+                $log_txt = "Dispatch created at " . date("m/d/Y h:i:s");
+                foreach ($data as $name => $value) {
+                    if ($log_txt != NULL) {
+                        $log_txt .= "\n";
+                    }
+                    switch ($name) {
+                        case 'date':
+                            $date = date("m/d/Y", $value);
+                            $log_txt .= "Set date to $date";
+                            break;
+
+                        case 'commodity_id':
+                            $commodity = Commoditie::find($value);
+                            $value = $commodity ? $commodity->name : $value;
+                            $log_txt .= "Set commodity to $value";
+                            break;
+
+                        case 'supplier_id':
+                            $supplier = Supplier::find($value);
+                            $value = $supplier  ? $supplier->name : $value;
+                            $log_txt .= "Set supplier to $value";
+                            break;
+
+                        case 'purchase_code':
+                            $log_txt .= "Set purchase code to $value";
+                            break;
+
+                        case 'exit_id':
+                            $exit = Exits::find($value);
+                            $value = $exit ? $exit->name : $value;
+                            $log_txt .= "Set exit to $value";
+                            break;
+
+                        case 'release_code':
+                            $log_txt .= "Set release code to $value";
+                            break;
+
+                        case 'driver_instructions':
+                            $log_txt .= "Set driver instructions";
+                            break;
+
+                        case 'via_id':
+                            $via = Via::find($value);
+                            $value = $via ? $via->name : $value;
+                            $log_txt .= "Set via to $value";
+                            break;
+
+                        case 'destination_id':
+                            $destination = Destination::find($value);
+                            $value = $destination ? $destination->name : $value;
+                            $log_txt .= "Set destination to $value";
+                            break;
+
+                        case 'rate_id':
+                            $rate = rate::find($value);
+                            $value = $rate ? $rate->name : $value;
+                            $log_txt .= "Set rate to $value";
+                            break;
+
+                        case 'salesman':
+                            $user = User::select(['first_name', 'last_name'])->find($value);
+                            $value = $user ? $user->full_name : $value;
+                            $log_txt .= "Set salesman to $value";
+                            break;
+
+                        case 'sales_num':
+                            $log_txt .= "Set sales number to $value";
+                            break;
+
+                        case 'sales_notes':
+                            $log_txt .= "Set sales notes";
+                            break;
+
+                        case 'accounting_notes':
+                            $log_txt .= "Set accounting notes";
+                            break;
+
+                        case 'noship':
+                            if ($value == TRUE) $log_txt .= "Set to ship OK";
+                            else $log_txt .= "Set to DO NOT ship";
+                            break;
+
+                        case 'void':
+                            if ($value == TRUE) $log_txt .= "Voided dispatch";
+                            else $log_txt .= "Removed VOID";
+                            break;
+
+                        case 'delivered':
+                            if ($value == TRUE) $log_txt .= "Marked as completed";
+                            else $log_txt .= "Removed mark as completed";
+                            break;
+                    }
+                }
+
+                $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+
+                // $this->UpdateLogs($request, $dispatch);
             }
 
             // Commit And Redirected To Listing
@@ -719,6 +840,7 @@ class DispatchController extends Controller
         $users = User::query()
             ->whereHas('role', fn ($q) => $q->whereIn('name', ['Admin', 'salesman']))
             ->where('status', 1)
+            ->orderBy('first_name', 'ASC')
             ->get();
 
         $config = Config::get();
@@ -815,12 +937,12 @@ class DispatchController extends Controller
         $date = $request->date;
         if ($date != '') {
             $date_timestamp =  strtotime($date);
-            $query = dispatch::query();
+            $query = dispatch::query()->with(['commodity', 'supplier', 'exit', 'rate', 'destination']);
 
             if (Auth::user()->hasRole('salesman')) {
                 $query =   $query->where('date', $date_timestamp)->where('salesman', Auth::user()->id);
             } elseif (Auth::user()->hasRole('truck')) {
-                $query = $query->where('date', $date_timestamp)->whereIn('via_id', auth()->user()->trucks->pluck('id'));
+                $query = $query->where('date', $date_timestamp)->whereIn('via_id', auth()->user()->trucks?->pluck('id'));
             } else {
                 $query = $query->where('date', $date_timestamp);
             }
@@ -837,6 +959,7 @@ class DispatchController extends Controller
 
 
             $dispatches = $query->get();
+            // dd($dispatches);
         } else {
             $strFromDate = date("Y-m-d");
             $strToDate = date("Y-m-d");
@@ -963,8 +1086,8 @@ class DispatchController extends Controller
         $dispatchlog = DispatchLog::where('dispatch_id', $id)->get();
         $html = '';
         foreach ($dispatchlog as $log) {
-            $log['date'] = date('d/m/Y  h:m:s',  $log->datetime);
-            $html .= '<tr class="alt"><td class="date">' . $log->date . '</td><td>' . $log->user->first_name . '</td><td>' . $log->note . '</td></tr>';
+            $log['date'] = date('m/d/Y  h:m:s',  $log->datetime);
+            $html .= '<tr class="alt"><td class="date" style="width: 30%;">' . $log->date . '</td><td style="width: 25%;">' . $log->user->first_name . '</td><td style="width: 45%;">' . str_replace("\n", '<br>', $log->note) . '</td></tr>';
         }
         //dd($html);
         return $html;
@@ -972,7 +1095,6 @@ class DispatchController extends Controller
 
     function UpdateLogs($request, $dispatch)
     {
-
         $fields = array('date', 'commodity_id', 'supplier_id', 'purchase_code', 'exit_id', 'release_code', 'via_id', 'destination_id', 'rate_id', 'salesman_id', 'sales_num', 'sales_notes', 'accounting_notes', 'driver_instructions', 'completed', 'noship', 'voided');
         $data = array();
         foreach ($fields as $key => $field) {
@@ -1007,11 +1129,17 @@ class DispatchController extends Controller
                     break;
 
                 case 'commodity_id':
-                    $log_txt .= "Changed commodity to {COMMODITY:$value}";
+                    $commodity = Commoditie::find($value);
+                    $value = $commodity ? $commodity->name : $value;
+                    // $log_txt .= "Changed commodity to {COMMODITY:$value}";
+                    $log_txt .= "Changed commodity to $value";
                     break;
 
                 case 'supplier_id':
-                    $log_txt .= "Changed supplier to {SUPPLIER:$value}";
+                    $supplier = Supplier::find($value);
+                    $value = $supplier  ? $supplier->name : $value;
+                    // $log_txt .= "Changed supplier to {SUPPLIER:$value}";
+                    $log_txt .= "Changed supplier to $value";
                     break;
 
                 case 'purchase_code':
@@ -1019,7 +1147,10 @@ class DispatchController extends Controller
                     break;
 
                 case 'exit_id':
-                    $log_txt .= "Changed exit to {EXIT:$value}";
+                    $exit = Exits::find($value);
+                    $value = $exit ? $exit->name : $value;
+                    // $log_txt .= "Changed exit to {EXIT:$value}";
+                    $log_txt .= "Changed exit to $value";
                     break;
 
                 case 'release_code':
@@ -1031,20 +1162,31 @@ class DispatchController extends Controller
                     break;
 
                 case 'via_id':
-                    $log_txt .= "Changed via to {VIA:$value}";
+                    $via = Via::find($value);
+                    $value = $via ? $via->name : $value;
+                    // $log_txt .= "Changed via to {VIA:$value}";
+                    $log_txt .= "Changed via to $value";
                     break;
 
                 case 'destination_id':
-                    $log_txt .= "Changed destination to {DESTINATION:$value}";
+                    $destination = Destination::find($value);
+                    $value = $destination ? $destination->name : $value;
+                    // $log_txt .= "Changed destination to {DESTINATION:$value}";
+                    $log_txt .= "Changed destination to $value";
                     break;
 
                 case 'rate_id':
-                    $log_txt .= "Changed rate to {RATE:$value}";
+                    $rate = rate::find($value);
+                    $value = $rate ? $rate->name : $value;
+                    // $log_txt .= "Changed rate to {RATE:$value}";
+                    $log_txt .= "Changed rate to $value";
                     break;
 
                 case 'salesman':
-                    $date = date("m/d/Y", $value);
-                    $log_txt .= "Changed salesman to {SALESMAN:$value}";
+                    $user = User::select(['first_name', 'last_name'])->find($value);
+                    $value = $user ? $user->full_name : $value;
+                    // $log_txt .= "Changed salesman to {SALESMAN:$value}";
+                    $log_txt .= "Changed salesman to $value";
                     break;
 
                 case 'sales_num':

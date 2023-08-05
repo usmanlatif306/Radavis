@@ -188,14 +188,14 @@ class ViaController extends Controller
         // Validations
         $request->validate([
             'name'      =>  'required|unique:vias,name,' . $via->id . ',id',
-            'contact_name'    => 'required|max:255|string',
-            'email'    => 'required|max:255|email|unique:vias,email,' . $via->id . ',id',
-            'phone'    => 'required|max:255',
             'active'    =>  'required|numeric|in:0,1',
-            'user_id'    => 'required|exists:users,id',
-            'trucks'    => 'required|integer',
-            'equip_type'    => 'required|array',
-            'service_area'    => 'required|array',
+            'contact_name'    => 'max:255|string',
+            'email'    => 'max:255|email|unique:vias,email,' . $via->id . ',id',
+            'phone'    => 'max:255',
+            'user_id'    => 'exists:users,id',
+            'trucks'    => 'integer',
+            'equip_type'    => 'array',
+            'service_area'    => 'array',
         ]);
 
         DB::beginTransaction();
@@ -208,8 +208,8 @@ class ViaController extends Controller
                 'active'    => $request->active,
                 'user_id'  => $request->user_id,
                 'trucks'  => $request->trucks,
-                'equip_type'  => $request->equip_type,
-                'service_area'  => $request->service_area,
+                'equip_type'  => $request->equip_type ?? [],
+                'service_area'  => $request->service_area ?? [],
             ]);
 
             // Commit And Redirected To Listing

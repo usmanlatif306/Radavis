@@ -72,6 +72,7 @@ class DestinationController extends Controller
         $request->validate([
             'name'    => 'required',
             'address'    => 'required',
+            'note'    => 'required|max:255',
             'active'  =>  'required|numeric|in:0,1',
         ]);
 
@@ -81,6 +82,7 @@ class DestinationController extends Controller
             $destination = Destination::create([
                 'name'    => $request->name,
                 'address'    => $request->address,
+                'note'    => $request->note,
                 'active'        => $request->active,
             ]);
 
@@ -166,6 +168,7 @@ class DestinationController extends Controller
         $request->validate([
             'name'      =>  'required|unique:destinations,name,' . $destination->id . ',id',
             'address'      =>  'required|unique:destinations,address,' . $destination->id . ',id',
+            'note'    => 'required|max:255',
             'active'    =>  'required|numeric|in:0,1',
         ]);
 
@@ -176,6 +179,7 @@ class DestinationController extends Controller
             $destination_updated = Destination::whereId($destination->id)->update([
                 'name'      => $request->name,
                 'address'    => $request->address,
+                'note'    => $request->note,
                 'active'    => $request->active,
             ]);
 
