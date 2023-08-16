@@ -228,11 +228,11 @@
                                     <select id="supplier" name="supplier" class="form-select">
                                         <option selected disabled>Select Supplier</option>
                                         <?php $supplier1 = null;
-
+                                        
                                         if (isset($_GET['supplier']) && $_GET['supplier'] != '') {
                                             $supplier1 = $_GET['supplier'];
                                         }
-
+                                        
                                         ?>
                                         @foreach ($suppliers->sortBy('name') as $supplier)
                                             <option value="{{ $supplier->id }}"
@@ -246,11 +246,11 @@
                                     <select id="destination" name="destination" class="form-select">
                                         <option selected disabled>Select Destination</option>
                                         <?php $destination1 = null;
-
+                                        
                                         if (isset($_GET['destination']) && $_GET['destination'] != '') {
                                             $destination1 = $_GET['destination'];
                                         }
-
+                                        
                                         ?>
                                         @foreach ($destinations->sortBy('name') as $destination)
                                             <option value="{{ $destination->id }}"
@@ -264,11 +264,11 @@
                                     <select id="exit" name="exit" class="form-select">
                                         <option selected disabled>Select Exit</option>
                                         <?php $exit1 = null;
-
+                                        
                                         if (isset($_GET['exit']) && $_GET['exit'] != '') {
                                             $exit1 = $_GET['exit'];
                                         }
-
+                                        
                                         ?>
                                         @foreach ($exits->sortBy('name') as $exit)
                                             <option value="{{ $exit->id }}"
@@ -282,11 +282,11 @@
                                     <select id="salesman" name="salesman" class="form-select">
                                         <option selected disabled>Select Salesman</option>
                                         <?php $salesman = null;
-
+                                        
                                         if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
                                             $salesman = $_GET['salesman'];
                                         }
-
+                                        
                                         ?>
                                         @foreach ($users->sortBy('first_name') as $user)
                                             <option value="{{ $user->id }}"
@@ -300,11 +300,11 @@
                                     <select id="rate" name="rate" class="form-select">
                                         <option selected disabled>Select Rate</option>
                                         <?php $rate1 = null;
-
+                                        
                                         if (isset($_GET['rate']) && $_GET['rate'] != '') {
                                             $rate1 = $_GET['rate'];
                                         }
-
+                                        
                                         ?>
                                         @foreach ($rates->sortBy('name') as $rate)
                                             <option value="{{ $rate->id }}"
@@ -321,6 +321,8 @@
                         <div class="card-footer">
                             <button type="submit" class="btn btn-success btn-user float-right mb-3">Filter</button>
                             <a class="btn btn-primary float-right mr-3 mb-3" href="{{ route('home') }}">Cancel</a>
+                            <button id="resetButton" type="reset"
+                                class="btn btn-secondary btn-user float-right mr-3 mb-3">Reset</button>
                         </div>
                     </form>
                 </div>
@@ -361,6 +363,7 @@
                                         </td>
                                         <td>
                                             <span>{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}
+                                                <br>
                                                 <span
                                                     class=" fw-bold text-danger text-uppercase">{{ $dispatch->destination?->note }}
                                                 </span>
@@ -406,13 +409,40 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#commodity').select2();
-            $('#via').select2();
-            $('#supplier').select2();
-            $('#destination').select2();
-            $('#exit').select2();
-            $('#salesman').select2();
-            $('#rate').select2();
+            $('#commodity').select2({
+                placeholder: "Select Commodity",
+            });
+            $('#via').select2({
+                placeholder: "Select Via",
+            });
+            $('#supplier').select2({
+                placeholder: "Select Supplier",
+            });
+            $('#destination').select2({
+                placeholder: "Select Destination",
+            });
+            $('#exit').select2({
+                placeholder: "Select Exit",
+            });
+            $('#salesman').select2({
+                placeholder: "Select Saleman",
+            });
+            $('#rate').select2({
+                placeholder: "Select Rate",
+            });
+
+            function resetSelect() {
+                $("#commodity").val('').trigger('change');
+                $("#via").val('').trigger('change');
+                $("#supplier").val('').trigger('change');
+                $("#destination").val('').trigger('change');
+                $("#exit").val('').trigger('change');
+                $("#salesman").val('').trigger('change');
+                $("#rate").val('').trigger('change');
+                $('#datepicker_from').removeAttr('disabled');
+                $('#datepicker_to').removeAttr('disabled');
+            }
+            document.getElementById('resetButton').addEventListener('click', resetSelect, true);
         });
     </script>
 @endpush

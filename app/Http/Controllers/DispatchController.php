@@ -491,15 +491,13 @@ class DispatchController extends Controller
                 $date  = strtotime($request->date);
                 foreach ($request->ids_to_edit as $id) {
 
-                    $dispatch = dispatch::find($id);
-
                     $change = dispatch::whereId($id)->update([
                         "date" => $date
                     ]);
 
                     $log_txt = "Changed date to " . $date;
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->commodity_id != '') {
@@ -507,13 +505,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
+                    $change = $dispatch?->update([
                         "commodity_id" => $request->commodity_id
                     ]);
 
-                    $log_txt = "Changed commodity to {COMMODITY:" . $dispatch->commodity->name . "}";
+                    $log_txt = "Changed commodity to {COMMODITY:" . $dispatch->commodity?->name . "}";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->supplier_id != '') {
@@ -521,14 +519,14 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
+                    $change = $dispatch?->update([
                         "supplier_id" => $request->supplier_id
                     ]);
 
-                    $log_txt = "Changed supplier to {SUPPLIER:" . $dispatch->supplier->name . "}";
+                    $log_txt = "Changed supplier to {SUPPLIER:" . $dispatch->supplier?->name . "}";
 
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->purchase_code != '') {
@@ -536,12 +534,12 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
+                    $change = $dispatch?->update([
                         "purchase_code" => $request->purchase_code
                     ]);
                     $log_txt = "Changed purchase code to " . $dispatch->purchase_code;
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->exit_id != '') {
@@ -549,13 +547,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
+                    $change = $dispatch?->update([
                         "exit_id" => $request->exit_id
                     ]);
 
-                    $log_txt = "Changed exit to {EXIT:" . $dispatch->exit->name . "}";
+                    $log_txt = "Changed exit to {EXIT:" . $dispatch->exit?->name . "}";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->release_code != '') {
@@ -563,13 +561,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "release_code"          => $request->release_code
+                    $change = $dispatch?->update([
+                        "release_code" => $request->release_code
                     ]);
 
                     $log_txt = "Changed release code to " . $dispatch->release_code;
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->via_id != '') {
@@ -577,13 +575,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "via_id"          => $request->via_id
+                    $change = $dispatch?->update([
+                        "via_id" => $request->via_id
                     ]);
                     $via = Via::where('id', $request->via_id)->first();
-                    $log_txt = "Changed via to {VIA:" . $via->name . "}";
+                    $log_txt = "Changed via to {VIA:" . $via?->name . "}";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->destination_id != '') {
@@ -591,12 +589,12 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "destination_id"          => $request->destination_id
+                    $change = $dispatch?->update([
+                        "destination_id" => $request->destination_id
                     ]);
-                    $log_txt = "Changed destination to {DESTINATION:" . $dispatch->destination->name . "}";
+                    $log_txt = "Changed destination to {DESTINATION:" . $dispatch->destination?->name . "}";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->rate_id != '') {
@@ -604,13 +602,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "rate_id"          => $request->rate_id
+                    $change = $dispatch?->update([
+                        "rate_id" => $request->rate_id
                     ]);
                     $rate = rate::where('id', $request->rate_id)->first();
-                    $log_txt = "Changed rate to {RATE:" . $rate->name . "}";
+                    $log_txt = "Changed rate to {RATE:" . $rate?->name . "}";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->salesman != '') {
@@ -618,13 +616,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "salesman"          => $request->salesman
+                    $change = $dispatch?->update([
+                        "salesman" => $request->salesman
                     ]);
 
                     $log_txt = "Changed salesman to {SALESMAN:" . $dispatch->salesman1->first_name . "}";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->sales_num != '') {
@@ -632,13 +630,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "sales_num"          => $request->sales_num
+                    $change = $dispatch?->update([
+                        "sales_num" => $request->sales_num
                     ]);
 
                     $log_txt = "Changed sales number to " . $dispatch->sales_num . " .";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->sales_notes != '') {
@@ -646,13 +644,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "sales_notes"          => $request->sales_notes
+                    $change = $dispatch?->update([
+                        "sales_notes" => $request->sales_notes
                     ]);
 
                     $log_txt = "Changed sales notes";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->accounting_notes != '') {
@@ -660,13 +658,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "accounting_notes"          => $request->accounting_notes
+                    $change = $dispatch?->update([
+                        "accounting_notes" => $request->accounting_notes
                     ]);
 
                     $log_txt = "Changed accounting notes";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->driver_instructions != '') {
@@ -674,13 +672,13 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "driver_instructions"          => $request->driver_instructions
+                    $change = $dispatch?->update([
+                        "driver_instructions" => $request->driver_instructions
                     ]);
 
                     $log_txt = "Changed driver instructions";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->noship != '') {
@@ -688,8 +686,8 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "noship"          => $request->noship
+                    $change = $dispatch?->update([
+                        "noship" => $request->noship
                     ]);
 
                     if ($dispatch->noship == 0)
@@ -697,7 +695,7 @@ class DispatchController extends Controller
                     else $log_txt = "Changed to DO NOT ship";
 
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->delivered != '') {
@@ -705,7 +703,7 @@ class DispatchController extends Controller
                     $is_delivered = $request->delivered === '1' ? true : false;
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
+                    $change = $dispatch?->update([
                         "delivered" => $request->delivered
                     ]);
 
@@ -719,7 +717,7 @@ class DispatchController extends Controller
                     else
                         $log_txt = "Removed mark as completed";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
             if ($request->void != '') {
@@ -727,8 +725,8 @@ class DispatchController extends Controller
 
                     $dispatch = dispatch::find($id);
 
-                    $change = dispatch::whereId($id)->update([
-                        "void"          => $request->void
+                    $change = $dispatch?->update([
+                        "void" => $request->void
                     ]);
 
                     if ($dispatch->void == 0)
@@ -736,7 +734,7 @@ class DispatchController extends Controller
                     else
                         $log_txt = "Removed mark as completed";
 
-                    $this->log_change($dispatch->id, Auth::user()->id, $log_txt);
+                    $this->log_change($id, auth()->id(), $log_txt);
                 }
             }
 
