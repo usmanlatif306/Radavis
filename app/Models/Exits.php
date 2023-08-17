@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Exits extends Model
 {
     //use HasFactory;
-    protected $fillable = [
-        'name',
-        'active'
-    ];
+    protected $fillable = ['name', 'address', 'note', 'active'];
     public $timestamps = false;
 }

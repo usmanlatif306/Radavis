@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BulletinController;
+use App\Http\Controllers\Admin\LocationTierController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DispatchController;
 use App\Http\Controllers\CommoditieController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ExitsController;
 use App\Http\Controllers\ViaController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\FreightCalculatorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogisticController;
 use App\Http\Controllers\UserController;
@@ -212,14 +214,25 @@ Route::group(['middleware' => ['role:Admin']], function () {
         Route::get('export/', [ConfigController::class, 'export'])->name('export');
     });
 
+    // bulletins routes
     Route::get('/update/status/{bulletin}/{status}', [BulletinController::class, 'updateStatus'])->name('bulletins.status');
     Route::delete('bulletin/delete', [BulletinController::class, 'destroy'])->name('bulletin.destroy');
     Route::resource('bulletins', BulletinController::class)->except(['destory']);
+
+    // location tiers routes
+    Route::prefix('loacation')->group(function () {
+        Route::delete('tiers/delete', [LocationTierController::class, 'destroy'])->name('tier.destroy');
+        Route::resource('tiers', LocationTierController::class)->except(['destory', 'show']);
+    });
 });
 
 // Truck directory routes for admin/salesman
 Route::group(['middleware' => ['role:Admin|salesman|']], function () {
     Route::get('truck/directory', TruckDirectoryController::class)->name('truck.directory');
+    Route::prefix('freight')->name('freight.')->group(function () {
+        Route::get('calculator', [FreightCalculatorController::class, 'index'])->name('index');
+        Route::post('calculator', [FreightCalculatorController::class, 'calculations'])->name('calculator');
+    });
 });
 
 /*Route::group(['middleware' => ['role:salesman']], function () {

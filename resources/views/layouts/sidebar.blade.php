@@ -176,6 +176,20 @@
                             </a>
                         </div>
 
+                        <!--Location Tiers-->
+                        <div class="menu-item">
+                            <a class="menu-link {{ request()->is('tiers*') ? 'active' : '' }}"
+                                href="{{ route('tiers.index') }}">
+                                <span class="menu-icon">
+                                    <i class="fas fa-fw fa-location-arrow">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Location Tiers</span>
+                            </a>
+                        </div>
+
                         <!--Bulletins-->
                         <div class="menu-item">
                             <a class="menu-link {{ request()->is('bulletins*') ? 'active' : '' }}"
@@ -187,6 +201,20 @@
                                     </i>
                                 </span>
                                 <span class="menu-title">Bulletins</span>
+                            </a>
+                        </div>
+
+                        <!--Freight Calculator-->
+                        <div class="menu-item">
+                            <a class="menu-link {{ request()->is('freight*') ? 'active' : '' }}"
+                                href="{{ route('freight.index') }}">
+                                <span class="menu-icon">
+                                    <i class="fas fa-fw fa-search-location">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Freight Calculator</span>
                             </a>
                         </div>
 
@@ -302,6 +330,20 @@
                                     </i>
                                 </span>
                                 <span class="menu-title">Truck Directory</span>
+                            </a>
+                        </div>
+
+                        <!--Freight Calculator-->
+                        <div class="menu-item">
+                            <a class="menu-link {{ request()->is('freight*') ? 'active' : '' }}"
+                                href="{{ route('freight.index') }}">
+                                <span class="menu-icon">
+                                    <i class="fas fa-fw fa-search-location">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Freight Calculator</span>
                             </a>
                         </div>
                     @endrole

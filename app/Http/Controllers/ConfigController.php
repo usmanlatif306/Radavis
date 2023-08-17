@@ -37,6 +37,11 @@ class ConfigController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ton' => ['required', 'numeric'],
+            'shell' => ['required', 'numeric'],
+            'ohd' => ['required', 'numeric'],
+        ]);
         //dd($request);
         $values = $request->all();
 

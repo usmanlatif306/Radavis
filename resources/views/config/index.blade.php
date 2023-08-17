@@ -167,6 +167,25 @@
                                 1 Ton:</label>
                                 <input class="form-control" type="number" name="ton"
                                     value="{{ $config[12]['value'] }}" placeholder="1 Ton contains loads" />
+                                @error('ton')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                Shell:</label>
+                                <input class="form-control" type="text" name="shell"
+                                    value="{{ $config[13]['value'] }}" placeholder="Shell Value" />
+                                @error('shell')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                OHD:</label>
+                                <input class="form-control" type="text" name="ohd"
+                                    value="{{ $config[14]['value'] }}" placeholder="OHD Value" />
+                                @error('ohd')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>

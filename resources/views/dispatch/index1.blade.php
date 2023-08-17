@@ -468,11 +468,16 @@
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}
                                                     <br>
                                                     <span
-                                                        class=" fw-bold text-danger text-uppercase">{!! $dispatch->destination?->note !!}
+                                                        class="fw-bold text-danger text-uppercase">{!! $dispatch->destination?->note !!}
                                                     </span>
                                                 </span>
                                             </td>
-                                            <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
+                                            <td onclick="EditDispatch({{ $dispatch->id }})">
+                                                {!! $dispatch->exit->name ?? $dispatch->exit_id !!}<br>{!! $dispatch->exit?->address !!}
+                                                <br>
+                                                <span class="fw-bold text-danger text-uppercase">{!! $dispatch->exit?->note !!}
+                                                </span>
+                                            </td>
                                             <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->release_code ?? ' ' !!}</td>
                                             <td><span
                                                     onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
@@ -518,7 +523,7 @@
                                                         onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->destination?->name ?? $dispatch->destination_id !!}<br>{!! $dispatch->destination?->address !!}
                                                         <br>
                                                         <span
-                                                            class=" fw-bold text-danger text-uppercase">{!! $dispatch->destination?->note !!}
+                                                            class="fw-bold text-danger text-uppercase">{!! $dispatch->destination?->note !!}
                                                         </span>
                                                     </span>
                                                 </td>
@@ -534,7 +539,11 @@
                                             @endif
                                             @if ($view !== 'suppliers')
                                                 <td onclick="EditDispatch({{ $dispatch->id }})">
-                                                    {!! $dispatch->exit->name ?? $dispatch->exit_id !!}
+                                                    {!! $dispatch->exit->name ?? $dispatch->exit_id !!}<br>{!! $dispatch->exit?->address !!}
+                                                    <br>
+                                                    <span
+                                                        class="fw-bold text-danger text-uppercase">{!! $dispatch->exit?->note !!}
+                                                    </span>
                                                 </td>
                                             @endif
                                             <td onclick="EditDispatch({{ $dispatch->id }})">{!! $dispatch->release_code ?? ' ' !!}</td>

@@ -357,7 +357,12 @@
                                             <span>{!! $dispatch->commodity?->name ?? $dispatch->commodity_id !!}</span>
                                         </td>
                                         <td> {!! $dispatch->supplier->name ?? $dispatch->supplier_id !!}</td>
-                                        <td>{!! $dispatch->exit->name ?? $dispatch->exit_id !!}</td>
+                                        <td>
+                                            {!! $dispatch->exit->name ?? $dispatch->exit_id !!}<br>{!! $dispatch->exit?->address !!}
+                                            <br>
+                                            <span class="fw-bold text-danger text-uppercase">{!! $dispatch->exit?->note !!}
+                                            </span>
+                                        </td>
                                         <td>{!! $dispatch->release_code ?? ' ' !!}</td>
                                         <td><span>{!! $dispatch->via->name ?? $dispatch->via_id !!}</span>
                                         </td>

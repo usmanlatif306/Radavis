@@ -47,8 +47,7 @@ class BulletinController extends Controller
                 ->make(true);
         }
 
-        $bulletins = Bulletin::paginate();
-        return view('bulletins.index', compact('bulletins'));
+        return view('bulletins.index');
     }
 
     /**

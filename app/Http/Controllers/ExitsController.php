@@ -19,6 +19,30 @@ use DataTables;
 
 class ExitsController extends Controller
 {
+    private function cleanNote($string)
+    {
+        $string = str_replace('<span style="color:red">', '', $string);
+        $string = str_replace('</span>', '', $string);
+        $string = str_replace('<span style="color:red; font-weight: 900;">', '', $string);
+        $string = str_replace('<span style="color:#ff0000">', '', $string);
+        $string = str_replace('<span style="color: red; font-weight: bold;">', '', $string);
+        $string = str_replace('<span style="color:red; font-weight: bold;">', '', $string);
+        $string = str_replace('<span style="font-size: 18px;color: red;">', '', $string);
+        $string = str_replace('<span style="font-weight:bold;font-size:18px;color:red;">', '', $string);
+        $string = str_replace('<span style="color: red; font-size: 18px;"><strong>', '', $string);
+        $string = str_replace('<strong>', '', $string);
+        $string = str_replace('</strong>', '', $string);
+        $string = str_replace('<span style="color: red;">', '', $string);
+        $string = str_replace('<span style="color:#ff0000;font-weight: bold;">', '', $string);
+        $string = str_replace('<span style="color:red; font-weight:bold;">', '', $string);
+        $string = str_replace('<span style="color:red"><strong>', '', $string);
+        $string = str_replace('<span style="font-weight:bold">', '', $string);
+        $string = str_replace('<span style="color: red; font-weight: bold; font-size: 18px;">', '', $string);
+        $string = str_replace('<span style="color: red; font-size:16px;font-weight: 900;">', '', $string);
+        $string = str_replace('<span style="font-weight:bold; color: red;">', '', $string);
+
+        return $string;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,6 +50,16 @@ class ExitsController extends Controller
      */
     public function index(Request $request)
     {
+        $exits = Exits::whereNull('address')->get();
+        foreach ($exits as $exit) {
+            $new = explode('<br />', $exit->name);
+            $exit->update([
+                'name' => $new[0],
+                'address' => isset($new[1]) ? $new[1] : null,
+                'note' => (isset($new[2]) ? $this->cleanNote($new[2]) : null) . (isset($new[3]) ? ' ' . $this->cleanNote($new[3]) : '') . (isset($new[4]) ? ' ' . $this->cleanNote($new[4]) : ''),
+            ]);
+        }
+
         if ($request->ajax()) {
             $data = Exits::select('*');
             return Datatables::of($data)
@@ -69,8 +103,10 @@ class ExitsController extends Controller
     {
         // Validations
         $request->validate([
-            'name'    => 'required',
-            'active'  =>  'required|numeric|in:0,1',
+            'name'       => 'required|string|max:255',
+            'address'    => 'required|string|max:255',
+            'note'       => 'nullable|string|max:255',
+            'active'     =>  'required|numeric|in:0,1',
         ]);
 
         DB::beginTransaction();
@@ -80,6 +116,8 @@ class ExitsController extends Controller
             // Store Data
             $exit = Exits::create([
                 'name'    => $request->name,
+                'address' => $request->address,
+                'note'    => $request->note,
                 'active'  => $request->active,
             ]);
 
@@ -165,6 +203,8 @@ class ExitsController extends Controller
         // Validations
         $request->validate([
             'name'      =>  'required|unique:exits,name,' . $exit->id . ',id',
+            'address'   => 'required|string|max:255',
+            'note'      => 'nullable|string|max:255',
             'active'    =>  'required|numeric|in:0,1',
         ]);
 
@@ -174,6 +214,8 @@ class ExitsController extends Controller
             //dd($request);
             $exits_updated = Exits::whereId($exit->id)->update([
                 'name'      => $request->name,
+                'address'   => $request->address,
+                'note'      => $request->note,
                 'active'    => $request->active,
             ]);
 
