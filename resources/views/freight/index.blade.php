@@ -10,19 +10,6 @@
         'title' => 'Freight Calculator',
     ])
 
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <div class="spinner-border text-primary" style="width: 6rem; height: 6rem;">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <h2 class="pt-5 text-primary">Please Wait</h2>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <div id="kt_app_content_container" class="app-container container-fluid">
             {{-- Alert Messages --}}
@@ -35,11 +22,10 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="">
+                    <form action="" id="geoForm">
                         <div class="row">
                             {{-- Exit --}}
                             <div class="col-12">
-                                <div id="info" class="alert alert-success d-none"></div>
                                 <div id="error" class="alert alert-danger d-none"></div>
                             </div>
                             <div class="col-md-6 mb-6">
@@ -47,7 +33,7 @@
                                     <div class="col-12 mb-5">
                                         <div class="form-group">
                                             <label>Select Exit</label>
-                                            <select id="exit" name="exit" class="form-select">
+                                            <select id="exit" class="form-select">
                                                 <option selected disabled value="">Select Exit</option>
                                                 @foreach ($exits->sortBy('name') as $exit)
                                                     <option value="{{ $exit->address }}">{!! $exit->address !!}</option>
@@ -61,8 +47,9 @@
                                     <div class="col-12 mb-6">
                                         <div class="form-group">
                                             <label>Enter Exit Address</label>
-                                            <input type="text" class="form-control" id="exitAddress"
+                                            <input type="text" class="form-control map-input" id="exitAddress"
                                                 placeholder="13646 Ca-33, Lost Hills, CA Gate #2" name="address">
+                                            <input type="hidden" name="exit" value="">
                                         </div>
 
                                     </div>
@@ -90,8 +77,9 @@
                                     <div class="col-12 mb-6">
                                         <div class="form-group">
                                             <label>Enter Destination Address</label>
-                                            <input type="text" class="form-control" id="destinationAddress"
+                                            <input type="text" class="form-control map-input" id="destinationAddress"
                                                 placeholder="13646 Ca-33, Lost Hills, CA Gate #2">
+                                            <input type="hidden" name="destination" value="">
                                         </div>
 
                                     </div>
@@ -161,6 +149,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" style="width: 6rem; height: 6rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h2 class="pt-5 text-primary">Please Wait</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade d-none" id="loadingBackdrop"></div>
 @endsection
 @push('scripts')
     @include('freight.js')
