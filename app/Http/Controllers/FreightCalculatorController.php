@@ -32,18 +32,27 @@ class FreightCalculatorController extends Controller
     public function calculations(Request $request)
     {
         $miles = (float)$request->miles;
-        $slot = LocationTier::where('starting', '<=', $miles)->where('ending', '>=', $miles)->first();
-        $shell = (int) Config::where('item', 'shell')->first()?->value ?? 1;
+        if ($miles < 200) {
+            $slot = LocationTier::where('starting', '<=', $miles)->where('ending', '>=', $miles)->first();
+            $local_rate = $slot?->price ?? 0;
+            $shell = (int) Config::where('item', 'shell')->first()?->value ?? 1;
+            $shel_rate =  round(($local_rate * 24) / $shell);
+            $local_rate = '$' . (string)$local_rate;
+            $shel_rate =  '$' . (string)$shel_rate;
+        } else {
+            $local_rate = 'N/A';
+            $shel_rate = 'N/A';
+        }
+
+        $long = LocationTier::where('name', 'location 11')->first() ?? LocationTier::last();
         $ohd = (float) Config::where('item', 'ohd')->first()?->value ?? 1;
-        $local_rate = $slot?->price ?? 0;
-        $shel_rate =  round(($local_rate * 24) / $shell);
-        $long_rate =  round($miles * $ohd, 1);
+        $long_rate =  round(($miles * $long->price / 24), 1);
 
         return response()->json([
             'miles' => $miles,
             'local_rate' => $local_rate,
             'shel_rate' => $shel_rate,
-            'long_rate' => $long_rate,
+            'long_rate' => '$' . $long_rate,
         ]);
     }
 }

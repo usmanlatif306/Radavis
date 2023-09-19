@@ -36,7 +36,7 @@
                                             <select id="exit" class="form-select">
                                                 <option selected disabled value="">Select Exit</option>
                                                 @foreach ($exits->sortBy('name') as $exit)
-                                                    <option value="{{ $exit->address }}">{!! $exit->address !!}</option>
+                                                    <option value="{{ $exit->address }}">{!! $exit->name !!}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -65,7 +65,7 @@
                                             <select id="destination" class="form-select">
                                                 <option selected disabled value="">Select Destination</option>
                                                 @foreach ($destinations->sortBy('name') as $destination)
-                                                    <option value="{{ $destination->address }}">{!! $destination->address !!}
+                                                    <option value="{{ $destination->address }}">{!! $destination->name !!}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -167,27 +167,4 @@
 @endsection
 @push('scripts')
     @include('freight.js')
-    {{-- <script type="text/javascript">
-        function initMap() {
-            const myLatLng = {
-                lat: 30.8798008,
-                lng: 72.3312289
-            };
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 5,
-                center: myLatLng,
-            });
-
-            new google.maps.Marker({
-                position: myLatLng,
-                map,
-                title: "Usman Latif",
-            });
-        }
-
-        window.initMap = initMap;
-    </script>
-
-    <script type="text/javascript"
-        src="https://maps.google.com/maps/api/js?key={{ config('services.google_map_key') }}&callback=initMap"></script> --}}
 @endpush

@@ -152,9 +152,9 @@
                         },
                         success: function(res) {
                             $('#mileage').text(res.miles);
-                            $('#suggestedRate').text('$' + res.local_rate);
-                            $('#shellRate').text('$' + res.shel_rate);
-                            $('#longDistanceRate').text('$' + res.long_rate);
+                            $('#suggestedRate').text(res.local_rate);
+                            $('#shellRate').text(res.shel_rate);
+                            $('#longDistanceRate').text(res.long_rate);
                             toggleModel('hide');
                         },
                         error: function(error) {
