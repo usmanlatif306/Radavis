@@ -16,6 +16,7 @@
 @section('content')
 
     <?php
+    date_default_timezone_set('America/Phoenix');
     if (isset($_GET['date'])) {
         $date = $_GET['date'];
     } else {

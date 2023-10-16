@@ -28,7 +28,7 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Supplier::select('*');
+            $data = Supplier::select('*')->orderBy('name');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name_added', function ($row) {

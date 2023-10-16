@@ -92,14 +92,15 @@
                     if (this.data()[13] || this.data()[14] || this.data()[15]) {
                         strAdditional = '<table style="width:100%"><tr>';
                         strAdditional = strAdditional +
-                            '<td style="width:33%"><span class="dtr-title">Driver Note</span></td>';
+                            '<td style="width:33%"><span class="dtr-title" style="font-weight:bold;">Driver Note</span></td>';
                         strAdditional = strAdditional +
-                            '<td style="width:33%"><span class="dtr-title">Sales Note</span></td>';
+                            '<td style="width:33%;"><span class="dtr-title">Sales Note</span></td>';
                         strAdditional = strAdditional +
                             '<td style="width:34%"><span class="dtr-title">Accounting Note</span></td></tr>';
-                        strAdditional = strAdditional + '<tr><td>';
+                        strAdditional = strAdditional +
+                            '<tr><td style="text-transform:uppercase;color:red;font-weight:bold;">';
                         strAdditional = strAdditional + format(this.data()[13])
-                        strAdditional = strAdditional + '</td><td style="width:33%">';
+                        strAdditional = strAdditional + '</td><td style="width:33%;">';
                         strAdditional = strAdditional + format(this.data()[14])
                         strAdditional = strAdditional + '</td><td style="width:33%">';
                         strAdditional = strAdditional + format(this.data()[15])
@@ -399,6 +400,25 @@
                 }, 5000);*/
 
             }
+        });
+
+        $('#edit-commoditie').select2({
+            placeholder: "Select Commoditie",
+        });
+        $('#edit-supplier').select2({
+            placeholder: "Select Supplier",
+        });
+        $('#edit-exits').select2({
+            placeholder: "Select Exit",
+        });
+        $('#edit-via').select2({
+            placeholder: "Select Via",
+        });
+        $('#edit-destination').select2({
+            placeholder: "Select Destination",
+        });
+        $('#edit-salesman').select2({
+            placeholder: "Select Salesman",
         });
 
         $('#confirm_del_id').val(id);

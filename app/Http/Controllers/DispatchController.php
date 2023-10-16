@@ -930,7 +930,6 @@ class DispatchController extends Controller
         //dd($variables);
         //if($_SERVER['REMOTE_ADDR']=='182.186.232.79')
         //{
-
         date_default_timezone_set("America/Phoenix");
         $date = $request->date;
         if ($date != '') {

@@ -343,6 +343,25 @@
             }
         });
 
+        $('#edit-commoditie').select2({
+            placeholder: "Select Commoditie",
+        });
+        $('#edit-supplier').select2({
+            placeholder: "Select Supplier",
+        });
+        $('#edit-exits').select2({
+            placeholder: "Select Exit",
+        });
+        $('#edit-via').select2({
+            placeholder: "Select Via",
+        });
+        $('#edit-destination').select2({
+            placeholder: "Select Destination",
+        });
+        $('#edit-salesman').select2({
+            placeholder: "Select Salesman",
+        });
+
         $('#confirm_del_id').val(id);
     }
 

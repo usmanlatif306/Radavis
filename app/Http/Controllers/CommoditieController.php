@@ -31,7 +31,7 @@ class CommoditieController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Commoditie::select('*');
+            $data = Commoditie::select('*')->orderBy('name');
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name_added', function ($row) {
