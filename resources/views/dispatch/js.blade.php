@@ -404,21 +404,27 @@
 
         $('#edit-commoditie').select2({
             placeholder: "Select Commoditie",
+            dropdownParent: $('#editModal')
         });
         $('#edit-supplier').select2({
             placeholder: "Select Supplier",
+            dropdownParent: $('#editModal')
         });
         $('#edit-exits').select2({
             placeholder: "Select Exit",
+            dropdownParent: $('#editModal')
         });
         $('#edit-via').select2({
             placeholder: "Select Via",
+            dropdownParent: $('#editModal')
         });
         $('#edit-destination').select2({
             placeholder: "Select Destination",
+            dropdownParent: $('#editModal')
         });
         $('#edit-salesman').select2({
             placeholder: "Select Salesman",
+            dropdownParent: $('#editModal')
         });
 
         $('#confirm_del_id').val(id);
