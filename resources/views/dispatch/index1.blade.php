@@ -604,6 +604,7 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @include('dispatch.js')
     <script>
         (function() {
@@ -616,45 +617,58 @@
 
         })();
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#commodity').select2({
-                placeholder: "Select Commodity",
+            $('#add-commoditie').select2({
+                placeholder: "Select Commoditie",
+                dropdownParent: $('#createModal')
             });
-            $('#via').select2({
-                placeholder: "Select Via",
-            });
-            $('#supplier').select2({
+            $('#add-supplier').select2({
                 placeholder: "Select Supplier",
+                dropdownParent: $('#createModal')
             });
-            $('#destination').select2({
-                placeholder: "Select Destination",
-            });
-            $('#exit').select2({
+            $('#add-exits').select2({
                 placeholder: "Select Exit",
+                dropdownParent: $('#createModal')
             });
-            $('#salesman').select2({
-                placeholder: "Select Saleman",
+            $('#add-via').select2({
+                placeholder: "Select Via",
+                dropdownParent: $('#createModal')
             });
-            $('#rate').select2({
-                placeholder: "Select Rate",
+            $('#add-destination').select2({
+                placeholder: "Select Destination",
+                dropdownParent: $('#createModal')
             });
-
+            $('#add-salesman').select2({
+                placeholder: "Select Salesman",
+                dropdownParent: $('#createModal')
+            });
+            // function addSelect2(type, model) {
+            //     $(`#${type}-commoditie`).select2({
+            //         placeholder: "Select Commoditie",
+            //         dropdownParent: $(`#${model}`)
+            //     });
+            //     $(`#${type}-supplier`).select2({
+            //         placeholder: "Select Supplier",
+            //         dropdownParent: $(`#${model}`)
+            //     });
+            //     $(`#${type}-exits`).select2({
+            //         placeholder: "Select Exit",
+            //         dropdownParent: $(`#${model}`)
+            //     });
+            //     $(`#${type}-via`).select2({
+            //         placeholder: "Select Via",
+            //         dropdownParent: $(`#${model}`)
+            //     });
+            //     $(`#${type}-destination`).select2({
+            //         placeholder: "Select Destination",
+            //         dropdownParent: $(`#${model}`)
+            //     });
+            //     $(`#${type}-salesman`).select2({
+            //         placeholder: "Select Salesman",
+            //         dropdownParent: $(`#${model}`)
+            //     });
+            // }
         });
-
-        function resetSelect() {
-            $("#commodity").val('').trigger('change');
-            $("#via").val('').trigger('change');
-            $("#supplier").val('').trigger('change');
-            $("#destination").val('').trigger('change');
-            $("#exit").val('').trigger('change');
-            $("#salesman").val('').trigger('change');
-            $("#rate").val('').trigger('change');
-            $('#datepicker_from').removeAttr('disabled');
-            $('#datepicker_to').removeAttr('disabled');
-        }
-        document.getElementById('resetButton').addEventListener('click', resetSelect, true);
     </script>
 @endpush

@@ -25,6 +25,31 @@
             return $(this).val();
         }).get();
 
+        $('#bulk-commoditie').select2({
+            placeholder: "Select Commoditie",
+            dropdownParent: $('#bulkeditModal')
+        });
+        $('#bulk-supplier').select2({
+            placeholder: "Select Supplier",
+            dropdownParent: $('#bulkeditModal')
+        });
+        $('#bulk-exits').select2({
+            placeholder: "Select Exit",
+            dropdownParent: $('#bulkeditModal')
+        });
+        $('#bulk-via').select2({
+            placeholder: "Select Via",
+            dropdownParent: $('#bulkeditModal')
+        });
+        $('#bulk-destination').select2({
+            placeholder: "Select Destination",
+            dropdownParent: $('#bulkeditModal')
+        });
+        $('#bulk-salesman').select2({
+            placeholder: "Select Salesman",
+            dropdownParent: $('#bulkeditModal')
+        });
+
         $('#bulkeditModal').modal('show');
 
         $('#ids_to_edit').val('');

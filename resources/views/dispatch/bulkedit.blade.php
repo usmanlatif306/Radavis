@@ -25,10 +25,10 @@
 
                         {{-- Commodity --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                            <span style="color:red;">*</span>Commoditye</label>
+                            <span style="color:red;">*</span>Commodity</label>
                             <select onchange="BulkUpdateSuppliers()"
                                 class="form-select @error('commodity') is-invalid @enderror" name="commodity_id"
-                                id="add-commoditie">
+                                id="bulk-commoditie">
                                 <option selected disabled>Select Commodity</option>
                                 @foreach ($commodities->sortBy('name') as $commoditie)
                                     <option style="color:{{ $commoditie->color }}" value="{{ $commoditie->id }}">
@@ -44,7 +44,7 @@
                         {{-- Supplier --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Supplier</label>
-                            <select id="add-supplier" onchange="BulkUpdateexits()"
+                            <select id="bulk-supplier" onchange="BulkUpdateexits()"
                                 class="form-select @error('supplier') is-invalid @enderror" name="supplier_id"
                                 @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
                                 <option selected="selected" disabled="disabled">Select Supplier</option>
@@ -72,7 +72,7 @@
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Exits</label>
                             <select class="form-select @error('exit') is-invalid @enderror" name="exit_id"
-                                id="add-exits" @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
+                                id="bulk-exits" @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
                                 <option selected="selected" disabled="disabled">Select Exits</option>
                             </select>
 
@@ -86,7 +86,7 @@
                         {{-- Via --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Via</label>
-                            <select class="form-select @error('via') is-invalid @enderror" name="via_id"
+                            <select id="bulk-via" class="form-select @error('via') is-invalid @enderror" name="via_id"
                                 @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
                                 <option selected disabled>Select Via</option>
                                 @foreach ($vias->sortBy('name') as $via)
@@ -101,7 +101,7 @@
                         {{-- Destination --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Destination</label>
-                            <select class="form-select @error('destination') is-invalid @enderror"
+                            <select id="bulk-destination" class="form-select @error('destination') is-invalid @enderror"
                                 name="destination_id">
                                 <option selected disabled>Select Destination</option>
                                 @foreach ($destinations->sortBy('name') as $destination)
@@ -132,8 +132,8 @@
                         {{-- Salesman --}}
                         <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                             <span style="color:red;">*</span>Salesman</label>
-                            <select class="form-select @error('salesman') is-invalid @enderror" name="salesman"
-                                @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
+                            <select id="bulk-salesman" class="form-select @error('salesman') is-invalid @enderror"
+                                name="salesman" @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
                                 <option selected disabled>Select Salesman</option>
                                 <option value=""></option>
                                 @foreach ($users->sortBy('first_name') as $user)
@@ -200,9 +200,9 @@
 
                         {{-- ship --}}
                         <div class="col-sm-4 mb-2 mt-2 mb-sm-0">
-                            Ship</label>
+                            Stop Shipment</label>
                             <select class="form-select @error('status') is-invalid @enderror" name="noship">
-                                <option disabled selected>Select Shiped</option>
+                                <option disabled selected>Select Shipped</option>
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             </select>
@@ -213,7 +213,7 @@
 
                         {{-- void --}}
                         <div class="col-sm-4 mb-2 mt-2 mb-sm-0">
-                            Void</label>
+                            Void Shipment</label>
                             <select class="form-select @error('status') is-invalid @enderror" name="void">
                                 <option disabled selected>Select Void</option>
                                 <option value="1">Yes</option>
