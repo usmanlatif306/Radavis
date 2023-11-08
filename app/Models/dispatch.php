@@ -73,8 +73,6 @@ class dispatch extends Model
 
     public static function get_dispatches_search($from, $to, $variables = array(), $select = '*')
     {
-        date_default_timezone_set("America/Los_Angeles");
-
         $query = dispatch::query()->with(['commodity', 'destination', 'rate'])->select($select);
 
         if (!isset($variables['datepicker_all'])) {
@@ -126,15 +124,15 @@ class dispatch extends Model
 
 
         if (\Auth::user()->hasRole('salesman')) {
-            return $query->where('salesman', \Auth::user()->id)->paginate(1000);
+            return $query->where('salesman', \Auth::user()->id)->paginate(10);
         } elseif (\Auth::user()->hasRole('truck')) {
-            return $query->whereIn('via_id', auth()->user()->trucks->pluck('id'))->paginate(1000);
+            return $query->whereIn('via_id', auth()->user()->trucks->pluck('id'))->paginate(10);
         } else {
             /*echo $query->toSql();
             $bindings = $query->getBindings();
             print_r($bindings);
             //exit;*/
-            return $query->paginate(1000);
+            return $query->paginate(10);
         }
     }
 

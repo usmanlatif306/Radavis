@@ -240,11 +240,11 @@
                                     <select id="via" name="via" class="form-select">
                                         <option selected disabled>Select Via</option>
                                         <?php $via1 = null;
-                                        
+
                                         if (isset($_GET['via']) && $_GET['via'] != '') {
                                             $via1 = $_GET['via'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($vias->sortBy('name') as $via)
                                             <option value="{{ $via->id }}" {{ $via->id == $via1 ? 'selected' : '' }}>
@@ -257,11 +257,11 @@
                                     <select id="supplier" name="supplier" class="form-select">
                                         <option selected disabled>Select Supplier</option>
                                         <?php $supplier1 = null;
-                                        
+
                                         if (isset($_GET['supplier']) && $_GET['supplier'] != '') {
                                             $supplier1 = $_GET['supplier'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($suppliers->sortBy('name') as $supplier)
                                             <option value="{{ $supplier->id }}"
@@ -275,11 +275,11 @@
                                     <select id="destination" name="destination" class="form-select">
                                         <option selected disabled>Select Destination</option>
                                         <?php $destination1 = null;
-                                        
+
                                         if (isset($_GET['destination']) && $_GET['destination'] != '') {
                                             $destination1 = $_GET['destination'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($destinations->sortBy('name') as $destination)
                                             <option value="{{ $destination->id }}"
@@ -293,11 +293,11 @@
                                     <select id="exit" name="exit" class="form-select">
                                         <option selected disabled>Select Exit</option>
                                         <?php $exit1 = null;
-                                        
+
                                         if (isset($_GET['exit']) && $_GET['exit'] != '') {
                                             $exit1 = $_GET['exit'];
                                         }
-                                        
+
                                         ?>
                                         @foreach ($exits->sortBy('name') as $exit)
                                             <option value="{{ $exit->id }}"
@@ -312,11 +312,11 @@
                                         <select id="salesman" name="salesman" class="form-select">
                                             <option selected disabled>Select Salesman</option>
                                             <?php $salesman = null;
-                                            
+
                                             if (isset($_GET['salesman']) && $_GET['salesman'] != '') {
                                                 $salesman = $_GET['salesman'];
                                             }
-                                            
+
                                             ?>
                                             @foreach ($users->sortBy('first_name') as $user)
                                                 <option value="{{ $user->id }}"
@@ -330,11 +330,11 @@
                                         <select id="rate" name="rate" class="form-select">
                                             <option selected disabled>Select Rate</option>
                                             <?php $rate1 = null;
-                                            
+
                                             if (isset($_GET['rate']) && $_GET['rate'] != '') {
                                                 $rate1 = $_GET['rate'];
                                             }
-                                            
+
                                             ?>
                                             @foreach ($rates->sortBy('name') as $rate)
                                                 <option value="{{ $rate->id }}"
@@ -643,32 +643,7 @@
                 placeholder: "Select Salesman",
                 dropdownParent: $('#createModal')
             });
-            // function addSelect2(type, model) {
-            //     $(`#${type}-commoditie`).select2({
-            //         placeholder: "Select Commoditie",
-            //         dropdownParent: $(`#${model}`)
-            //     });
-            //     $(`#${type}-supplier`).select2({
-            //         placeholder: "Select Supplier",
-            //         dropdownParent: $(`#${model}`)
-            //     });
-            //     $(`#${type}-exits`).select2({
-            //         placeholder: "Select Exit",
-            //         dropdownParent: $(`#${model}`)
-            //     });
-            //     $(`#${type}-via`).select2({
-            //         placeholder: "Select Via",
-            //         dropdownParent: $(`#${model}`)
-            //     });
-            //     $(`#${type}-destination`).select2({
-            //         placeholder: "Select Destination",
-            //         dropdownParent: $(`#${model}`)
-            //     });
-            //     $(`#${type}-salesman`).select2({
-            //         placeholder: "Select Salesman",
-            //         dropdownParent: $(`#${model}`)
-            //     });
-            // }
+
         });
     </script>
 @endpush

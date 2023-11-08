@@ -115,7 +115,7 @@
                             <span style="color:red;">*</span>Destination</label>
                             <select id="edit-destination" class="form-select @error('destination') is-invalid @enderror"
                                 name="destination_id">
-                                <option selected disabled>Select Destination</option>
+                                <option disabled>Select Destination</option>
                                 @foreach ($destinations->sortBy('name') as $destination)
                                     <option value="{{ $destination->id }}">{{ $destination->name }}</option>
                                 @endforeach
@@ -146,7 +146,7 @@
                             <span style="color:red;">*</span>Salesman</label>
                             <select id="edit-salesman" class="form-select @error('salesman') is-invalid @enderror"
                                 name="salesman" @if (Auth::user()->hasRole('salesman')) disabled="disabled" @endif>
-                                <option selected disabled>Select Salesman</option>
+                                <option disabled>Select Salesman</option>
                                 <option value=""></option>
                                 @foreach ($users->sortBy('first_name') as $user)
                                     <option value="{{ $user->id }}">{{ $user->first_name }}</option>

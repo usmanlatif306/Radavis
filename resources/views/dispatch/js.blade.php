@@ -386,6 +386,31 @@
     function EditDispatch(id) {
         $('#editModal').modal('show');
         $('.edit-button').attr('disabled', 'disabled');
+        $('#edit-commoditie').select2({
+            placeholder: "Select Commoditie",
+            dropdownParent: $('#editModal')
+        });
+        $('#edit-supplier').select2({
+            placeholder: "Select Supplier",
+            dropdownParent: $('#editModal')
+        });
+        $('#edit-exits').select2({
+            placeholder: "Select Exit",
+            dropdownParent: $('#editModal')
+        });
+        $('#edit-via').select2({
+            placeholder: "Select Via",
+            dropdownParent: $('#editModal')
+        });
+        $('#edit-destination').select2({
+            placeholder: "Select Destination",
+            dropdownParent: $('#editModal')
+        });
+        $('#edit-salesman').select2({
+            placeholder: "Select Salesman",
+            dropdownParent: $('#editModal')
+        });
+
         $.ajax({
             type: 'POST',
             url: '{{ route('dispatch.getdispatch') }}',
@@ -528,7 +553,7 @@
     }
 
     function BulkUpdateSuppliers() {
-        value = $('.bulk-edit-form #add-commoditie').find(':selected').val();
+        value = $('.bulk-edit-form #bulk-commoditie').find(':selected').val();
         console.log(value);
         $.ajax({
             type: 'POST',
@@ -538,8 +563,8 @@
                 id: value
             },
             success: function(data) {
-                $('.bulk-edit-form #add-supplier').html(data);
-                $('.bulk-edit-form #add-supplier').trigger('change');
+                $('.bulk-edit-form #bulk-supplier').html(data);
+                $('.bulk-edit-form #bulk-supplier').trigger('change');
             }
         });
 
@@ -547,7 +572,7 @@
     }
 
     function BulkUpdateexits() {
-        value = $('.bulk-edit-form #add-supplier').find(':selected').val();
+        value = $('.bulk-edit-form #bulk-supplier').find(':selected').val();
         $.ajax({
             type: 'POST',
             url: '{{ route('dispatch.getSuppliersExits') }}',
@@ -556,7 +581,7 @@
                 id: value
             },
             success: function(data) {
-                $('.bulk-edit-form #add-exits').html(data);
+                $('.bulk-edit-form #bulk-exits').html(data);
             }
         });
     }
